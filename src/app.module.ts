@@ -9,6 +9,10 @@ import { GraphQLModule } from '@nestjs/graphql';
     // GraphQLModule.forRoot({
     //   autoSchemaFile: 'schema.gql',
     // }),
+    GraphQLModule.forRoot({
+      typePaths: ['./**/*.graphql'],
+      installSubscriptionHandlers: true,
+    }),
     UsersModule,
   ],
   controllers: [AppController],
