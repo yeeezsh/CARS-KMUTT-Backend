@@ -1,5 +1,4 @@
 import { Schema} from 'mongoose';
-// import { Schema } from 'inspector';
 
 export interface Staff {
     _id: string;
