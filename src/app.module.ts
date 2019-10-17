@@ -3,17 +3,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { GraphQLModule } from '@nestjs/graphql';
+import * as GraphQLJSON from 'graphql-type-json';
 
 @Module({
   imports: [
-    // GraphQLModule.forRoot({
-    //   autoSchemaFile: 'schema.gql',
-    // }),
+    UsersModule,
     GraphQLModule.forRoot({
       typePaths: ['./**/*.graphql'],
-      installSubscriptionHandlers: true,
+      // resolvers: { JSON: GraphQLJSON },
+      autoSchemaFile: 'schema.gql',
     }),
-    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
