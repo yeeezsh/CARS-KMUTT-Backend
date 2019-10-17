@@ -1,5 +1,5 @@
 
-import { IsNotEmpty, IsEmail, IsString } from 'class-validator';
+import { IsNotEmpty, IsEmail, IsString, IsIn } from 'class-validator';
 
 export class CreateStaffDto {
     @IsNotEmpty()
@@ -15,5 +15,6 @@ export class CreateStaffDto {
     readonly email: string;
 
     @IsNotEmpty()
+    @IsIn(['staff', 'approver', 'admin'])
     readonly permission: string;
 }
