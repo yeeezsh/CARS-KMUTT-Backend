@@ -12,7 +12,5 @@ export interface Staff {
 interface StaffPermission {
     position: 'staff' | 'approver' | 'admin';
     approve: boolean;
-    // permitArea: [Area['_id']];
-    // permitArea: string[];
     permitArea: Schema.Types.ObjectId[];
 }
