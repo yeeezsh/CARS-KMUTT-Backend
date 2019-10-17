@@ -1,0 +1,22 @@
+scalar Date
+
+type Query {
+  getStaffs: [Staff]
+  staff(id: String!): Staff
+}
+
+type Staff {
+    _id: String
+    username: String
+    password: String
+    email: String
+    permission: String
+    createAt: Date
+}
+
+input CreateStaffInput {
+    username: String
+    password: String
+    email: String
+    permission: String
+}
