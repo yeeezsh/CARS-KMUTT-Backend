@@ -1,22 +1,22 @@
-import bcrypt from 'bcrypt';
+import { genSalt, compare, hash } from 'bcrypt';
 
 const saltRounds = 10;
 
 export class Hash {
 
-    encrypt(plaintext: string): string {
-        return bcrypt.genSalt(saltRounds, (err, salt) => {
-            if (err) { throw new Error(err); }
-            bcrypt.hash(plaintext, salt, (err, hash: string) => {
-                if (err) { throw new Error(err); }
+    encrypt(plaintext: string): Promise<string> {
+        return genSalt(saltRounds, (err, salt) => {
+            if (err) { throw err; }
+            hash(plaintext, salt, (errx, hash: string) => {
+                if (err || errx) { throw err || errx; }
                 return hash;
             });
         });
     }
 
-    compare(plaintext: string, hash: string): string {
-        return bcrypt.compare(plaintext, hash, (err, res) => {
-            if (err) { throw new Error(err); }
+    compare(plaintext: string, hashed: string): Promise<boolean> {
+        return compare(plaintext, hashed, (err, res) => {
+            if (err) { throw err; }
             return res;
         });
     }
