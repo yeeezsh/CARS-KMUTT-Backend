@@ -7,9 +7,9 @@ export class Hash {
     encrypt(plaintext: string): Promise<string> {
         return genSalt(saltRounds, (err, salt) => {
             if (err) { throw err; }
-            hash(plaintext, salt, (errx, hash: string) => {
+            hash(plaintext, salt, (errx, hashed: string) => {
                 if (err || errx) { throw err || errx; }
-                return hash;
+                return hashed;
             });
         });
     }
