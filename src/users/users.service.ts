@@ -46,7 +46,6 @@ export class UsersService {
             if (!user) { throw new HttpException('user is not exist', HttpStatus.UNAUTHORIZED); }
             const auth = await Hash.compare(login.password, user.password);
             if (!auth) { throw new HttpException('password invalid', HttpStatus.UNAUTHORIZED); }
-            delete user.password;
             return user;
         } catch (err) {
             throw err;

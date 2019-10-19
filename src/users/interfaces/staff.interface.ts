@@ -1,9 +1,9 @@
-import { Schema} from 'mongoose';
+import { Schema } from 'mongoose';
 
 export interface Staff {
     _id: string;
     username: string;
-    password: string;
+    password?: string;
     email: string;
     permission: StaffPermission;
     createAt: Date;
