@@ -1,6 +1,6 @@
 
 import { IsNotEmpty, IsEmail, IsString, IsIn } from 'class-validator';
-import { Field, InputType } from 'type-graphql';
+import { Field, InputType, ArgsType } from 'type-graphql';
 
 @InputType()
 export class CreateStaffInput {

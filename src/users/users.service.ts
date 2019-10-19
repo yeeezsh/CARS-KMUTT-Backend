@@ -5,7 +5,7 @@ import { Model } from 'mongoose';
 import { Staff } from './interfaces/staff.interface';
 
 // dtos
-import { CreateStaffInput } from './dtos/create-staff.input';
+import { CreateStaffInput } from './dtos/staff.input';
 
 @Injectable()
 export class UsersService {
