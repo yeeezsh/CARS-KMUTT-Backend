@@ -5,32 +5,32 @@ import { ObjectType, Field } from 'type-graphql';
 @ObjectType()
 export class StaffDto {
     @Field()
-    // @IsNotEmpty()
+    @IsNotEmpty()
     // tslint:disable-next-line: variable-name
     readonly _id: string;
 
     @Field()
-    // @IsNotEmpty()
-    // @IsString()
+    @IsNotEmpty()
+    @IsString()
     readonly username: string;
 
     @Field()
-    // @IsNotEmpty()
-    // @IsString()
+    @IsNotEmpty()
+    @IsString()
     readonly password: string;
 
     @Field()
-    // @IsNotEmpty()
-    // @IsEmail()
+    @IsNotEmpty()
+    @IsEmail()
     readonly email: string;
 
     @Field()
-    // @IsNotEmpty()
-    // @IsIn(['staff', 'approver', 'admin'])
+    @IsNotEmpty()
+    @IsIn(['staff', 'approver', 'admin'])
     readonly permission: string;
 
     @Field()
-    // @IsNotEmpty()
-    // @IsDate()
+    @IsNotEmpty()
+    @IsDate()
     readonly createAt: Date;
 }
