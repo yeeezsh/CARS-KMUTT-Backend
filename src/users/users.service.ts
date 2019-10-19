@@ -4,7 +4,11 @@ import { Model } from 'mongoose';
 // interfaces
 import { Staff } from './interfaces/staff.interface';
 
+// dtos
 import { CreateStaffInput } from './dtos/staff.input';
+
+// helpers
+import { Hash } from './helpers/hash';
 
 @Injectable()
 export class UsersService {
@@ -22,7 +26,11 @@ export class UsersService {
             throw new Error('username or email is duplicated');
         }
 
-        const doc = new this.staffModel(create);
+        const parse: CreateStaffInput = {
+            ...create,
+            password: await Hash.encrypt(create.password),
+        };
+        const doc = new this.staffModel(parse);
         const saved = await doc.save();
         return saved;
     }
