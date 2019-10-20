@@ -1,5 +1,6 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { UsersService } from './users.service';
+import { AuthGuard } from '@nestjs/passport';
+import { UseGuards } from '@nestjs/common';
 
 // inputs
 import { CreateStaffInput } from './dtos/staff.input';
@@ -9,15 +10,28 @@ import { LoginStaffInput } from './dtos/staff.login.input';
 import { StaffDto } from './dtos/staff.dto';
 import { StaffLoginDto } from './dtos/staff.login.dto';
 
+// helpers
+import { GqlAuthGuard } from './staff.guard';
+
+// decorators
+import { CurrentUser } from './decorators/staff.guard.decorator';
+
+// services
+import { UsersService } from './users.service';
+import { AuthService } from '../auth/auth.service';
+
 @Resolver('Users')
 export class UsersResolver {
 
     constructor(
         private readonly usersService: UsersService,
+        private readonly authService: AuthService
     ) { }
 
     @Query(() => [StaffDto])
-    async getStaffs() {
+    @UseGuards(GqlAuthGuard)
+    async getStaffs(@CurrentUser() user: StaffDto) {
+        console.log(user)
         return await this.usersService.listStaff();
     }
 
@@ -27,7 +41,9 @@ export class UsersResolver {
     }
 
     @Mutation(returns => StaffDto)
+    @UseGuards(GqlAuthGuard)
     async loginStaff(@Args('loginStaff') data: LoginStaffInput) {
+        await this.authService.login(data.username, data.password);
         return await this.usersService.loginStaff(data);
     }
 }
