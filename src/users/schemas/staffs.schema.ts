@@ -6,5 +6,5 @@ export const StaffSchema = new Schema({
   password: String,
   email: String,
   permission: String,
-  createAt: Date,
+  createAt: { type: Date, default: Date.now },
 });
