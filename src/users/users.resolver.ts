@@ -9,7 +9,7 @@ import { LoginStaffInput } from './dtos/staff.login.input';
 import { StaffDto } from './dtos/staff.dto';
 
 // helpers
-import { GqlAuthGuard } from './staff.guard';
+import { GqlStaffGuard } from './staff.guard';
 
 // decorators
 import { CurrentUser } from './decorators/staff.guard.decorator';
@@ -27,24 +27,15 @@ export class UsersResolver {
     ) { }
 
     @Query(() => [StaffDto])
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlStaffGuard)
     async getStaffs(@CurrentUser() user: StaffDto) {
         // console.log(user)
         return await this.usersService.listStaff();
     }
 
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlStaffGuard)
     @Mutation(returns => StaffDto)
     async createStaff(@Args('createStaff') data: CreateStaffInput) {
         return await this.usersService.createStaff(data);
     }
-
-    // @Mutation(returns => StaffGuardDto)
-    // async loginStaff(@Args('loginStaff') data: LoginStaffInput) {
-    //     // await this.authService.login(data.username, data.password);
-    //     // await this.usersService.loginStaff(data);
-    //     // const token = await this.authService.validateStaff(data.username, data.password)
-    //     // console.log(token)
-    //     return { access_token: 'test' };
-    // }
 }
