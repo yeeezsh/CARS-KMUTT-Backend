@@ -41,9 +41,9 @@ export class UsersResolver {
     }
 
     @Mutation(returns => StaffDto)
-    @UseGuards(GqlAuthGuard)
+    // @UseGuards(GqlAuthGuard)
     async loginStaff(@Args('loginStaff') data: LoginStaffInput) {
-        await this.authService.login(data.username, data.password);
+        // await this.authService.login(data.username, data.password);
         return await this.usersService.loginStaff(data);
     }
 }
