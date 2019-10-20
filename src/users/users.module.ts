@@ -5,6 +5,7 @@ import { DatabaseModule } from '../database/database.module';
 import { usersProviders } from './users.providers';
 import { DateScalar } from '../common/date.scalar';
 import { AuthModule } from '../auth/auth.module';
+import { UsersController } from './users.controller';
 
 @Module({
   imports: [
@@ -17,5 +18,6 @@ import { AuthModule } from '../auth/auth.module';
     UsersResolver,
   ],
   exports: [UsersService],
+  controllers: [UsersController],
 })
 export class UsersModule { }
