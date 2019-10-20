@@ -10,7 +10,7 @@ export class UsersController {
     ) { }
 
     @UseGuards(AuthGuard('local'))
-    @Post('/auth/login/staff')
+    @Post('/auth/staff')
     async loginStaff(@Request() req) {
         return req.user;
         // return this.authService.validateStaff()
