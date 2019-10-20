@@ -1,12 +1,14 @@
-import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, Inject, HttpException, HttpStatus, HttpService } from '@nestjs/common';
 import { Model } from 'mongoose';
 
 // interfaces
 import { Staff } from './interfaces/staff.interface';
+import { Requestor } from './interfaces/requestor.interface';
 
 // dtos
 import { CreateStaffInput } from './dtos/staff.input';
 import { StaffLoginDto } from './dtos/staff.login.dto';
+import { RequestorLoginDto } from './dtos/requestor.login.dto';
 
 // helpers
 import { Hash } from './helpers/hash';
@@ -15,6 +17,8 @@ import { Hash } from './helpers/hash';
 export class UsersService {
     constructor(
         @Inject('STAFF_MODEL') private readonly staffModel: Model<Staff>,
+        @Inject('REQUESTOR_MODEL') private readonly requestorModel: Model<Requestor>,
+        private readonly httpService: HttpService,
     ) { }
 
     async createStaff(create: CreateStaffInput): Promise<Staff> {
@@ -47,6 +51,27 @@ export class UsersService {
             const auth = await Hash.compare(login.password, user.password);
             if (!auth) { throw new HttpException('password invalid', HttpStatus.UNAUTHORIZED); }
             return user;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async loginRequestor(login: RequestorLoginDto): Promise<Requestor> {
+        try {
+            const { data: ldap } = await this.httpService.post('https://auth.innosoft.kmutt.ac.th',
+                { username: login.username, password: login.password },
+            ).toPromise();
+
+            const registred = await this.requestorModel.findOne({ username: login.username }).lean();
+            if (!registred) {
+                const doc = new this.requestorModel({
+                    username: login.username,
+                    stId: login.username,
+                });
+                const saved = await doc.save();
+                return saved;
+            }
+            return registred;
         } catch (err) {
             throw err;
         }
