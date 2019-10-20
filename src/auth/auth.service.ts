@@ -4,39 +4,28 @@ import { UsersService } from '../users/users.service';
 import { Staff } from '../users/interfaces/staff.interface';
 
 @Injectable()
-export class AuthService {
 
+export class AuthService {
     constructor(
-        private readonly jwtService: JwtService,
         private readonly usersService: UsersService,
+        private readonly jwtService: JwtService,
     ) { }
 
     async validateStaff(username: string, inputPassword: string): Promise<any> {
-        const user = await this.usersService.loginStaff({ username, password: inputPassword });
-        if (user) {
+        try {
+            const user = await this.usersService.loginStaff({ username, password: inputPassword });
             const { password, ...result } = user;
             return result;
+        } catch (err) {
+            return null;
         }
-        return null;
     }
 
-    // async login(user: any) {
-    //     const payload = { username: user.username, sub: user.userId };
-    //     return {
-    //         access_token: this.jwtService.sign(payload),
-    //     };
-    // }
-
-    public async login(username: string, inputPassword: string): Promise<any | { status: number }> {
-        return this.validateStaff(username, inputPassword).then((user) => {
-            if (!user) {
-                return { status: 404 };
-            }
-            const payload = { username: user.username, sub: user.userId };
-            return {
-                access_token: this.jwtService.sign(payload),
-            };
-
-        });
+    async loginJWT(user: Staff) {
+        const payload = { _id: user._id, permission: user.permission, email: user.email };
+        return {
+            access_token: this.jwtService.sign(payload),
+        };
     }
+
 }
