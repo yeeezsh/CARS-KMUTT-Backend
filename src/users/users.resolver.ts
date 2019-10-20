@@ -29,7 +29,7 @@ export class UsersResolver {
     @Query(() => [StaffDto])
     @UseGuards(GqlAuthGuard)
     async getStaffs(@CurrentUser() user: StaffDto) {
-        console.log(user)
+        // console.log(user)
         return await this.usersService.listStaff();
     }
 
