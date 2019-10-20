@@ -42,7 +42,7 @@ export class UsersService {
 
     async loginStaff(login: StaffLoginDto): Promise<Staff> {
         try {
-            const user: Staff = await this.staffModel.findOne({ username: login.username });
+            const user: Staff = await this.staffModel.findOne({ username: login.username }).lean();
             if (!user) { throw new HttpException('user is not exist', HttpStatus.UNAUTHORIZED); }
             const auth = await Hash.compare(login.password, user.password);
             if (!auth) { throw new HttpException('password invalid', HttpStatus.UNAUTHORIZED); }
