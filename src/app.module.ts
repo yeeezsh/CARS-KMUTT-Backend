@@ -8,13 +8,13 @@ import * as GraphQLJSON from 'graphql-type-json';
 
 @Module({
   imports: [
-    UsersModule,
     GraphQLModule.forRoot({
       typePaths: ['./**/*.graphql'],
       // resolvers: { JSON: GraphQLJSON },
       autoSchemaFile: 'schema.gql',
     }),
     AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
