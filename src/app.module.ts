@@ -11,6 +11,7 @@ import * as GraphQLJSON from 'graphql-type-json';
     GraphQLModule.forRoot({
       typePaths: ['./**/*.graphql'],
       // resolvers: { JSON: GraphQLJSON },
+      context: ({ req }) => ({ req }),
       autoSchemaFile: 'schema.gql',
     }),
     AuthModule,
