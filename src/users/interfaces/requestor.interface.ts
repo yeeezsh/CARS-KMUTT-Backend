@@ -2,7 +2,8 @@ import { Schema } from 'mongoose';
 
 export interface Requestor {
     _id: Schema.Types.ObjectId;
-    stId?: string;
+    username: string;
+    studentId?: string;
     email: string;
     name?: {
         firstName: string,
