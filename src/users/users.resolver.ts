@@ -7,7 +7,7 @@ import { StaffDto } from './dtos/staff.dto';
 // helpers
 import { GqlStaffGuard } from './guards/staff.guard';
 // decorators
-import { CurrentUser } from './decorators/staff.guard.decorator';
+import { CurrentUser } from './decorators/user.guard.decorator';
 // services
 import { UsersService } from './users.service';
 import { AuthService } from '../auth/auth.service';
