@@ -6,6 +6,7 @@ import { usersProviders } from './users.providers';
 import { DateScalar } from '../common/date.scalar';
 import { AuthModule } from '../auth/auth.module';
 import { UsersController } from './users.controller';
+import { JSONScalar } from '../common/json.scalar';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { UsersController } from './users.controller';
   ],
   providers: [
     DateScalar,
+    JSONScalar,
     UsersService, ...usersProviders,
     UsersResolver,
   ],
