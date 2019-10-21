@@ -61,6 +61,9 @@ export class UsersService {
             const { data: ldap } = await this.httpService.post('https://auth.innosoft.kmutt.ac.th',
                 { username: login.username, password: login.password },
             ).toPromise();
+            if (!ldap.isSuccess) {
+                throw new HttpException('invalid KMUTT account', HttpStatus.UNAUTHORIZED);
+            }
 
             const registred = await this.requestorModel.findOne({ username: login.username }).lean();
             if (!registred) {
