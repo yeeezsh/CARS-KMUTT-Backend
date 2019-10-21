@@ -1,14 +1,9 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-// inputs
 import { CreateStaffInput } from './dtos/staff.input';
-// dtos
 import { StaffDto } from './dtos/staff.dto';
-// helpers
 import { GqlStaffGuard } from './guards/staff.guard';
-// decorators
 import { CurrentUser } from './decorators/user.guard.decorator';
-// services
 import { UsersService } from './users.service';
 import { AuthService } from '../auth/auth.service';
 
