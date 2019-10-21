@@ -4,7 +4,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 @Injectable()
-export class StaffStrategey extends PassportStrategy(Strategy, 'staff') {
+export class StaffStrategy extends PassportStrategy(Strategy, 'staff') {
     constructor(
         private readonly authService: AuthService,
     ) {
@@ -16,7 +16,7 @@ export class StaffStrategey extends PassportStrategy(Strategy, 'staff') {
         if (!user) {
             throw new UnauthorizedException();
         }
-        const payload = this.authService.loginJWT(user);
+        const payload = this.authService.loginJWTStaff(user);
         return payload;
     }
 }
