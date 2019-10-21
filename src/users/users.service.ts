@@ -85,4 +85,18 @@ export class UsersService {
         return doc;
     }
 
+    async getUserInfo(id: string, permission: string): Promise<Staff | Requestor> {
+        const staffPermission = ['staff', 'approver', 'admin'];
+        if (permission === 'requestor') {
+            const doc = await this.requestorModel.findById(id);
+            return doc;
+        } else if (staffPermission.includes(permission)) {
+            const doc = await this.staffModel.findById(id);
+            const { password, ...result } = doc;
+            return result;
+        } else {
+            throw new Error('invalid permission');
+        }
+    }
+
 }
