@@ -14,10 +14,10 @@ export class StaffDto {
     @IsString()
     readonly username: string;
 
-    @Field()
-    @IsNotEmpty()
-    @IsString()
-    readonly password: string;
+    // @Field()
+    // @IsNotEmpty()
+    // @IsString()
+    // readonly password: string;
 
     @Field()
     @IsNotEmpty()

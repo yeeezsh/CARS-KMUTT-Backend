@@ -32,7 +32,6 @@ export class UsersResolver {
         // return {}
     }
 
-    @UseGuards(GqlStaffGuard)
     @Mutation(returns => StaffDto)
     async createStaff(@Args('createStaff') data: CreateStaffInput) {
         return await this.usersService.createStaff(data);
