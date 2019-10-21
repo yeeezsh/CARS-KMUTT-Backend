@@ -76,6 +76,9 @@ export class UsersService {
             }
             return registred;
         } catch (err) {
+            if (err.code === 'ECONNRESET') {
+                throw new HttpException('KMUTT LDAP connection error', HttpStatus.INTERNAL_SERVER_ERROR);
+            }
             throw err;
         }
     }
