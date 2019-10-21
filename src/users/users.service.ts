@@ -69,7 +69,7 @@ export class UsersService {
             if (!registred) {
                 const doc = new this.requestorModel({
                     username: login.username,
-                    stId: login.username,
+                    studentId: login.username,
                 });
                 const saved = await doc.save();
                 return saved;

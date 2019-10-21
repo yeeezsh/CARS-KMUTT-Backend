@@ -14,6 +14,6 @@ export class RequestorJWTStrategy extends PassportStrategy(Strategy, 'requestorJ
   }
 
   async validate(payload: any) {
-    return { _id: payload._id, permission: payload.permission, email: payload.email };
+    return { _id: payload._id, username: payload.username, studentId: payload.studentId || null, email: payload.email, permission: 'requestor' };
   }
 }
