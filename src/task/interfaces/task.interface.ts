@@ -19,5 +19,4 @@ export interface Task {
     form?: null; // required form module
     createAt: Date;
     updateAt: Date;
-
 }

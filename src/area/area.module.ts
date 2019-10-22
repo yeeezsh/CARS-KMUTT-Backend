@@ -5,6 +5,6 @@ import { DatabaseModule } from '../database/database.module';
 
 @Module({
   imports: [DatabaseModule],
-  providers: [AreaService, AreaResolver]
+  providers: [AreaService, AreaResolver],
 })
 export class AreaModule { }
