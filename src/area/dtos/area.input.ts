@@ -7,6 +7,11 @@ export class CreateAreaInput {
     @Field(() => String)
     @IsNotEmpty()
     @IsString()
+    readonly label: string;
+
+    @Field(() => String)
+    @IsNotEmpty()
+    @IsString()
     readonly type: string;
 
     @Field(() => String)

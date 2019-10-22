@@ -12,6 +12,11 @@ export class AreaDto {
     @Field()
     @IsNotEmpty()
     @IsString()
+    readonly label: string;
+
+    @Field()
+    @IsNotEmpty()
+    @IsString()
     readonly type: string;
 
     // @Field()
