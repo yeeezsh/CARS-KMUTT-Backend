@@ -1,49 +1,33 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { AuthGuard } from '@nestjs/passport';
 import { UseGuards } from '@nestjs/common';
-
-// inputs
 import { CreateStaffInput } from './dtos/staff.input';
-import { LoginStaffInput } from './dtos/staff.login.input';
-
-// dtos
 import { StaffDto } from './dtos/staff.dto';
-import { StaffLoginDto } from './dtos/staff.login.dto';
-
-// helpers
-import { GqlAuthGuard } from './staff.guard';
-
-// decorators
-import { CurrentUser } from './decorators/staff.guard.decorator';
-
-// services
+import { GqlStaffGuard } from './guards/staff.guard';
+import { CurrentUser } from './decorators/user.guard.decorator';
 import { UsersService } from './users.service';
-import { AuthService } from '../auth/auth.service';
+import { RequestorDto } from './dtos/requestor.dto';
+import { UserInfoArgs } from './dtos/userinfo.args';
 
 @Resolver('Users')
 export class UsersResolver {
 
     constructor(
         private readonly usersService: UsersService,
-        private readonly authService: AuthService
     ) { }
 
     @Query(() => [StaffDto])
-    @UseGuards(GqlAuthGuard)
+    @UseGuards(GqlStaffGuard)
     async getStaffs(@CurrentUser() user: StaffDto) {
-        console.log(user)
         return await this.usersService.listStaff();
+    }
+
+    @Query(() => RequestorDto)
+    async getRequestorInfo(@Args({ name: 'id', type: () => String }) id: string): Promise<any> {
+        return this.usersService.getUserInfo(id, 'requestor');
     }
 
     @Mutation(returns => StaffDto)
     async createStaff(@Args('createStaff') data: CreateStaffInput) {
         return await this.usersService.createStaff(data);
-    }
-
-    @Mutation(returns => StaffDto)
-    @UseGuards(GqlAuthGuard)
-    async loginStaff(@Args('loginStaff') data: LoginStaffInput) {
-        await this.authService.login(data.username, data.password);
-        return await this.usersService.loginStaff(data);
     }
 }

@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 
 export interface Staff {
-    _id: string;
+    _id: Schema.Types.ObjectId;
     username: string;
     password?: string;
     email: string;
