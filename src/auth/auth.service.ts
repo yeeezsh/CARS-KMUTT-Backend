@@ -24,8 +24,10 @@ export class AuthService {
 
     async loginJWTStaff(user: Staff) {
         const payload = { _id: user._id, permission: user.permission, email: user.email };
+        const sign = this.jwtService.sign(payload);
         return {
-            access_token: this.jwtService.sign(payload),
+            access_token: sign,
+            Authorization: 'Bearer' + ' ' + sign,
         };
     }
 
@@ -40,8 +42,10 @@ export class AuthService {
 
     async loginJWTRequestor(user: Requestor) {
         const payload = { _id: user._id, username: user.username, studentId: user.studentId || null, email: user.email, permission: 'requestor' };
+        const sign = this.jwtService.sign(payload);
         return {
-            access_token: this.jwtService.sign(payload),
+            access_token: sign,
+            Authorization: 'Bearer' + ' ' + sign,
         };
     }
 
