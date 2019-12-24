@@ -76,17 +76,17 @@ export class UsersService {
     }
 
     async listStaff(): Promise<Staff[]> {
-        const doc = await this.staffModel.find({});
+        const doc = await this.staffModel.find({}).lean();
         return doc;
     }
 
     async getUserInfo(id: string, permission: string): Promise<Staff | Requestor> {
         const staffPermission = ['staff', 'approver', 'admin'];
         if (permission === 'requestor') {
-            const doc = await this.requestorModel.findById(id);
+            const doc = await this.requestorModel.findById(id).lean();
             return doc;
         } else if (staffPermission.includes(permission)) {
-            const doc = await this.staffModel.findById(id);
+            const doc = await this.staffModel.findById(id).lean();
             const { password, ...result } = doc;
             return result;
         } else {
