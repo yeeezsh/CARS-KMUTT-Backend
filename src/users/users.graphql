@@ -18,4 +18,6 @@ type CreateUserInput {
 type Query  {
     Users: [User]
     User(id: ID!, permission: String) : User
+    Staff(id: ID!) : User
+    Requestor(id: ID!) : User
 }

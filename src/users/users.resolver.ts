@@ -22,8 +22,16 @@ export class UsersResolver {
 
     @Query('User')
     async User(@Args('id') id: string, @Args('permission') permission: string) {
-        console.log(id, permission)
-        console.log(await this.usersService.getUserInfo(id, permission))
         return await this.usersService.getUserInfo(id, permission);
+    }
+
+    @Query('Requestor')
+    async Requestor(@Args('id') id: string) {
+        return await this.usersService.getUserInfo(id, 'requestor');
+    }
+
+    @Query('Staff')
+    async Staff(@Args('id') id: string) {
+        return await this.usersService.getUserInfo(id, 'staff');
     }
 }
