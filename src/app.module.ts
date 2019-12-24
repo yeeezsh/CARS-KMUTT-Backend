@@ -13,6 +13,7 @@ import * as GraphQLJSON from 'graphql-type-json';
     GraphQLModule.forRoot({
       typePaths: ['./**/*.graphql'],
       installSubscriptionHandlers: true,
+      context: ({ req }) => ({ req }),
       // resolvers: { JSON: GraphQLJSON },
       // context: ({ req }) => ({ req }),
       // autoSchemaFile: 'schema.gql',
