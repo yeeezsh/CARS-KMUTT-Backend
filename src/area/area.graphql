@@ -1,0 +1,44 @@
+scalar Date
+scalar JSON
+
+type AreaType {
+  _id: String
+  label: String
+  createAt: Date
+  updateAt: Date
+}
+
+input CreateAreaTypeInput {
+  _id: String
+  label: String
+  createAt: Date
+  updateAt: Date
+}
+
+type Area {
+  _id: String
+  label: String
+  type: String
+  form: String
+  maxTask: Int
+  createAt: Date
+  updateAt: Date
+}
+
+input CreateAreaInput {
+  label: String
+  type: String
+  form: String
+  maxTask: Int
+  createAt: Date
+  updateAt: Date
+}
+
+type Query {
+  Areas: [Area]
+}
+
+type Mutation {
+    createArea(createArea: CreateAreaInput): Area
+    createAreaType(createAreaType: CreateAreaTypeInput): AreaType
+}
