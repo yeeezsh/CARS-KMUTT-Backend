@@ -1,3 +1,6 @@
+scalar Date
+scalar JSON
+
 type User {
   username: String
   password: String
@@ -13,6 +16,6 @@ type CreateUserInput {
 }
 
 type Query  {
-    getUsers: [User]
-    user(id: ID!) : User
+    Users: [User]
+    User(id: ID!, permission: String) : User
 }

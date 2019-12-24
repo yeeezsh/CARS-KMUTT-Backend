@@ -15,19 +15,15 @@ export class UsersResolver {
         private readonly usersService: UsersService,
     ) { }
 
-    @Query(() => [StaffDto])
-    @UseGuards(GqlStaffGuard)
-    async getStaffs(@CurrentUser() user: StaffDto) {
+    @Query('Users')
+    async Users() {
         return await this.usersService.listStaff();
     }
 
-    @Query(() => RequestorDto)
-    async getRequestorInfo(@Args({ name: 'id', type: () => String }) id: string): Promise<any> {
-        return this.usersService.getUserInfo(id, 'requestor');
-    }
-
-    @Mutation(returns => StaffDto)
-    async createStaff(@Args('createStaff') data: CreateStaffInput) {
-        return await this.usersService.createStaff(data);
+    @Query('User')
+    async User(@Args('id') id: string, @Args('permission') permission: string) {
+        console.log(id, permission)
+        console.log(await this.usersService.getUserInfo(id, permission))
+        return await this.usersService.getUserInfo(id, permission);
     }
 }
