@@ -15,7 +15,7 @@ export class AreaService {
 
     async createAreaType(data: AreaTypeDto): Promise<AreaType> {
         try {
-            const duplicated = this.areaTypeModel.findOne({ label: data.label });
+            const duplicated = await this.areaTypeModel.findOne({ label: data.label });
             if (duplicated) {
                 throw new HttpException('label duplicated', HttpStatus.NOT_ACCEPTABLE);
             }
@@ -29,7 +29,7 @@ export class AreaService {
 
     async createArea(data: AreaDto): Promise<Area> {
         try {
-            const duplicated = this.areaModel.findOne({ label: data.label });
+            const duplicated = await this.areaModel.findOne({ label: data.label });
             if (duplicated) {
                 throw new HttpException('label duplicated', HttpStatus.NOT_ACCEPTABLE);
             }
@@ -43,7 +43,7 @@ export class AreaService {
 
     async listAreaType(): Promise<AreaType[]> {
         try {
-            const doc = this.areaTypeModel.find({}).lean();
+            const doc = await this.areaTypeModel.find({}).lean();
             return doc;
         } catch (err) {
             throw err;
@@ -52,7 +52,7 @@ export class AreaService {
 
     async listArea(): Promise<Area[]> {
         try {
-            const doc = this.areaModel.find({}).lean();
+            const doc = await this.areaModel.find({}).lean();
             return doc;
         } catch (err) {
             throw err;
