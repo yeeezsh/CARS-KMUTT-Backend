@@ -5,7 +5,6 @@ import { ObjectType, Field } from 'type-graphql';
 @ObjectType()
 export class AreaDto {
     @Field()
-    @IsNotEmpty()
     // tslint:disable-next-line: variable-name
     readonly _id: string;
 
@@ -28,13 +27,13 @@ export class AreaDto {
     @IsNumber()
     readonly maxTask: number;
 
-    @Field()
-    @IsNotEmpty()
-    @IsDate()
-    readonly createAt: Date;
+    // @Field()
+    // @IsNotEmpty()
+    // @IsDate()
+    // readonly createAt: Date;
 
-    @Field()
-    @IsNotEmpty()
-    @IsDate()
-    readonly updateAt: Date;
+    // @Field()
+    // @IsNotEmpty()
+    // @IsDate()
+    // readonly updateAt: Date;
 }

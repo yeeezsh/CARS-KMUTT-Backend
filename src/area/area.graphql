@@ -9,10 +9,7 @@ type AreaType {
 }
 
 input CreateAreaTypeInput {
-  _id: String
   label: String
-  createAt: Date
-  updateAt: Date
 }
 
 type Area {
@@ -36,6 +33,7 @@ input CreateAreaInput {
 
 type Query {
   Areas: [Area]
+  AreaTypes: [AreaType]
 }
 
 type Mutation {
