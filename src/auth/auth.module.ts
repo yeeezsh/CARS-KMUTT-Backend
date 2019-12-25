@@ -13,9 +13,11 @@ import { RequestorJWTStrategy } from './requestor.jwt.strategy';
   imports: [
     forwardRef(() => UsersModule),
     PassportModule,
-    JwtModule.register({
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
+    JwtModule.registerAsync({
+      useFactory: () => ({
+        secret: jwtConstants.secret,
+        signOptions: { expiresIn: '3600s' },
+      }),
     }),
 
   ],
