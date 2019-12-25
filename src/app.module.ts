@@ -6,6 +6,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { AuthModule } from './auth/auth.module';
 import { TaskModule } from './task/task.module';
 import { AreaModule } from './area/area.module';
+import { FormModule } from './form/form.module';
 import * as GraphQLJSON from 'graphql-type-json';
 
 @Module({
@@ -22,6 +23,7 @@ import * as GraphQLJSON from 'graphql-type-json';
     UsersModule,
     TaskModule,
     AreaModule,
+    FormModule,
   ],
   controllers: [AppController],
   providers: [AppService],
