@@ -10,9 +10,10 @@ import { FormService } from 'src/form/form.service';
 export class AreaService {
   constructor(
     @Inject('AREA_MODEL') private readonly areaModel: Model<Area>,
-    @Inject('AREA_BUILDING_MODEL') private readonly areaBuildingModel: Model<AreaBuilding>,
+    @Inject('AREA_BUILDING_MODEL')
+    private readonly areaBuildingModel: Model<AreaBuilding>,
     private readonly formService: FormService,
-  ) { }
+  ) {}
 
   async createAreaBuilding(data: AreaBuildingCreateDto): Promise<AreaBuilding> {
     try {
@@ -38,8 +39,12 @@ export class AreaService {
       }
 
       // linking validation
-      const formId = data.form ? await this.formService.linkForm(data.form) : undefined;
-      const buildingId = data.building ? await this.linkAreaBuilding(data.building) : undefined;
+      const formId = data.form
+        ? await this.formService.linkForm(data.form)
+        : undefined;
+      const buildingId = data.building
+        ? await this.linkAreaBuilding(data.building)
+        : undefined;
       const doc = new this.areaModel({
         ...data,
         form: formId,
@@ -63,7 +68,10 @@ export class AreaService {
 
   async listArea(): Promise<Area[]> {
     try {
-      const doc = await this.areaModel.find({}).populate(['building', 'form']).lean();
+      const doc = await this.areaModel
+        .find({})
+        .populate(['building', 'form'])
+        .lean();
       return doc;
     } catch (err) {
       throw err;

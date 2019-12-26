@@ -5,7 +5,7 @@ import { FormCreateDto } from './dtos/form.create.dto';
 
 @Injectable()
 export class FormService {
-  constructor(@Inject('FORM_MODEL') private readonly formModel: Model<Form>) { }
+  constructor(@Inject('FORM_MODEL') private readonly formModel: Model<Form>) {}
 
   async createForm(data: FormCreateDto): Promise<Form> {
     try {

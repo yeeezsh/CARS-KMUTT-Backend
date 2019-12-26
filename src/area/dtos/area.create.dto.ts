@@ -3,7 +3,6 @@ import { ObjectType, Field, Int } from 'type-graphql';
 
 @ObjectType()
 export class AreaCreateDto {
-
   @Field()
   @IsNotEmpty()
   @IsString()

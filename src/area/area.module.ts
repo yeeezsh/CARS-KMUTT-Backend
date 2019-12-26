@@ -17,4 +17,4 @@ import { FormModule } from 'src/form/form.module';
     ...areaProviders,
   ],
 })
-export class AreaModule { }
+export class AreaModule {}
