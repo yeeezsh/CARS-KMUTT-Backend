@@ -16,7 +16,7 @@ const field = new Schema({
 });
 
 export const FormSchema = new Schema({
-  label: String,
+  name: String,
   fields: [field],
   createAt: { type: Date, default: Date.now },
   updateAt: { type: Date, default: Date.now },
