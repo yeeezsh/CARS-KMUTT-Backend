@@ -3,13 +3,13 @@ import { Schema } from 'mongoose';
 const option = new Schema({
   key: String,
   label: String,
-  value: String,
+  value: [String],
 }, { _id: false });
 
 const field = new Schema({
   key: String,
   label: String,
-  value: String,
+  value: [String],
   type: String,
   options: [option],
   required: { type: Boolean, default: false },

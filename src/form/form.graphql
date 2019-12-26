@@ -10,7 +10,7 @@ type Option {
 type Field {
   key: String
   label: String
-  value: String
+  value: [String]
   type: String
   options: [Option]
 }
@@ -31,13 +31,13 @@ type Query {
 input OptionInput {
   key: String
   label: String
-  value: String
+  value: [String]
 }
 
 input FieldInput {
   key: String
   label: String
-  value: String
+  value: [String]
   type: String
   options: [OptionInput]
   required: Boolean
