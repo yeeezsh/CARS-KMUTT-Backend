@@ -37,7 +37,7 @@ export class AreaService {
         throw new HttpException('label duplicated', HttpStatus.NOT_ACCEPTABLE);
       }
       // validation form if form is required
-      const formId = data.form ? this.formService.linkForm(data.form) : undefined;
+      const formId = data.form ? await this.formService.linkForm(data.form) : undefined;
       const doc = new this.areaModel({
         ...data,
         form: formId,

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsDate, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
 import { ObjectType, Field, Int } from 'type-graphql';
 
 @ObjectType()
@@ -10,14 +10,13 @@ export class AreaCreateDto {
   name: string;
 
   @Field()
-  @IsNotEmpty()
-  @IsString()
-  type: string;
+  building: string;
 
   @Field()
   form: string; // required form module
 
   @Field(() => Int)
+  @IsNotEmpty()
   @IsNumber()
   maxTask: number;
 }
