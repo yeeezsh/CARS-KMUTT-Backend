@@ -28,6 +28,6 @@ export class AreaResolver {
   async createAreaBuilding(
     @Args('createAreaBuilding') args: AreaBuildingCreateDto,
   ): Promise<AreaBuilding> {
-    return await this.areaServie.createAreaType(args);
+    return await this.areaServie.createAreaBuilding(args);
   }
 }

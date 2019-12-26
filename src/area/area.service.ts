@@ -12,9 +12,9 @@ export class AreaService {
     @Inject('AREA_MODEL') private readonly areaModel: Model<Area>,
     @Inject('AREA_BUILDING_MODEL') private readonly areaBuildingModel: Model<AreaBuilding>,
     private readonly formService: FormService,
-  ) {}
+  ) { }
 
-  async createAreaType(data: AreaBuildingCreateDto): Promise<AreaBuilding> {
+  async createAreaBuilding(data: AreaBuildingCreateDto): Promise<AreaBuilding> {
     try {
       const duplicated = await this.areaBuildingModel.findOne({
         label: data.label,
@@ -36,7 +36,12 @@ export class AreaService {
       if (duplicated) {
         throw new HttpException('label duplicated', HttpStatus.NOT_ACCEPTABLE);
       }
-      const doc = new this.areaModel(data);
+      // validation form if form is required
+      const formId = data.form ? this.formService.linkForm(data.form) : undefined;
+      const doc = new this.areaModel({
+        ...data,
+        form: formId,
+      });
       const saved = await doc.save();
       return saved;
     } catch (err) {
