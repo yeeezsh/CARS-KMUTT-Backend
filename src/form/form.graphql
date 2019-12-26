@@ -1,0 +1,49 @@
+scalar Date
+scalar JSON
+
+type Option {
+  key: String
+  value: String
+}
+
+type Field {
+  key: String
+  value: String
+  type: String
+  options: [Option]
+}
+
+type Form {
+  _id: String
+  label: String
+  fields: [Field]
+  createAt: Date
+  updateAt: Date
+}
+
+type Query {
+  Forms: [Form]
+  Form(id: ID): Form
+}
+
+input OptionInput {
+  key: String
+  value: String
+}
+
+input FieldInput {
+  key: String
+  value: String
+  type: String
+  options: [OptionInput]
+  required: Boolean
+}
+
+input CreateFormInput {
+  label: String
+  fields: [FieldInput]
+}
+
+type Mutation {
+  createForm(createForm: CreateFormInput): Form
+}
