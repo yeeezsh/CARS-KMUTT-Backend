@@ -2,7 +2,7 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { AreaService } from './area.service';
 import { Area } from './interfaces/area.interface';
 import { AreaCreateDto } from './dtos/area.create.dto';
-import { AreaBuildingCreateDto } from './dtos/area.building.dto';
+import { AreaBuildingCreateDto } from './dtos/area.building.create.dto';
 import { AreaBuilding } from './interfaces/area.building.interface';
 
 @Resolver('Area')

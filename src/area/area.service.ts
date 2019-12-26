@@ -2,7 +2,7 @@ import { Injectable, Inject, HttpStatus, HttpException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { Area } from './interfaces/area.interface';
 import { AreaBuilding } from './interfaces/area.building.interface';
-import { AreaBuildingCreateDto } from './dtos/area.building.dto';
+import { AreaBuildingCreateDto } from './dtos/area.building.create.dto';
 import { AreaCreateDto } from './dtos/area.create.dto';
 
 @Injectable()
