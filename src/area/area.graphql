@@ -15,7 +15,7 @@ input CreateAreaBuildingInput {
 type Area {
   _id: String
   name: String
-  type: String
+  building: String
   form: String
   maxTask: Int
   createAt: Date
@@ -25,6 +25,7 @@ type Area {
 input CreateAreaInput {
   label: String
   name: String
+  building: String
   form: String
   maxTask: Int
   createAt: Date

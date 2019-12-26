@@ -36,11 +36,14 @@ export class AreaService {
       if (duplicated) {
         throw new HttpException('label duplicated', HttpStatus.NOT_ACCEPTABLE);
       }
-      // validation form if form is required
+
+      // linking validation
       const formId = data.form ? await this.formService.linkForm(data.form) : undefined;
+      const buildingId = data.building ? await this.linkAreaBuilding(data.building) : undefined;
       const doc = new this.areaModel({
         ...data,
         form: formId,
+        building: buildingId,
       });
       const saved = await doc.save();
       return saved;

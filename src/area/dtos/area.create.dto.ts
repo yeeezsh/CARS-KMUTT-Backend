@@ -9,10 +9,10 @@ export class AreaCreateDto {
   @IsString()
   name: string;
 
-  @Field()
+  @Field({ nullable: true })
   building: string;
 
-  @Field()
+  @Field({ nullable: true })
   form: string; // required form module
 
   @Field(() => Int)
