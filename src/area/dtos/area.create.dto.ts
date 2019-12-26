@@ -7,7 +7,7 @@ export class AreaCreateDto {
   @Field()
   @IsNotEmpty()
   @IsString()
-  label: string;
+  name: string;
 
   @Field()
   @IsNotEmpty()
