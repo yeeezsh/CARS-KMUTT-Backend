@@ -1,7 +1,7 @@
 import { Connection } from 'mongoose';
 
 import { AreaSchema } from './schemas/area.schema';
-import { AreaTypeSchema } from './schemas/area.type.schema';
+import { AreaBuildingSchema } from './schemas/area.building.schema';
 
 export const areaProviders = [
   {
@@ -11,9 +11,9 @@ export const areaProviders = [
     inject: ['DATABASE_CONNECTION'],
   },
   {
-    provide: 'AREA_TYPE_MODEL',
+    provide: 'AREA_BUILDING_MODEL',
     useFactory: async (connection: Connection) =>
-      await connection.model('area.types', AreaTypeSchema),
+      await connection.model('area.buildings', AreaBuildingSchema),
     inject: ['DATABASE_CONNECTION'],
   },
 ];

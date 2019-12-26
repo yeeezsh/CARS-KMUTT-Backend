@@ -1,14 +1,14 @@
 scalar Date
 scalar JSON
 
-type AreaType {
+type AreaBuilding {
   _id: String
   label: String
   createAt: Date
   updateAt: Date
 }
 
-input CreateAreaTypeInput {
+input CreateAreaBuildingInput {
   label: String
 }
 
@@ -33,10 +33,10 @@ input CreateAreaInput {
 
 type Query {
   Areas: [Area]
-  AreaTypes: [AreaType]
+  AreaBuildings: [AreaBuilding]
 }
 
 type Mutation {
     createArea(createArea: CreateAreaInput): Area
-    createAreaType(createAreaType: CreateAreaTypeInput): AreaType
+    createAreaBuilding(createAreaBuilding: CreateAreaBuildingInput): AreaBuilding
 }

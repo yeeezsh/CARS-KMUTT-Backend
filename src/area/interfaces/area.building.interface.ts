@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-export interface AreaType {
+export interface AreaBuilding {
   _id: Schema.Types.ObjectId;
   label: string;
   createAt: Date;
