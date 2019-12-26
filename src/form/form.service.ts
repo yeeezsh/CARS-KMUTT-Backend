@@ -13,7 +13,10 @@ export class FormService {
         name: data.name,
       });
       if (duplicated) {
-        throw new HttpException('form name is duplicated', HttpStatus.NOT_ACCEPTABLE);
+        throw new HttpException(
+          'form name is duplicated',
+          HttpStatus.NOT_ACCEPTABLE,
+        );
       }
       const doc = new this.formModel(data);
       const saved = await doc.save();
