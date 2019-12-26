@@ -9,18 +9,15 @@ import { UsersController } from './users.controller';
 import { JSONScalar } from '../common/json.scalar';
 
 @Module({
-  imports: [
-    HttpModule,
-    DatabaseModule,
-    forwardRef(() => AuthModule),
-  ],
+  imports: [HttpModule, DatabaseModule, forwardRef(() => AuthModule)],
   providers: [
     DateScalar,
     JSONScalar,
-    UsersService, ...usersProviders,
+    UsersService,
+    ...usersProviders,
     UsersResolver,
   ],
   exports: [UsersService],
   controllers: [UsersController],
 })
-export class UsersModule { }
+export class UsersModule {}

@@ -14,6 +14,10 @@ export class StaffJWTStrategy extends PassportStrategy(Strategy, 'staffJWT') {
   }
 
   async validate(payload: any) {
-    return { _id: payload._id, permission: payload.permission, email: payload.email };
+    return {
+      _id: payload._id,
+      permission: payload.permission,
+      email: payload.email,
+    };
   }
 }

@@ -19,7 +19,6 @@ import { RequestorJWTStrategy } from './requestor.jwt.strategy';
         signOptions: { expiresIn: '3600s' },
       }),
     }),
-
   ],
   providers: [
     AuthService,
@@ -30,4 +29,4 @@ import { RequestorJWTStrategy } from './requestor.jwt.strategy';
   ],
   exports: [AuthService],
 })
-export class AuthModule { }
+export class AuthModule {}

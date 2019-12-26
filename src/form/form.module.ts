@@ -5,9 +5,6 @@ import { DateScalar } from 'src/common/date.scalar';
 import { JSONScalar } from 'src/common/json.scalar';
 
 @Module({
-  providers: [
-    DateScalar, JSONScalar,
-    FormResolver, FormService,
-  ],
+  providers: [DateScalar, JSONScalar, FormResolver, FormService],
 })
 export class FormModule {}

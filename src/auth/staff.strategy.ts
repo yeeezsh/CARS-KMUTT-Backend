@@ -5,18 +5,16 @@ import { AuthService } from './auth.service';
 
 @Injectable()
 export class StaffStrategy extends PassportStrategy(Strategy, 'staff') {
-    constructor(
-        private readonly authService: AuthService,
-    ) {
-        super();
-    }
+  constructor(private readonly authService: AuthService) {
+    super();
+  }
 
-    async validate(username: string, password: string): Promise<any> {
-        const user = await this.authService.validateStaff(username, password);
-        if (!user) {
-            throw new UnauthorizedException();
-        }
-        const payload = this.authService.loginJWTStaff(user);
-        return payload;
+  async validate(username: string, password: string): Promise<any> {
+    const user = await this.authService.validateStaff(username, password);
+    if (!user) {
+      throw new UnauthorizedException();
     }
+    const payload = this.authService.loginJWTStaff(user);
+    return payload;
+  }
 }

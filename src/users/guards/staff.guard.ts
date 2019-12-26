@@ -5,7 +5,7 @@ import { TokenExpiredError } from 'jsonwebtoken';
 
 @Injectable()
 export class GqlStaffGuard extends AuthGuard('staffJWT') {
-// export class GqlStaffGuard {
+  // export class GqlStaffGuard {
   getRequest(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context);
     return ctx.getContext().req;
@@ -19,5 +19,4 @@ export class GqlStaffGuard extends AuthGuard('staffJWT') {
   //   // return user;
   //   return null;
   // }
-
 }

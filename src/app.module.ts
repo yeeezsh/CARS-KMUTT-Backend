@@ -28,4 +28,4 @@ import * as GraphQLJSON from 'graphql-type-json';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

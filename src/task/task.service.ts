@@ -5,13 +5,7 @@ import * as moment from 'moment';
 
 @Injectable()
 export class TaskService {
+  constructor(@Inject('TASK_MODEL') private readonly taskModel: Model<Task>) {}
 
-    constructor(
-        @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
-    ) { }
-
-    async createSportTask() {
-
-    }
-
+  async createSportTask() {}
 }

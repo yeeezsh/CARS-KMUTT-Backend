@@ -9,9 +9,11 @@ import { JSONScalar } from 'src/common/json.scalar';
 @Module({
   imports: [DatabaseModule],
   providers: [
-    DateScalar, JSONScalar,
-    AreaService, AreaResolver,
+    DateScalar,
+    JSONScalar,
+    AreaService,
+    AreaResolver,
     ...areaProviders,
   ],
 })
-export class AreaModule { }
+export class AreaModule {}

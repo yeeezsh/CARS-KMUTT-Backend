@@ -7,56 +7,56 @@ import { AreaDto } from './dtos/area.dto';
 
 @Injectable()
 export class AreaService {
+  constructor(
+    @Inject('AREA_MODEL') private readonly areaModel: Model<Area>,
+    @Inject('AREA_TYPE_MODEL') private readonly areaTypeModel: Model<AreaType>,
+  ) {}
 
-    constructor(
-        @Inject('AREA_MODEL') private readonly areaModel: Model<Area>,
-        @Inject('AREA_TYPE_MODEL') private readonly areaTypeModel: Model<AreaType>,
-    ) { }
-
-    async createAreaType(data: AreaTypeDto): Promise<AreaType> {
-        try {
-            const duplicated = await this.areaTypeModel.findOne({ label: data.label });
-            if (duplicated) {
-                throw new HttpException('label duplicated', HttpStatus.NOT_ACCEPTABLE);
-            }
-            const doc = new this.areaTypeModel(data);
-            const saved = await doc.save();
-            return saved;
-        } catch (err) {
-            throw err;
-        }
+  async createAreaType(data: AreaTypeDto): Promise<AreaType> {
+    try {
+      const duplicated = await this.areaTypeModel.findOne({
+        label: data.label,
+      });
+      if (duplicated) {
+        throw new HttpException('label duplicated', HttpStatus.NOT_ACCEPTABLE);
+      }
+      const doc = new this.areaTypeModel(data);
+      const saved = await doc.save();
+      return saved;
+    } catch (err) {
+      throw err;
     }
+  }
 
-    async createArea(data: AreaDto): Promise<Area> {
-        try {
-            const duplicated = await this.areaModel.findOne({ label: data.label });
-            if (duplicated) {
-                throw new HttpException('label duplicated', HttpStatus.NOT_ACCEPTABLE);
-            }
-            const doc = new this.areaModel(data);
-            const saved = await doc.save();
-            return saved;
-        } catch (err) {
-            throw err;
-        }
+  async createArea(data: AreaDto): Promise<Area> {
+    try {
+      const duplicated = await this.areaModel.findOne({ label: data.label });
+      if (duplicated) {
+        throw new HttpException('label duplicated', HttpStatus.NOT_ACCEPTABLE);
+      }
+      const doc = new this.areaModel(data);
+      const saved = await doc.save();
+      return saved;
+    } catch (err) {
+      throw err;
     }
+  }
 
-    async listAreaType(): Promise<AreaType[]> {
-        try {
-            const doc = await this.areaTypeModel.find({}).lean();
-            return doc;
-        } catch (err) {
-            throw err;
-        }
+  async listAreaType(): Promise<AreaType[]> {
+    try {
+      const doc = await this.areaTypeModel.find({}).lean();
+      return doc;
+    } catch (err) {
+      throw err;
     }
+  }
 
-    async listArea(): Promise<Area[]> {
-        try {
-            const doc = await this.areaModel.find({}).lean();
-            return doc;
-        } catch (err) {
-            throw err;
-        }
+  async listArea(): Promise<Area[]> {
+    try {
+      const doc = await this.areaModel.find({}).lean();
+      return doc;
+    } catch (err) {
+      throw err;
     }
-
+  }
 }
