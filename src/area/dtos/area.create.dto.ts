@@ -15,13 +15,9 @@ export class AreaCreateDto {
   type: string;
 
   @Field()
-  readonly form: string; // required form module
+  form: string; // required form module
 
   @Field(() => Int)
   @IsNumber()
-  readonly maxTask: number;
-
-  @Field(() => Date, { nullable: true })
-  @IsDate()
-  readonly updateAt: Date;
+  maxTask: number;
 }
