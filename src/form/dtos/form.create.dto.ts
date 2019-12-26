@@ -1,45 +1,67 @@
 import { IsNotEmpty, IsString, IsBoolean, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
+import { ObjectType, Field, InputType } from 'type-graphql';
 
+@ObjectType()
 class Option {
+    @Field()
     @IsNotEmpty()
     @IsString()
-    readonly key: string;
+    key: string;
 
-    @IsString()
-    readonly value: string;
+    // @IsString()
+    @Field({ nullable: true })
+    label: string;
+
+    @Field({ nullable: true })
+    // @IsString()
+    value: string;
 }
 
 // tslint:disable-next-line: max-classes-per-file
-class Field {
+@ObjectType()
+class FormField {
+    @Field()
     @IsNotEmpty()
     @IsString()
-    readonly key: string;
+    key: string;
 
-    @IsString()
-    readonly value: string;
+    // @IsString()
+    @Field({ nullable: true })
+    label: string;
 
+    @Field({ nullable: true })
+    value: string;
+
+    @Field()
     @IsNotEmpty()
     @IsString()
-    readonly type: string;
+    type: string;
 
+    @Field()
     @IsNotEmpty()
     @IsBoolean()
-    readonly required: boolean;
+    required: boolean;
 
+    @Field(type => [Option], { nullable: true })
     @ValidateNested({ each: true })
     @Type(() => Option)
-    readonly options: Option[];
+    options: Option[];
 
 }
 
 // tslint:disable-next-line: max-classes-per-file
+@ObjectType()
 export class FormCreateDto {
+
+    @Field()
     @IsNotEmpty()
     @IsString()
-    readonly label: string;
+    name: string;
 
+    @Field(type => [FormField])
     @ValidateNested({ each: true })
-    @Type(() => Field)
-    readonly fields: Field[];
+    @Type(() => FormField)
+    @IsNotEmpty()
+    fields: FormField[];
 }

@@ -3,11 +3,13 @@ scalar JSON
 
 type Option {
   key: String
+  label: String
   value: String
 }
 
 type Field {
   key: String
+  label: String
   value: String
   type: String
   options: [Option]
@@ -15,7 +17,7 @@ type Field {
 
 type Form {
   _id: String
-  label: String
+  name: String
   fields: [Field]
   createAt: Date
   updateAt: Date
@@ -28,11 +30,13 @@ type Query {
 
 input OptionInput {
   key: String
+  label: String
   value: String
 }
 
 input FieldInput {
   key: String
+  label: String
   value: String
   type: String
   options: [OptionInput]
@@ -40,7 +44,7 @@ input FieldInput {
 }
 
 input CreateFormInput {
-  label: String
+  name: String
   fields: [FieldInput]
 }
 

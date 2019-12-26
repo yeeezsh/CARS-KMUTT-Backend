@@ -2,11 +2,13 @@ import { Schema } from 'mongoose';
 
 interface Option {
     key: string;
+    label?: string;
     value: string;
 }
 
 interface Field {
     key: string;
+    label?: string;
     value: string;
     type: 'text' | 'checkbox' | 'radio' | 'date' | 'upload' | 'textarea';
     required?: boolean;
@@ -15,7 +17,7 @@ interface Field {
 
 export interface Form {
     _id: Schema.Types.ObjectId;
-    label: string;
+    name: string;
     fields: [Field];
     createAt: Date;
     updateAt: Date;

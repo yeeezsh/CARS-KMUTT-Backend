@@ -12,7 +12,7 @@ export class FormService {
     async createForm(data: FormCreateDto): Promise<Form> {
         try {
             const duplicated = await this.formModel.findOne({
-                label: data.label,
+                name: data.name,
             });
             if (duplicated) {
                 throw new HttpException('label duplicated', HttpStatus.NOT_ACCEPTABLE);
