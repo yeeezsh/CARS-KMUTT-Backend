@@ -3,7 +3,7 @@ scalar JSON
 
 type AreaBuilding {
   _id: String
-  name: String
+  label: String
   createAt: Date
   updateAt: Date
 }
@@ -14,7 +14,7 @@ input CreateAreaBuildingInput {
 
 type Area {
   _id: String
-  label: String
+  name: String
   type: String
   form: String
   maxTask: Int
@@ -23,8 +23,8 @@ type Area {
 }
 
 input CreateAreaInput {
+  label: String
   name: String
-  type: String
   form: String
   maxTask: Int
   createAt: Date
