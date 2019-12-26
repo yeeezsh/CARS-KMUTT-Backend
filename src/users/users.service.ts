@@ -66,9 +66,7 @@ export class UsersService {
 
   async loginRequestor(login: RequestorLoginDto): Promise<Requestor> {
     try {
-      const {
-        data: ldap,
-      } = await this.httpService
+      const { data: ldap } = await this.httpService
         .post('https://auth.innosoft.kmutt.ac.th', {
           username: login.username,
           password: login.password,

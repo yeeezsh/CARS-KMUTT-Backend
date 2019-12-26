@@ -8,6 +8,12 @@ import { formProviders } from './form.providers';
 
 @Module({
   imports: [DatabaseModule],
-  providers: [DateScalar, JSONScalar, FormResolver, FormService, ...formProviders],
+  providers: [
+    DateScalar,
+    JSONScalar,
+    FormResolver,
+    FormService,
+    ...formProviders,
+  ],
 })
-export class FormModule { }
+export class FormModule {}
