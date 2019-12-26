@@ -66,4 +66,16 @@ export class AreaService {
       throw err;
     }
   }
+
+  async linkAreaBuilding(id: string): Promise<AreaBuilding> {
+    try {
+      const doc = await this.areaBuildingModel.findById(id);
+      if (!doc) {
+        throw Error('area building by _id is not existing');
+      }
+      return doc;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
