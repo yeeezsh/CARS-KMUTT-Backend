@@ -5,7 +5,7 @@ import { FormCreateDto } from './dtos/form.create.dto';
 
 @Injectable()
 export class FormService {
-  constructor(@Inject('FORM_MODEL') private readonly formModel: Model<Form>) {}
+  constructor(@Inject('FORM_MODEL') private readonly formModel: Model<Form>) { }
 
   async createForm(data: FormCreateDto): Promise<Form> {
     try {
@@ -29,6 +29,18 @@ export class FormService {
   async listForm(): Promise<Form[]> {
     try {
       return await this.formModel.find({}).lean();
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async linkForm(id: string): Promise<Form> {
+    try {
+      const doc = await this.formModel.findById(id);
+      if (!doc) {
+        throw Error('form by _id is not existing');
+      }
+      return doc;
     } catch (err) {
       throw err;
     }
