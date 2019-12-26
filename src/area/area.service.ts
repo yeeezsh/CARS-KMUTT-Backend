@@ -63,7 +63,7 @@ export class AreaService {
 
   async listArea(): Promise<Area[]> {
     try {
-      const doc = await this.areaModel.find({}).lean();
+      const doc = await this.areaModel.find({}).populate(['building', 'form']).lean();
       return doc;
     } catch (err) {
       throw err;

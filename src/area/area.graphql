@@ -1,6 +1,28 @@
 scalar Date
 scalar JSON
 
+type Option {
+  key: String
+  label: String
+  value: String
+}
+
+type Field {
+  key: String
+  label: String
+  value: [String]
+  type: String
+  options: [Option]
+}
+
+type Form {
+  _id: String
+  name: String
+  fields: [Field]
+  createAt: Date
+  updateAt: Date
+}
+
 type AreaBuilding {
   _id: String
   label: String
@@ -15,8 +37,8 @@ input CreateAreaBuildingInput {
 type Area {
   _id: String
   name: String
-  building: String
-  form: String
+  building: AreaBuilding
+  form: Form
   maxTask: Int
   createAt: Date
   updateAt: Date
