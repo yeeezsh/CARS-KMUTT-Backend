@@ -5,9 +5,10 @@ import { DatabaseModule } from '../database/database.module';
 import { areaProviders } from './area.providers';
 import { DateScalar } from 'src/common/date.scalar';
 import { JSONScalar } from 'src/common/json.scalar';
+import { FormModule } from 'src/form/form.module';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, FormModule],
   providers: [
     DateScalar,
     JSONScalar,
@@ -16,4 +17,4 @@ import { JSONScalar } from 'src/common/json.scalar';
     ...areaProviders,
   ],
 })
-export class AreaModule {}
+export class AreaModule { }

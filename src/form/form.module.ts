@@ -15,5 +15,6 @@ import { formProviders } from './form.providers';
     FormService,
     ...formProviders,
   ],
+  exports: [FormService],
 })
-export class FormModule {}
+export class FormModule { }

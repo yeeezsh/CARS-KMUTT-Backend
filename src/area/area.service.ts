@@ -4,12 +4,14 @@ import { Area } from './interfaces/area.interface';
 import { AreaBuilding } from './interfaces/area.building.interface';
 import { AreaBuildingCreateDto } from './dtos/area.building.create.dto';
 import { AreaCreateDto } from './dtos/area.create.dto';
+import { FormService } from 'src/form/form.service';
 
 @Injectable()
 export class AreaService {
   constructor(
     @Inject('AREA_MODEL') private readonly areaModel: Model<Area>,
     @Inject('AREA_BUILDING_MODEL') private readonly areaBuildingModel: Model<AreaBuilding>,
+    private readonly formService: FormService,
   ) {}
 
   async createAreaType(data: AreaBuildingCreateDto): Promise<AreaBuilding> {
