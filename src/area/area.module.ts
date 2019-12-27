@@ -6,9 +6,10 @@ import { areaProviders } from './area.providers';
 import { DateScalar } from 'src/common/date.scalar';
 import { JSONScalar } from 'src/common/json.scalar';
 import { FormModule } from 'src/form/form.module';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
-  imports: [DatabaseModule, FormModule],
+  imports: [DatabaseModule, FormModule, UsersModule],
   providers: [
     DateScalar,
     JSONScalar,
