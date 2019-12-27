@@ -26,7 +26,7 @@ export class UsersService {
     @Inject('REQUESTOR_MODEL')
     private readonly requestorModel: Model<Requestor>,
     private readonly httpService: HttpService,
-  ) {}
+  ) { }
 
   async createStaff(create: CreateStaffInput): Promise<Staff> {
     const duplicated = await Promise.all([
@@ -121,6 +121,28 @@ export class UsersService {
       return result;
     } else {
       throw new Error('invalid permission');
+    }
+  }
+
+  async linkUser(id: string, type: 'staff' | 'requestor'): Promise<Staff | Requestor> {
+    try {
+      let doc: Staff | Requestor | PromiseLike<Staff | Requestor>;
+      switch (type) {
+        case 'staff':
+          doc = await this.staffModel.findById(id);
+          break;
+        case 'requestor':
+          doc = await this.requestorModel.findById(id);
+          break;
+        default:
+          throw Error('bad user type');
+      }
+      if (!doc) {
+        throw Error('user by _id is not existing');
+      }
+      return doc;
+    } catch (err) {
+      throw err;
     }
   }
 }
