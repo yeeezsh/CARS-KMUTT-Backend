@@ -48,7 +48,7 @@ export class AreaService {
         ? await this.linkAreaBuilding(data.building)
         : undefined;
       const staffID = data.staffRequired ? await Promise.all(
-        data.staffRequired.map(e => this.userService.linkUser(e, 'staff'))
+        data.staffRequired.map(e => this.userService.linkUser(e, 'staff')),
       ) : undefined;
       const doc = new this.areaModel({
         ...data,

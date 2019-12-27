@@ -19,6 +19,6 @@ export class AreaCreateDto {
   @IsNumber()
   maxTask: number;
 
-  @Field(() => ID, { nullable: true })
+  @Field(() => [ID], { nullable: true })
   staffRequired: string[];
 }
