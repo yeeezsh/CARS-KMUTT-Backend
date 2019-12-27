@@ -1,10 +1,13 @@
 import { Schema } from 'mongoose';
 
-const TimeSchema = new Schema({
-  date: Date,
-  start: Date,
-  stop: Date,
-}, { _id: false });
+const TimeSchema = new Schema(
+  {
+    date: Date,
+    start: Date,
+    stop: Date,
+  },
+  { _id: false },
+);
 
 export const TaskSchema = new Schema({
   time: [TimeSchema],

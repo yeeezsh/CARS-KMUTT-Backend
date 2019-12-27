@@ -26,7 +26,7 @@ export class UsersService {
     @Inject('REQUESTOR_MODEL')
     private readonly requestorModel: Model<Requestor>,
     private readonly httpService: HttpService,
-  ) { }
+  ) {}
 
   async createStaff(create: CreateStaffInput): Promise<Staff> {
     const duplicated = await Promise.all([
@@ -124,7 +124,10 @@ export class UsersService {
     }
   }
 
-  async linkUser(id: string, type: 'staff' | 'requestor'): Promise<Staff | Requestor> {
+  async linkUser(
+    id: string,
+    type: 'staff' | 'requestor',
+  ): Promise<Staff | Requestor> {
     try {
       let doc: Staff | Requestor | PromiseLike<Staff | Requestor>;
       switch (type) {

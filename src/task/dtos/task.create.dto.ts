@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, IsDate, IsArray, ValidateNested } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsDate,
+  IsArray,
+  ValidateNested,
+} from 'class-validator';
 import { ObjectType, Field } from 'type-graphql';
 import { Type } from 'class-transformer';
 
@@ -23,7 +29,6 @@ class TimeSlot {
 // tslint:disable-next-line: max-classes-per-file
 @ObjectType()
 export class TaskCreateDto {
-
   @Field(type => [TimeSlot])
   @ValidateNested({ each: true })
   @Type(() => TimeSlot)
@@ -50,5 +55,4 @@ export class TaskCreateDto {
   @Field()
   @IsString()
   form: string; // required form module
-
 }
