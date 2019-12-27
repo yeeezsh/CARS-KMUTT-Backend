@@ -40,7 +40,7 @@ type Area {
   building: AreaBuilding
   form: Form
   maxTask: Int
-  staffRequired: String
+  staffRequired: [String]
   createAt: Date
   updateAt: Date
 }
@@ -51,7 +51,7 @@ input CreateAreaInput {
   building: String
   form: String
   maxTask: Int
-  staffRequired: String
+  staffRequired: [String]
   createAt: Date
   updateAt: Date
 }
