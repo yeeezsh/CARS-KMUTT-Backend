@@ -10,7 +10,7 @@ interface TimeSlot {
 }
 
 interface TaskState {
-  [index: number]: 'wait' | 'approve' | 'reject' | 'accept';
+  [index: number]: 'wait' | 'approve' | 'reject' | 'accept' | 'drop';
 }
 
 export interface Task {
@@ -19,6 +19,7 @@ export interface Task {
   requestor: [Schema.Types.ObjectId];
   state: TaskState;
   staff: Staff[];
+  approve: boolean[];
   area: Area; // required area module
   form?: Form; // required form module
   createAt: Date;

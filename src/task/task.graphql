@@ -1,2 +1,19 @@
 scalar Date
 scalar JSON
+
+type TimeSlot {
+    date: Date
+    start: Date
+    stop: Date
+}
+
+type Task {
+    _id: ID
+    time: [TimeSlot]
+    requestor: String
+    state: [String]
+    staff: String
+    approve: [Boolean]
+    area: String
+    form: String
+}
