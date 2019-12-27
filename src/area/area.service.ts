@@ -47,16 +47,16 @@ export class AreaService {
       const buildingId = data.building
         ? await this.linkAreaBuilding(data.building)
         : undefined;
-      const staffID = data.staffRequired
-        ? await Promise.all(
-            data.staffRequired.map(e => this.userService.linkUser(e, 'staff')),
-          )
-        : undefined;
+      // const staffID = data.staffRequired
+      //   ? await Promise.all(
+      //       data.staffRequired.map(e => this.userService.linkUser(e, 'staff')),
+      //     )
+      //   : undefined;
       const doc = new this.areaModel({
         ...data,
         form: formId,
         building: buildingId,
-        staffRequired: staffID,
+        // staffRequired: staffID,
       });
       const saved = await doc.save();
       return saved;

@@ -1,24 +1,38 @@
-import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
-import { ObjectType, Field, Int, ID } from 'type-graphql';
+import { IsString, IsNumber, ValidateNested } from 'class-validator';
+import { ObjectType, Field, Int } from 'type-graphql';
+import { Type } from 'class-transformer';
 
+@ObjectType()
+class Required {
+  @Field(type => String, { nullable: true })
+  form: string;
+
+  @Field(type => String, { nullable: true })
+  staff: string[];
+
+  @Field(type => Int)
+  requestor: number;
+}
+
+// tslint:disable-next-line: max-classes-per-file
 @ObjectType()
 export class AreaCreateDto {
   @Field()
-  @IsNotEmpty()
   @IsString()
   name: string;
 
-  @Field({ nullable: true })
+  @Field(type => String, { nullable: true })
   building: string;
 
-  @Field({ nullable: true })
+  @Field(type => String, { nullable: true })
   form: string; // required form module
 
   @Field(() => Int)
-  @IsNotEmpty()
   @IsNumber()
-  maxTask: number;
+  maxReserve: number;
 
-  @Field(() => [ID], { nullable: true })
-  staffRequired: string[];
+  @Field(type => Required)
+  @Type(type => Required)
+  @ValidateNested({ each: true })
+  required: Required;
 }

@@ -34,24 +34,34 @@ input CreateAreaBuildingInput {
   label: String
 }
 
+type Required {
+  form: String
+  staff: [String]
+  requestor: Int
+}
+
 type Area {
   _id: String
   name: String
   building: AreaBuilding
-  form: Form
-  maxTask: Int
-  staffRequired: [String]
+  maxReserve: Int
+  required: Required
   createAt: Date
   updateAt: Date
+}
+
+input RequiredInput {
+  form: String
+  staff: [String]
+  requestor: Int
 }
 
 input CreateAreaInput {
   label: String
   name: String
   building: String
-  form: String
-  maxTask: Int
-  staffRequired: [String]
+  maxReserve: Int
+  required: RequiredInput
   createAt: Date
   updateAt: Date
 }
@@ -62,6 +72,6 @@ type Query {
 }
 
 type Mutation {
-    createArea(createArea: CreateAreaInput): Area
-    createAreaBuilding(createAreaBuilding: CreateAreaBuildingInput): AreaBuilding
+  createArea(createArea: CreateAreaInput): Area
+  createAreaBuilding(createAreaBuilding: CreateAreaBuildingInput): AreaBuilding
 }
