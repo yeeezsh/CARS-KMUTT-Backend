@@ -16,5 +16,6 @@ import { FormModule } from 'src/form/form.module';
     AreaResolver,
     ...areaProviders,
   ],
+  exports: [AreaService],
 })
 export class AreaModule {}
