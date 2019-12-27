@@ -1,4 +1,7 @@
 import { Schema } from 'mongoose';
+import { Form } from 'src/form/interfaces/form.interface';
+import { Area } from 'src/area/interfaces/area.interface';
+import { Staff } from 'src/users/interfaces/staff.interface';
 
 interface TimeSlot {
   start: Date;
@@ -14,9 +17,9 @@ export interface Task {
   time: TimeSlot;
   requestor: [Schema.Types.ObjectId];
   state: TaskState;
-  staff: Schema.Types.ObjectId;
-  area: null; // required area module
-  form?: null; // required form module
+  staff: Staff;
+  area: Area; // required area module
+  form?: Form; // required form module
   createAt: Date;
   updateAt: Date;
 }
