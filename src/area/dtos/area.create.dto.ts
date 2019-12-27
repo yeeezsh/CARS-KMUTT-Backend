@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
-import { ObjectType, Field, Int } from 'type-graphql';
+import { ObjectType, Field, Int, ID } from 'type-graphql';
 
 @ObjectType()
 export class AreaCreateDto {
@@ -18,4 +18,7 @@ export class AreaCreateDto {
   @IsNotEmpty()
   @IsNumber()
   maxTask: number;
+
+  @Field(() => ID, { nullable: true })
+  staffRequired: string[];
 }
