@@ -5,6 +5,7 @@ import { AreaBuilding } from './interfaces/area.building.interface';
 import { AreaBuildingCreateDto } from './dtos/area.building.create.dto';
 import { AreaCreateDto } from './dtos/area.create.dto';
 import { FormService } from 'src/form/form.service';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AreaService {
@@ -13,7 +14,8 @@ export class AreaService {
     @Inject('AREA_BUILDING_MODEL')
     private readonly areaBuildingModel: Model<AreaBuilding>,
     private readonly formService: FormService,
-  ) {}
+    private readonly userService: UsersService,
+  ) { }
 
   async createAreaBuilding(data: AreaBuildingCreateDto): Promise<AreaBuilding> {
     try {
@@ -45,10 +47,14 @@ export class AreaService {
       const buildingId = data.building
         ? await this.linkAreaBuilding(data.building)
         : undefined;
+      const staffID = data.staffRequired ? await Promise.all(
+        data.staffRequired.map(e => this.userService.linkUser(e, 'staff'))
+      ) : undefined;
       const doc = new this.areaModel({
         ...data,
         form: formId,
         building: buildingId,
+        staffRequired: staffID,
       });
       const saved = await doc.save();
       return saved;
