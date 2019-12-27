@@ -42,7 +42,6 @@ export class TaskCreateDto {
   @Field()
   @IsNotEmpty()
   @IsArray()
-  // @IsIn(['wait', 'approve', 'reject', 'accept'])
   state: [string];
 
   // @Field()

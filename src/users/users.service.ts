@@ -26,7 +26,7 @@ export class UsersService {
     @Inject('REQUESTOR_MODEL')
     private readonly requestorModel: Model<Requestor>,
     private readonly httpService: HttpService,
-  ) { }
+  ) {}
 
   async createStaff(create: CreateStaffInput): Promise<Staff> {
     const duplicated = await Promise.all([

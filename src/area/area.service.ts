@@ -15,7 +15,7 @@ export class AreaService {
     private readonly areaBuildingModel: Model<AreaBuilding>,
     private readonly formService: FormService,
     private readonly userService: UsersService,
-  ) { }
+  ) {}
 
   async createAreaBuilding(data: AreaBuildingCreateDto): Promise<AreaBuilding> {
     try {
@@ -47,9 +47,11 @@ export class AreaService {
       const buildingId = data.building
         ? await this.linkAreaBuilding(data.building)
         : undefined;
-      const staffID = data.staffRequired ? await Promise.all(
-        data.staffRequired.map(e => this.userService.linkUser(e, 'staff')),
-      ) : undefined;
+      const staffID = data.staffRequired
+        ? await Promise.all(
+            data.staffRequired.map(e => this.userService.linkUser(e, 'staff')),
+          )
+        : undefined;
       const doc = new this.areaModel({
         ...data,
         form: formId,
