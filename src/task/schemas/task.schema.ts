@@ -13,7 +13,7 @@ export const TaskSchema = new Schema({
   time: [TimeSchema],
   requestor: { type: Schema.Types.ObjectId, ref: 'requestors' },
   state: [String],
-  staff: { type: Schema.Types.ObjectId, ref: 'staffs' },
+  staff: { type: [Schema.Types.ObjectId], ref: 'staffs' },
   area: { type: Schema.Types.ObjectId, ref: 'areas' },
   form: { type: Schema.Types.ObjectId, ref: 'forms' },
   createAt: { type: Date, default: Date.now },

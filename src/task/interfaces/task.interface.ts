@@ -4,6 +4,7 @@ import { Area } from 'src/area/interfaces/area.interface';
 import { Staff } from 'src/users/interfaces/staff.interface';
 
 interface TimeSlot {
+  date: Date;
   start: Date;
   stop: Date;
 }
@@ -17,7 +18,7 @@ export interface Task {
   time: TimeSlot[];
   requestor: [Schema.Types.ObjectId];
   state: TaskState;
-  staff: Staff;
+  staff: Staff[];
   area: Area; // required area module
   form?: Form; // required form module
   createAt: Date;
