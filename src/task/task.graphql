@@ -12,7 +12,7 @@ type Task {
     time: [TimeSlot]
     requestor: String
     state: [String]
-    staff: String
+    staff: [String]
     approve: [Boolean]
     area: String
     form: String
