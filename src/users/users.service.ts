@@ -129,10 +129,10 @@ export class UsersService {
       let doc: Staff | Requestor | PromiseLike<Staff | Requestor>;
       switch (type) {
         case 'staff':
-          doc = await this.staffModel.findById(id);
+          doc = await this.staffModel.findById(id).lean();
           break;
         case 'requestor':
-          doc = await this.requestorModel.findById(id);
+          doc = await this.requestorModel.findById(id).lean();
           break;
         default:
           throw Error('bad user type');
