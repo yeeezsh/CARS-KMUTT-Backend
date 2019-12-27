@@ -14,7 +14,7 @@ interface TaskState {
 
 export interface Task {
   _id: Schema.Types.ObjectId;
-  time: TimeSlot;
+  time: TimeSlot[];
   requestor: [Schema.Types.ObjectId];
   state: TaskState;
   staff: Staff;
