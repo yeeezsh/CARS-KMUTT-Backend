@@ -26,7 +26,7 @@ export class UsersService {
     @Inject('REQUESTOR_MODEL')
     private readonly requestorModel: Model<Requestor>,
     private readonly httpService: HttpService,
-  ) {}
+  ) { }
 
   async createStaff(create: CreateStaffInput): Promise<Staff> {
     const duplicated = await Promise.all([
@@ -145,6 +145,9 @@ export class UsersService {
       }
       return doc;
     } catch (err) {
+      if (err.name === 'CastError') {
+        throw new Error('bad user type');
+      }
       throw err;
     }
   }
