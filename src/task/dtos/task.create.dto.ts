@@ -13,11 +13,6 @@ class TimeSlot {
   @Field(() => Date)
   @IsNotEmpty()
   @IsDate()
-  date: Date;
-
-  @Field(() => Date)
-  @IsNotEmpty()
-  @IsDate()
   start: Date;
 
   @Field(() => Date)
@@ -43,9 +38,6 @@ export class TaskCreateDto {
   @IsNotEmpty()
   @IsArray()
   state: [string];
-
-  // @Field()
-  //  staff: string;
 
   @Field()
   @IsString()

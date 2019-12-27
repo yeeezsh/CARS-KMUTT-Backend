@@ -2,7 +2,6 @@ scalar Date
 scalar JSON
 
 type TimeSlot {
-    date: Date
     start: Date
     stop: Date
 }
@@ -10,10 +9,10 @@ type TimeSlot {
 type Task {
     _id: ID
     time: [TimeSlot]
-    requestor: String
+    requestor: [String]
     state: [String]
     staff: [String]
-    approve: [Boolean]
+    approve: [String]
     area: String
     form: String
 }
