@@ -17,17 +17,14 @@ class Required {
 // tslint:disable-next-line: max-classes-per-file
 @ObjectType()
 export class AreaCreateDto {
-  @Field()
+  @Field(type => String)
   @IsString()
   name: string;
 
   @Field(type => String, { nullable: true })
   building: string;
 
-  @Field(type => String, { nullable: true })
-  form: string; // required form module
-
-  @Field(() => Int)
+  @Field(type => Int)
   @IsNumber()
   maxReserve: number;
 
