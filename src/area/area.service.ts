@@ -59,7 +59,6 @@ export class AreaService {
       const buildingId = data.building
         ? await this.linkAreaBuilding(data.building)
         : undefined;
-
       const staffID = data.required.staff
         ? await Promise.all(
             data.required.staff.map(e => this.userService.linkUser(e, 'staff')),
