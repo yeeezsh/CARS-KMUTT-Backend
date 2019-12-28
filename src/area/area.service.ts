@@ -40,6 +40,13 @@ export class AreaService {
         throw new HttpException('label duplicated', HttpStatus.NOT_ACCEPTABLE);
       }
 
+      // date validation
+      data.reserve.forEach(({ start, stop }) => {
+        if (new Date(start) > new Date(stop)) {
+          throw Error('error time setting');
+        }
+      });
+
       // linking validation
       const formId = data.required.form
         ? await this.formService.linkForm(data.required.form)
