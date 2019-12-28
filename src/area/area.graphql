@@ -15,13 +15,13 @@ type Field {
   options: [Option]
 }
 
-type Form {
-  _id: String
-  name: String
-  fields: [Field]
-  createAt: Date
-  updateAt: Date
-}
+# type Form {
+#   _id: ID
+#   name: String
+#   fields: [Field]
+#   createAt: Date
+#   updateAt: Date
+# }
 
 type AreaBuilding {
   _id: String

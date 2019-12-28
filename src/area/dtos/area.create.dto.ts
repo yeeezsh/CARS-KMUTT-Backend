@@ -1,4 +1,4 @@
-import { IsString, IsNumber, ValidateNested } from 'class-validator';
+import { IsString, IsNumber, IsNotEmpty, ValidateNested } from 'class-validator';
 import { ObjectType, Field, Int } from 'type-graphql';
 import { Type } from 'class-transformer';
 
@@ -19,6 +19,7 @@ class Required {
 export class AreaCreateDto {
   @Field(type => String)
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   @Field(type => String, { nullable: true })

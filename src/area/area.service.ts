@@ -63,7 +63,9 @@ export class AreaService {
         },
         // staffRequired: staffID,
       });
-      const saved = await doc.save();
+      await doc.save();
+      // hotifx
+      const saved = await this.areaModel.findById(doc._id).lean();
       return saved;
     } catch (err) {
       throw err;
