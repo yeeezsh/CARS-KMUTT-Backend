@@ -1,16 +1,23 @@
 import { Schema } from 'mongoose';
 import { Staff } from 'src/users/interfaces/staff.interface';
 
+interface Reserve {
+  interval: number;
+  max: number;
+  start: Date;
+  stop: Date;
+}
+
 export interface Area {
   _id: Schema.Types.ObjectId;
   name: string;
   building?: Schema.Types.ObjectId;
-  maxReserve: number;
   required: {
     form?: Schema.Types.ObjectId; // required form module
     staff?: Staff[];
     requestor: number;
   };
+  reserve: Reserve[];
   createAt: Date;
   updateAt: Date;
 }

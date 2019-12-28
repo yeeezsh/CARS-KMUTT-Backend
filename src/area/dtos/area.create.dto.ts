@@ -1,36 +1,55 @@
-import { IsString, IsNumber, IsNotEmpty, ValidateNested } from 'class-validator';
+import { IsString, IsNumber, IsDate, IsNotEmpty, ValidateNested } from 'class-validator';
 import { ObjectType, Field, Int } from 'type-graphql';
 import { Type } from 'class-transformer';
 
 @ObjectType()
+class Reserve {
+  @Field(() => Int)
+  interval: number;
+
+  @Field(() => Int)
+  max: number;
+
+  @Field(() => Date)
+  @IsDate()
+  start: number;
+
+  @Field(() => Date)
+  @IsDate()
+  stop: number;
+}
+
+// tslint:disable-next-line: max-classes-per-file
+@ObjectType()
 class Required {
-  @Field(type => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   form: string;
 
-  @Field(type => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   staff: string[];
 
-  @Field(type => Int)
+  @Field(() => Int)
   requestor: number;
 }
 
 // tslint:disable-next-line: max-classes-per-file
 @ObjectType()
 export class AreaCreateDto {
-  @Field(type => String)
+  @Field(() => String)
   @IsString()
   @IsNotEmpty()
   name: string;
 
-  @Field(type => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   building: string;
 
-  @Field(type => Int)
-  @IsNumber()
-  maxReserve: number;
-
-  @Field(type => Required)
-  @Type(type => Required)
+  @Field(() => Required)
+  @Type(() => Required)
   @ValidateNested({ each: true })
   required: Required;
+
+  @Field(() => [Reserve])
+  @Type(() => Reserve)
+  @ValidateNested({ each: true })
+  reserve: [Reserve];
 }
