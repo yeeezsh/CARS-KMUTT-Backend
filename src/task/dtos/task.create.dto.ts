@@ -1,7 +1,6 @@
 import {
   IsNotEmpty,
   IsString,
-  IsDate,
   IsArray,
   ValidateNested,
 } from 'class-validator';
@@ -10,23 +9,21 @@ import { Type } from 'class-transformer';
 
 @ObjectType()
 class TimeSlot {
-  @Field(() => Date)
+  @Field(() => String)
   @IsNotEmpty()
-  @IsDate()
   start: Date;
 
-  @Field(() => Date)
+  @Field(() => String)
   @IsNotEmpty()
-  @IsDate()
   stop: Date;
 }
 
 // tslint:disable-next-line: max-classes-per-file
 @ObjectType()
 export class TaskCreateDto {
-  @Field(type => [TimeSlot])
-  @ValidateNested({ each: true })
+  @Field(() => TimeSlot)
   @Type(() => TimeSlot)
+  @ValidateNested({ each: true })
   time: TimeSlot[];
 
   @Field()

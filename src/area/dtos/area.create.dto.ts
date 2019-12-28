@@ -1,22 +1,24 @@
-import { IsString, IsNumber, IsDate, IsNotEmpty, ValidateNested } from 'class-validator';
+import { IsString, IsNotEmpty, ValidateNested } from 'class-validator';
 import { ObjectType, Field, Int } from 'type-graphql';
 import { Type } from 'class-transformer';
 
 @ObjectType()
 class Reserve {
   @Field(() => Int)
+  @IsNotEmpty()
   interval: number;
 
   @Field(() => Int)
+  @IsNotEmpty()
   max: number;
 
-  @Field(() => Date)
-  @IsDate()
-  start: number;
+  @Field(() => String)
+  @IsNotEmpty()
+  start: Date;
 
-  @Field(() => Date)
-  @IsDate()
-  stop: number;
+  @Field(() => String)
+  @IsNotEmpty()
+  stop: Date;
 }
 
 // tslint:disable-next-line: max-classes-per-file
@@ -48,8 +50,8 @@ export class AreaCreateDto {
   @ValidateNested({ each: true })
   required: Required;
 
-  @Field(() => [Reserve])
+  @Field(() => Reserve)
   @Type(() => Reserve)
   @ValidateNested({ each: true })
-  reserve: [Reserve];
+  reserve: Reserve[];
 }

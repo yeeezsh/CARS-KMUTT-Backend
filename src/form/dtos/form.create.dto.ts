@@ -18,7 +18,7 @@ class Option {
   @IsString()
   label: string;
 
-  @Field(type => [String], { nullable: true })
+  @Field(() => String, { nullable: true })
   value: string[];
 }
 
@@ -33,7 +33,7 @@ class FormField {
   @Field({ nullable: true })
   label?: string;
 
-  @Field(type => [String], { nullable: true })
+  @Field(() => String, { nullable: true })
   value: string[];
 
   @Field()
@@ -46,7 +46,7 @@ class FormField {
   @IsBoolean()
   required: boolean;
 
-  @Field(type => [Option], { nullable: true })
+  @Field(() => Option, { nullable: true })
   @ValidateNested({ each: true })
   @Type(() => Option)
   options: Option[];
@@ -60,7 +60,7 @@ export class FormCreateDto {
   @IsString()
   name: string;
 
-  @Field(type => [FormField])
+  @Field(() => FormField)
   @ValidateNested({ each: true })
   @Type(() => FormField)
   @IsNotEmpty()
