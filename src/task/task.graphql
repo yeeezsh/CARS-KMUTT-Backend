@@ -1,9 +1,8 @@
-scalar Date
 scalar JSON
 
 type TimeSlot {
-    start: Date
-    stop: Date
+    start: String
+    stop: String
 }
 
 type Task {
