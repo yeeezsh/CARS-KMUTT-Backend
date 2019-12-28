@@ -1,53 +1,47 @@
 scalar Date
 scalar JSON
 
-type Option {
-  key: String
-  label: String
-  value: String
+type Reserve {
+  interval: Int
+  max: Int
+  start: Date
+  stop: Date
 }
-
-type Field {
-  key: String
-  label: String
-  value: [String]
-  type: String
-  options: [Option]
-}
-
-# type Form {
-#   _id: ID
-#   name: String
-#   fields: [Field]
-#   createAt: Date
-#   updateAt: Date
-# }
 
 type AreaBuilding {
-  _id: String
-  label: String
+  _id: ID
+  name: String
+  type: String
   createAt: Date
   updateAt: Date
 }
 
 input CreateAreaBuildingInput {
-  label: String
+  name: String
+  type: String
 }
 
 type Required {
-  form: String
-  staff: [String]
+  form: ID
+  staff: [ID]
   requestor: Int
 }
 
 type Area {
-  _id: String
+  _id: ID
   name: String
   building: AreaBuilding
-  maxReserve: Int
   required: Required
+  reserve: [Reserve]
   createAt: Date
   updateAt: Date
+}
+
+input ReserveInput {
+  interval: Int
+  max: Int
+  start: Date
+  stop: Date
 }
 
 input RequiredInput {
@@ -57,11 +51,10 @@ input RequiredInput {
 }
 
 input CreateAreaInput {
-  label: String
   name: String
   building: String
-  maxReserve: Int
   required: RequiredInput
+  reserve: [ReserveInput]
   createAt: Date
   updateAt: Date
 }
