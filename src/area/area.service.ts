@@ -43,10 +43,9 @@ export class AreaService {
       // date validation
       data.reserve.forEach(({ start, stop }) => {
         if (new Date(start) > new Date(stop)) {
-          throw Error('error time setting');
+          throw new HttpException('error time setting', HttpStatus.NOT_ACCEPTABLE);
         }
       });
-
       // linking validation
       const formId = data.required.form
         ? await this.formService.linkForm(data.required.form)
@@ -68,7 +67,6 @@ export class AreaService {
           form: formId,
           staff: staffID,
         },
-        // staffRequired: staffID,
       });
       await doc.save();
       // hotifx
