@@ -23,7 +23,7 @@ export class AreaService {
         name: data.name,
       });
       if (duplicated) {
-        throw new HttpException('label duplicated', HttpStatus.NOT_ACCEPTABLE);
+        throw new HttpException('name is duplicated', HttpStatus.NOT_ACCEPTABLE);
       }
       const doc = new this.areaBuildingModel(data);
       const saved = await doc.save();
