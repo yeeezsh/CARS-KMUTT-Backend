@@ -15,7 +15,7 @@ export const AreaSchema = new Schema({
   building: { type: Schema.Types.ObjectId, ref: 'area.buildings' },
   required: {
     form: { type: Schema.Types.ObjectId, ref: 'forms' }, // required form module
-    staff: { type: [Schema.Types.ObjectId], ref: 'staffs' },
+    staff: { type: Number, default: 1 },
     requestor: { type: Number, default: 1 },
   },
   reserve: { type: [ReserveSchema], required: true },
