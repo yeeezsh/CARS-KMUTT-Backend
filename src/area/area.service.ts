@@ -15,7 +15,7 @@ export class AreaService {
     private readonly areaBuildingModel: Model<AreaBuilding>,
     private readonly formService: FormService,
     private readonly userService: UsersService,
-  ) { }
+  ) {}
 
   async createAreaBuilding(data: AreaBuildingCreateDto): Promise<AreaBuilding> {
     try {
@@ -23,7 +23,10 @@ export class AreaService {
         name: data.name,
       });
       if (duplicated) {
-        throw new HttpException('name is duplicated', HttpStatus.NOT_ACCEPTABLE);
+        throw new HttpException(
+          'name is duplicated',
+          HttpStatus.NOT_ACCEPTABLE,
+        );
       }
       const doc = new this.areaBuildingModel(data);
       const saved = await doc.save();
@@ -43,7 +46,10 @@ export class AreaService {
       // date validation
       data.reserve.forEach(({ start, stop }) => {
         if (new Date(start) > new Date(stop)) {
-          throw new HttpException('error time setting', HttpStatus.NOT_ACCEPTABLE);
+          throw new HttpException(
+            'error time setting',
+            HttpStatus.NOT_ACCEPTABLE,
+          );
         }
       });
       // linking validation
@@ -56,8 +62,8 @@ export class AreaService {
 
       const staffID = data.required.staff
         ? await Promise.all(
-          data.required.staff.map(e => this.userService.linkUser(e, 'staff')),
-        )
+            data.required.staff.map(e => this.userService.linkUser(e, 'staff')),
+          )
         : undefined;
       const doc = new this.areaModel({
         ...data,

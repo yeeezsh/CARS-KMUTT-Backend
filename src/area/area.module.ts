@@ -9,12 +9,7 @@ import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [DatabaseModule, FormModule, UsersModule],
-  providers: [
-    JSONScalar,
-    AreaService,
-    AreaResolver,
-    ...areaProviders,
-  ],
+  providers: [JSONScalar, AreaService, AreaResolver, ...areaProviders],
   exports: [AreaService],
 })
 export class AreaModule {}

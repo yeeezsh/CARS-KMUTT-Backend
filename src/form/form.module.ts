@@ -7,12 +7,7 @@ import { formProviders } from './form.providers';
 
 @Module({
   imports: [DatabaseModule],
-  providers: [
-    JSONScalar,
-    FormResolver,
-    FormService,
-    ...formProviders,
-  ],
+  providers: [JSONScalar, FormResolver, FormService, ...formProviders],
   exports: [FormService],
 })
 export class FormModule {}

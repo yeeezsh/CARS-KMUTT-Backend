@@ -1,11 +1,14 @@
 import { Schema } from 'mongoose';
 
-const ReserveSchema = new Schema({
-  interval: { type: Number, default: 60 },
-  max: { type: Number, default: 1 },
-  start: { type: Date, required: true },
-  stop: { type: Date, required: true },
-}, { _id: false });
+const ReserveSchema = new Schema(
+  {
+    interval: { type: Number, default: 60 },
+    max: { type: Number, default: 1 },
+    start: { type: Date, required: true },
+    stop: { type: Date, required: true },
+  },
+  { _id: false },
+);
 
 export const AreaSchema = new Schema({
   name: String,

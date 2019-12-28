@@ -9,12 +9,7 @@ import { JSONScalar } from '../common/json.scalar';
 
 @Module({
   imports: [HttpModule, DatabaseModule, forwardRef(() => AuthModule)],
-  providers: [
-    JSONScalar,
-    UsersService,
-    ...usersProviders,
-    UsersResolver,
-  ],
+  providers: [JSONScalar, UsersService, ...usersProviders, UsersResolver],
   exports: [UsersService],
   controllers: [UsersController],
 })

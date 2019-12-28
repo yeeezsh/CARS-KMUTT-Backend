@@ -1,9 +1,4 @@
-import {
-  IsNotEmpty,
-  IsString,
-  IsArray,
-  ValidateNested,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsArray, ValidateNested } from 'class-validator';
 import { ObjectType, Field } from 'type-graphql';
 import { Type } from 'class-transformer';
 

@@ -9,11 +9,6 @@ import { JSONScalar } from 'src/common/json.scalar';
 
 @Module({
   imports: [DatabaseModule, AreaModule, FormModule],
-  providers: [
-    JSONScalar,
-    TaskService,
-    ...taskProviders,
-    TaskResolver,
-  ],
+  providers: [JSONScalar, TaskService, ...taskProviders, TaskResolver],
 })
 export class TaskModule {}

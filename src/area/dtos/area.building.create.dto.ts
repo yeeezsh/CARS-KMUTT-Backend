@@ -1,4 +1,4 @@
-import {IsString, IsIn, IsNumber } from 'class-validator';
+import { IsString, IsIn, IsNumber } from 'class-validator';
 import { ObjectType, Field } from 'type-graphql';
 
 @ObjectType()
