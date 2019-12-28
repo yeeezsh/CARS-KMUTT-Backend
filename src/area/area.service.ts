@@ -15,7 +15,7 @@ export class AreaService {
     private readonly areaBuildingModel: Model<AreaBuilding>,
     private readonly formService: FormService,
     private readonly userService: UsersService,
-  ) {}
+  ) { }
 
   async createAreaBuilding(data: AreaBuildingCreateDto): Promise<AreaBuilding> {
     try {
@@ -61,8 +61,8 @@ export class AreaService {
         : undefined;
       const staffID = data.required.staff
         ? await Promise.all(
-            data.required.staff.map(e => this.userService.linkUser(e, 'staff')),
-          )
+          data.required.staff.map(e => this.userService.linkUser(e, 'staff')),
+        )
         : undefined;
       const doc = new this.areaModel({
         ...data,
@@ -95,7 +95,7 @@ export class AreaService {
     try {
       const doc = await this.areaModel
         .find({})
-        .populate(['building', 'form'])
+        .populate(['building', 'required.form', 'required.staff'])
         .lean();
       return doc;
     } catch (err) {
