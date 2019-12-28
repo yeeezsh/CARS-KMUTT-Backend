@@ -2,7 +2,7 @@ import { Schema } from 'mongoose';
 import { Staff } from 'src/users/interfaces/staff.interface';
 
 interface Reserve {
-  interval: number;
+  interval: number | -1 | 60;
   max: number;
   start: Date;
   stop: Date;
