@@ -1,4 +1,4 @@
-import { IsString, IsIn, IsNumber } from 'class-validator';
+import { IsString, IsIn } from 'class-validator';
 import { ObjectType, Field } from 'type-graphql';
 
 @ObjectType()
@@ -11,4 +11,7 @@ export class AreaBuildingCreateDto {
   @IsString()
   @IsIn(['sport', 'area'])
   type: string;
+
+  @Field(() => String, { nullable: true })
+  category: string;
 }
