@@ -23,8 +23,8 @@ input CreateAreaBuildingInput {
 }
 
 type Required {
-  form: ID
-  staff: [ID]
+  form: Form
+  staff: [User]
   requestor: Int
 }
 
@@ -68,4 +68,36 @@ type Query {
 type Mutation {
   createArea(createArea: CreateAreaInput): Area
   createAreaBuilding(createAreaBuilding: CreateAreaBuildingInput): AreaBuilding
+}
+
+# external
+#Form
+type Option {
+  key: String
+  label: String
+  value: String
+}
+
+type Field {
+  key: String
+  label: String
+  value: [String]
+  type: String
+  options: [Option]
+}
+
+type Form {
+  _id: String
+  name: String
+  fields: [Field]
+  createAt: String
+  updateAt: String
+}
+
+# User
+type User {
+  username: String
+  password: String
+  email: String
+  permission: String
 }
