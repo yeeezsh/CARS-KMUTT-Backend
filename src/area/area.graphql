@@ -1,19 +1,18 @@
-scalar Date
 scalar JSON
 
 type Reserve {
   interval: Int
   max: Int
-  start: Date
-  stop: Date
+  start: String
+  stop: String
 }
 
 type AreaBuilding {
   _id: ID
   name: String
   type: String
-  createAt: Date
-  updateAt: Date
+  createAt: String
+  updateAt: String
 }
 
 input CreateAreaBuildingInput {
@@ -33,15 +32,15 @@ type Area {
   building: AreaBuilding
   required: Required
   reserve: [Reserve]
-  createAt: Date
-  updateAt: Date
+  createAt: String
+  updateAt: String
 }
 
 input ReserveInput {
   interval: Int
   max: Int
-  start: Date
-  stop: Date
+  start: String
+  stop: String
 }
 
 input RequiredInput {
@@ -55,8 +54,8 @@ input CreateAreaInput {
   building: String
   required: RequiredInput
   reserve: [ReserveInput]
-  createAt: Date
-  updateAt: Date
+  createAt: String
+  updateAt: String
 }
 
 type Query {
