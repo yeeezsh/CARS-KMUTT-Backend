@@ -20,7 +20,7 @@ export class AreaService {
   async createAreaBuilding(data: AreaBuildingCreateDto): Promise<AreaBuilding> {
     try {
       const duplicated = await this.areaBuildingModel.findOne({
-        label: data.label,
+        name: data.name,
       });
       if (duplicated) {
         throw new HttpException('label duplicated', HttpStatus.NOT_ACCEPTABLE);
