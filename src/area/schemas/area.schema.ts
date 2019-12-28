@@ -15,7 +15,7 @@ export const AreaSchema = new Schema({
     staff: { type: [Schema.Types.ObjectId], ref: 'staffs' },
     requestor: { type: Number, default: 1 },
   },
-  reserve: [ReserveSchema],
+  reserve: { type: [ReserveSchema], required: true },
   createAt: { type: Date, default: Date.now },
   updateAt: { type: Date, default: Date.now },
 });
