@@ -2,9 +2,9 @@
 import { Schema } from 'mongoose';
 
 export const StaffSchema = new Schema({
-  username: String,
+  username: { type: String, required: true },
   password: String,
-  email: String,
-  permission: String,
+  email: { type: String, required: true },
+  permission: { type: String, required: true, enum: ['staff', 'approver', 'admin'] },
   createAt: { type: Date, default: Date.now },
 });
