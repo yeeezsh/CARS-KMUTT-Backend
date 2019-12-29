@@ -11,5 +11,13 @@ export class TaskQueryService {
     ) { }
 
     async valid(areaID: string, time: Date[]) {
+        try {
+            const area = await this.areaService.getArea(areaID);
+            const timeTable = area.reserve.forEach(({ start, stop, interval, max }) => {
+
+            })
+        } catch (err) {
+            throw err;
+        }
     }
 }
