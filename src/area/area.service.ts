@@ -117,7 +117,11 @@ export class AreaService {
 
   async getArea(id: string): Promise<Area> {
     try {
-      return this.areaModel.findById(id).lean();
+      const doc = await this.areaModel.findById(id).lean()
+      if(!doc) {
+        throw Error('_id is not exisiting');
+      }
+      return doc;
     } catch (err) {
       throw err;
     }
@@ -125,7 +129,11 @@ export class AreaService {
 
   async getAreaBuilding(id: string): Promise<AreaBuilding> {
     try {
-      return this.areaBuildingModel.findById(id).lean();
+      const doc = await this.areaBuildingModel.findById(id).lean();
+      if(!doc) {
+        throw Error('_id is not exisiting');
+      }
+      return doc;
     } catch (err) {
       throw err;
     }
