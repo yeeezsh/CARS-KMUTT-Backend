@@ -15,7 +15,7 @@ export class AreaService {
     private readonly areaBuildingModel: Model<AreaBuilding>,
     private readonly formService: FormService,
     private readonly userService: UsersService,
-  ) {}
+  ) { }
 
   async createAreaBuilding(data: AreaBuildingCreateDto): Promise<AreaBuilding> {
     try {
@@ -61,8 +61,8 @@ export class AreaService {
         : undefined;
       const staffID = data.required.staff
         ? await Promise.all(
-            data.required.staff.map(e => this.userService.linkUser(e, 'staff')),
-          )
+          data.required.staff.map(e => this.userService.linkUser(e, 'staff')),
+        )
         : undefined;
       const doc = new this.areaModel({
         ...data,
@@ -110,6 +110,22 @@ export class AreaService {
         throw Error('area building by _id is not existing');
       }
       return doc;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getArea(id: string): Promise<Area> {
+    try {
+      return this.areaModel.findById(id).lean();
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getAreaBuilding(id: string): Promise<AreaBuilding> {
+    try {
+      return this.areaBuildingModel.findById(id).lean();
     } catch (err) {
       throw err;
     }

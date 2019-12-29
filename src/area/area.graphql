@@ -63,6 +63,8 @@ input CreateAreaInput {
 type Query {
   Areas: [Area]
   AreaBuildings: [AreaBuilding]
+  Area(id: String): Area
+  AreaBuilding(id: String): AreaBuilding
 }
 
 type Mutation {
