@@ -7,7 +7,7 @@ import { AreaBuilding } from './interfaces/area.building.interface';
 
 @Resolver('Area')
 export class AreaResolver {
-  constructor(private readonly areaServie: AreaService) { }
+  constructor(private readonly areaServie: AreaService) {}
 
   @Query('Areas')
   async Areas() {

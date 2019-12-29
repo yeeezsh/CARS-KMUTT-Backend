@@ -8,6 +8,6 @@ export class TaskService {
   constructor(@Inject('TASK_MODEL') private readonly taskModel: Model<Task>) {}
 
   async createSportTask() {
-    return {}
+    return {};
   }
 }
