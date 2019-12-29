@@ -4,8 +4,8 @@ import { Area } from './interfaces/area.interface';
 import { AreaBuilding } from './interfaces/area.building.interface';
 import { AreaBuildingCreateDto } from './dtos/area.building.create.dto';
 import { AreaCreateDto } from './dtos/area.create.dto';
-import { FormService } from 'src/form/form.service';
-import { UsersService } from 'src/users/users.service';
+import { FormService } from '../form/form.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AreaService {
