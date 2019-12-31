@@ -117,7 +117,10 @@ export class AreaService {
 
   async getArea(id: string): Promise<Area> {
     try {
-      const doc = await this.areaModel.findById(id).lean();
+      const doc = await this.areaModel
+        .findById(id)
+        .populate(['building'])
+        .lean();
       if (!doc) {
         throw Error('_id is not exisiting');
       }
