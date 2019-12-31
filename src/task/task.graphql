@@ -1,17 +1,27 @@
 scalar JSON
 
 type TimeSlot {
-    start: String
-    stop: String
+  start: String
+  stop: String
 }
 
 type Task {
-    _id: ID
-    time: [TimeSlot]
-    requestor: [String]
-    state: [String]
-    staff: [String]
-    approve: [String]
-    area: String
-    form: String
+  _id: ID
+  time: [TimeSlot]
+  requestor: [String]
+  state: [String]
+  staff: [String]
+  approve: [String]
+  area: String
+  form: String
+}
+
+input CreateSportTask {
+  time: [TimeSlot]
+  requestor: [String]
+  area: String
+}
+
+type Mutation {
+    createSportTask(createSportTask: CreateSportTask): Task
 }
