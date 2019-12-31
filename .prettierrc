@@ -1,15 +1,4 @@
 {
   "singleQuote": true,
-  "trailingComma": "all",
-  "semi": true,
-  "overrides": [
-    {
-      "files": [
-        "/**/*.ts"
-      ],
-      "options": {
-        "semi": true
-      }
-    }
-  ]
+  "trailingComma": "all"
 }
