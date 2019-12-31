@@ -9,62 +9,56 @@ interface TimeSchema {
   stop: Date;
 }
 
-const FORMAT = 'hh:mm:ss';
+const FORMAT = 'DD-MM-YYYY-HH:mm:ss';
+const TIME_FORMAT = 'HH:mm:ss';
+const DAY_FORMAT = 'DD-MM-YYYY';
 
 @Injectable()
 export class TaskQueryService {
   constructor(
     @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
     private readonly areaService: AreaService,
-  ) { }
+  ) {}
 
   // async valid(areaID: string, time: TimeSchema[]) {
-  async valid(areaID: string, times: TimeSchema[]) {
+  async getTimesByAreaId(
+    areaID: string,
+  ): Promise<Array<{ start: string; stop: string }>> {
     try {
       const area = await this.areaService.getArea(areaID);
+      console.log('area', area);
       //   validation area condition
-      const areaTimes: Date[] = area.reserve.flatMap(e => {
-        const start = moment(e.start);
-        const stop = moment(e.stop);
+      const nowDay = moment();
+      const areaTimes: Array<{
+        start: string;
+        stop: string;
+      }> = area.reserve.flatMap(e => {
+        const start = moment(e.start, 'HH:mm:ss');
+        const stop = moment(e.stop, 'HH:mm:ss');
         let partition = start;
         const arr = [];
-        while (partition <= stop) {
-          arr.push(partition.format(FORMAT));
+        arr.push(partition.format(FORMAT));
+        while (partition < stop) {
           partition = partition.add(e.interval, 'minutes');
+          arr.push(
+            `${nowDay.format(DAY_FORMAT)}-${partition.format(TIME_FORMAT)}`,
+          );
         }
         return arr;
       });
+      console.log('areaTimes', areaTimes);
 
-      const valid = areaTimes
-        .map((e, ind, arr) => {
-          if (ind === 0) {
-            return null;
-          }
-          return { start: arr[ind - 1], stop: e };
-        })
-        .filter(e => e);
-      const foundRange = valid
-        .map(({ start: areaStart, stop: areaStop }) => {
-          return times.forEach(({ start, stop }) => {
-            if (
-              moment(start).format(FORMAT) ===
-              moment(areaStart).format(FORMAT) &&
-              moment(stop).format(FORMAT) === moment(areaStop).format(FORMAT)
-            ) {
-              return {
-                start: moment(start).format(FORMAT),
-                stop: moment(stop).format(FORMAT),
-              };
-            }
-            return false;
-          });
-        })
-        .filter(e => Boolean(e));
-      if (foundRange.length === 0) {
-        throw Error('reservation time not valid for this area');
-      }
-      console.log(foundRange);
-      return area;
+      // const validTimes = areaTimes
+      //   .map((e, ind, arr) => {
+      //     if (ind === 0) {
+      //       return null;
+      //     }
+      //     return { start: arr[ind - 1], stop: e };
+      //   })
+      //   .filter(e => e);
+      // console.log('valid times', validTimes);
+
+      return areaTimes;
       // .filter(e => Boolean(e));
 
       // time.forEach(({ start: taskStart, stop: taskStop }) => {
