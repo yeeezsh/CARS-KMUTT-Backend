@@ -16,12 +16,17 @@ type Task {
   form: String
 }
 
-input CreateSportTask {
-  time: [TimeSlot]
+input TimeSlotInput {
+  start: String
+  stop: String
+}
+
+input CreateSportTaskInput {
+  time: [TimeSlotInput]
   requestor: [String]
   area: String
 }
 
 type Mutation {
-    createSportTask(createSportTask: CreateSportTask): Task
+    createSportTask(createSportTask: CreateSportTaskInput): Task
 }

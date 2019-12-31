@@ -2,6 +2,7 @@ import { ObjectType, Field } from 'type-graphql';
 import { Type } from 'class-transformer';
 import { ValidateNested, IsNotEmpty } from 'class-validator';
 
+@ObjectType()
 class TimeSlot {
     @Field(() => String)
     @IsNotEmpty()
@@ -14,7 +15,7 @@ class TimeSlot {
 
 // tslint:disable-next-line:max-classes-per-file
 @ObjectType()
-export class TaskCreateSport {
+export class TaskCreateSportDto {
 
     @Field(() => TimeSlot)
     @Type(() => TimeSlot)
@@ -22,7 +23,7 @@ export class TaskCreateSport {
     @IsNotEmpty()
     time: TimeSlot[];
 
-    @Field()
+    @Field(() => String)
     @Type(() => String)
     @ValidateNested({ each: true })
     @IsNotEmpty()
