@@ -50,7 +50,6 @@ export class TaskService {
       });
       const schedule: Array<{ start: string; stop: string }> = areaTimes
         .map((e, i, arr) => {
-          console.log(i, arr.length - 1);
           if (i === arr.length - 1) {
             return null;
           }
@@ -62,6 +61,7 @@ export class TaskService {
         .filter(e => Boolean(e));
 
       // query all reservation
+
 
       const available: Array<{
         start: string;

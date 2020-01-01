@@ -4,8 +4,9 @@ import { Staff } from 'src/users/interfaces/staff.interface';
 interface Reserve {
   interval: number | -1 | 60;
   max: number;
-  start: Date;
-  stop: Date;
+  start?: Date;
+  stop?: Date;
+  allDay: Boolean;
 }
 
 export interface Area {

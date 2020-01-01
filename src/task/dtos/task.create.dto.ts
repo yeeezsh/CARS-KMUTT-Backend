@@ -4,13 +4,14 @@ import { Type } from 'class-transformer';
 
 @ObjectType()
 class TimeSlot {
-  @Field(() => String)
-  @IsNotEmpty()
+  @Field(() => String, { nullable: true })
   start: Date;
 
-  @Field(() => String)
-  @IsNotEmpty()
+  @Field(() => String, { nullable: true })
   stop: Date;
+
+  @Field(() => Boolean)
+  allDay: boolean;
 }
 
 // tslint:disable-next-line: max-classes-per-file
@@ -21,18 +22,13 @@ export class TaskCreateDto {
   @ValidateNested({ each: true })
   time: TimeSlot[];
 
-  @Field()
-  @IsNotEmpty()
-  @IsString()
+  @Field(() => String)
   requestor: string;
 
-  @Field()
-  @IsNotEmpty()
-  @IsArray()
+  @Field(() => [String])
   state: [string];
 
-  @Field()
-  @IsString()
+  @Field(() => String)
   area: string; // required area module
 
   @Field()

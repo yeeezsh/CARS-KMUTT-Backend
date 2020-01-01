@@ -4,6 +4,7 @@ const TimeSchema = new Schema(
   {
     start: Date,
     stop: Date,
+    allDay: { type: Boolean, default: false },
   },
   { _id: false },
 );

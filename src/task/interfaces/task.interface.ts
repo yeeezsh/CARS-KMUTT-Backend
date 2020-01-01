@@ -4,8 +4,9 @@ import { Area } from 'src/area/interfaces/area.interface';
 import { Staff } from 'src/users/interfaces/staff.interface';
 
 interface TimeSlot {
-  start: Date;
-  stop: Date;
+  start?: Date;
+  stop?: Date;
+  allDay: boolean;
 }
 
 interface TaskState {

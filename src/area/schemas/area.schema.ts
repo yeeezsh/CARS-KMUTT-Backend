@@ -4,8 +4,9 @@ const ReserveSchema = new Schema(
   {
     interval: { type: Number, default: 60 },
     max: { type: Number, default: 1 },
-    start: { type: Date, required: true },
-    stop: { type: Date, required: true },
+    start: Date,
+    stop: Date,
+    allDay: { type: Boolean, default: false },
   },
   { _id: false },
 );
