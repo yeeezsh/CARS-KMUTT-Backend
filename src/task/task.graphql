@@ -21,12 +21,18 @@ input TimeSlotInput {
   stop: String
 }
 
-input CreateSportTaskInput {
+input CreateTaskSportInput {
   time: [TimeSlotInput]
   requestor: [String]
   area: String
 }
 
 type Mutation {
-    createSportTask(createSportTask: CreateSportTaskInput): Task
+    createTaskSport(createTaskSport: CreateTaskSportInput): Task
+}
+
+# Task Available
+type TaskAvailable {
+  schedule: [TimeSlot]
+  available: [TimeSlot]
 }

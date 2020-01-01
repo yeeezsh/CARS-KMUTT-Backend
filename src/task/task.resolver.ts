@@ -4,11 +4,11 @@ import { TaskService } from './task.service';
 
 @Resolver('Task')
 export class TaskResolver {
-  constructor(private readonly taskService: TaskService) {}
+    constructor(private readonly taskService: TaskService) { }
 
-  @Mutation('createSportTask')
-  async createSportTask(@Args('createSportTask') args: TaskCreateSportDto) {
-    await this.taskService.createSportTask(args);
-    return {};
-  }
+    @Mutation('createTaskSport')
+    async createTaskSport(@Args('createTaskSport') args: TaskCreateSportDto) {
+        await this.taskService.createTaskSport(args);
+        return {};
+    }
 }

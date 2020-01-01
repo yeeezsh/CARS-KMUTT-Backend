@@ -10,11 +10,13 @@ export class TaskService {
   constructor(
     @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
     private readonly taskQueryService: TaskQueryService,
-  ) {}
+  ) { }
 
-  async createSportTask(data: TaskCreateSportDto) {
+  async createTaskSport(data: TaskCreateSportDto) {
     console.log('task service', data);
     await this.taskQueryService.getTimesByAreaId(data.area);
     return {};
   }
+
+  async getSportSchedule() { }
 }
