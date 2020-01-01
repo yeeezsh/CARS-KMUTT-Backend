@@ -17,7 +17,7 @@ export class TaskService {
   constructor(
     @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
     private readonly areaService: AreaService,
-  ) { }
+  ) {}
 
   async createTaskSport(data: TaskCreateSportDto) {
     console.log('task service', data);
@@ -25,7 +25,10 @@ export class TaskService {
     return {};
   }
 
-  async getSportSchedule(id: string, date: Date = new Date()): Promise<TaskSchedule> {
+  async getSportSchedule(
+    id: string,
+    date: Date = new Date(),
+  ): Promise<TaskSchedule> {
     try {
       const area = await this.areaService.getArea(id);
 
@@ -61,7 +64,6 @@ export class TaskService {
         .filter(e => Boolean(e));
 
       // query all reservation
-
 
       const available: Array<{
         start: string;

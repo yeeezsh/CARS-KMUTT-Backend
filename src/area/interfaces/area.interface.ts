@@ -6,7 +6,7 @@ interface Reserve {
   max: number;
   start?: Date;
   stop?: Date;
-  allDay: Boolean;
+  allDay: boolean;
 }
 
 export interface Area {
