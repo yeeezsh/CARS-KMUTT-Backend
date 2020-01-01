@@ -6,7 +6,6 @@ import { taskProviders } from './task.providers';
 import { AreaModule } from '../area/area.module';
 import { FormModule } from '../form/form.module';
 import { JSONScalar } from '../common/json.scalar';
-import { TaskQueryService } from './task.query.service';
 
 @Module({
   imports: [DatabaseModule, AreaModule, FormModule],
@@ -15,7 +14,6 @@ import { TaskQueryService } from './task.query.service';
     TaskService,
     ...taskProviders,
     TaskResolver,
-    TaskQueryService,
   ],
 })
-export class TaskModule {}
+export class TaskModule { }
