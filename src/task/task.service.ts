@@ -17,7 +17,7 @@ export class TaskService {
   constructor(
     @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
     private readonly areaService: AreaService,
-  ) {}
+  ) { }
 
   async createTaskSport(data: TaskCreateSportDto) {
     console.log('task service', data);
@@ -38,8 +38,15 @@ export class TaskService {
         start: string;
         stop: string;
       }> = area.reserve.flatMap(e => {
-        const start = moment(e.start, 'HH:mm:ss');
-        const stop = moment(e.stop, 'HH:mm:ss');
+        const allDay = e.allDay;
+        const start = !allDay
+          ? moment(e.start, 'HH:mm:ss')
+          : moment().startOf('day');
+        const stop = !allDay
+          ? moment(e.stop, 'HH:mm:ss')
+          : moment()
+            .startOf('day')
+            .add('1', 'day');
         let partition = start;
         const arr = [];
         arr.push(partition.format(FORMAT));
