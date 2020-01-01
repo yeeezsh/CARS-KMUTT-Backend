@@ -1,7 +1,7 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { TaskCreateSportDto } from './dtos/task.create.sport';
 import { TaskService } from './task.service';
-import { TaskQueryScheduleDto } from './dtos/task.query.schedule.dto';
+import { TaskSchedule } from './interfaces/task.schedule.interface';
 
 @Resolver('Task')
 export class TaskResolver {
@@ -14,8 +14,8 @@ export class TaskResolver {
     }
 
     @Query('taskSportSchedule')
-    async getTaskSportSchedule(@Args('id') args: TaskQueryScheduleDto) {
-        const { id } = args;
-        return {};
+    async getTaskSportSchedule(@Args('id') id: string): Promise<TaskSchedule> {
+        const schedule = await this.taskService.getSportSchedule(id);
+        return schedule;
     }
 }

@@ -1,10 +1,10 @@
 interface TimeSlot {
-    start: Date;
-    stop: Date;
+    start: string;
+    stop: string;
 }
 interface TimeSlotAvailable {
-    start: Date;
-    stop: Date;
+    start: string;
+    stop: string;
     n: number;
 }
 

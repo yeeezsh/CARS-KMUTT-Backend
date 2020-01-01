@@ -1,22 +1,77 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { Task } from './interfaces/task.interface';
-import { TaskQueryService } from './task.query.service';
+
 import { TaskCreateSportDto } from './dtos/task.create.sport';
 import * as moment from 'moment';
+import { TaskSchedule } from './interfaces/task.schedule.interface';
+import { AreaService } from 'src/area/area.service';
+
+// constant
+const FORMAT = 'DD-MM-YYYY-HH:mm:ss';
+const TIME_FORMAT = 'HH:mm:ss';
+const DAY_FORMAT = 'DD-MM-YYYY';
 
 @Injectable()
 export class TaskService {
   constructor(
     @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
-    private readonly taskQueryService: TaskQueryService,
+    private readonly areaService: AreaService,
   ) { }
 
   async createTaskSport(data: TaskCreateSportDto) {
     console.log('task service', data);
-    await this.taskQueryService.getTimesByAreaId(data.area);
+    // await this.taskQueryService.getTimesByAreaId(data.area);
     return {};
   }
 
-  async getSportSchedule() { }
+  async getSportSchedule(id: string): Promise<TaskSchedule> {
+    try {
+      console.log(id);
+      const area = await this.areaService.getArea(id);
+      console.log('area', area);
+
+      //   validation area condition
+      const nowDay = moment();
+      const areaTimes: Array<{
+        start: string;
+        stop: string;
+      }> = area.reserve.flatMap(e => {
+        const start = moment(e.start, 'HH:mm:ss');
+        const stop = moment(e.stop, 'HH:mm:ss');
+        let partition = start;
+        const arr = [];
+        arr.push(partition.format(FORMAT));
+        while (partition < stop) {
+          partition = partition.add(e.interval, 'minutes');
+          arr.push(
+            `${nowDay.format(DAY_FORMAT)}-${partition.format(TIME_FORMAT)}`,
+          );
+        }
+        return arr;
+      });
+      const schedule: Array<{ start: any, stop: any }> = areaTimes.map((e, i, arr) => {
+        console.log(i, arr.length - 1);
+        if (i === arr.length - 1) {
+          return null;
+        }
+        return {
+          start: e,
+          stop: arr[i + 1],
+        };
+      }).filter(e => Boolean(e));
+      console.log('areaTimes', areaTimes);
+      console.log('schedule', schedule);
+      // return areaTimes;
+
+      return {
+        _id: area._id,
+        // schedule: [],
+        schedule: schedule,
+        available: [],
+      };
+    } catch (err) {
+      throw err;
+    }
+  }
 }
