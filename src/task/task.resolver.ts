@@ -5,17 +5,17 @@ import { TaskSchedule } from './interfaces/task.schedule.interface';
 
 @Resolver('Task')
 export class TaskResolver {
-    constructor(private readonly taskService: TaskService) { }
+  constructor(private readonly taskService: TaskService) {}
 
-    @Mutation('createTaskSport')
-    async createTaskSport(@Args('createTaskSport') args: TaskCreateSportDto) {
-        await this.taskService.createTaskSport(args);
-        return {};
-    }
+  @Mutation('createTaskSport')
+  async createTaskSport(@Args('createTaskSport') args: TaskCreateSportDto) {
+    await this.taskService.createTaskSport(args);
+    return {};
+  }
 
-    @Query('taskSportSchedule')
-    async getTaskSportSchedule(@Args('id') id: string): Promise<TaskSchedule> {
-        const schedule = await this.taskService.getSportSchedule(id);
-        return schedule;
-    }
+  @Query('taskSportSchedule')
+  async getTaskSportSchedule(@Args('id') id: string): Promise<TaskSchedule> {
+    const schedule = await this.taskService.getSportSchedule(id);
+    return schedule;
+  }
 }
