@@ -6,7 +6,8 @@ import { TaskCreateSportDto } from './dtos/task.create.sport';
 import * as moment from 'moment';
 import { TaskSchedule } from './interfaces/task.schedule.interface';
 import { AreaService } from 'src/area/area.service';
-import TaskSchedulePartitionArrHelper from './helpers/task.schedule.partition.arr.helper'
+import TaskSchedulePartitionArrHelper from './helpers/task.schedule.partition.arr.helper';
+import TaskScheduleStructArrHelper from './helpers/task.schedule.struct.arr.helper';
 
 // constant
 const FORMAT = 'DD-MM-YYYY-HH:mm:ss';
@@ -18,7 +19,7 @@ export class TaskService {
   constructor(
     @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
     private readonly areaService: AreaService,
-  ) { }
+  ) {}
 
   async createTaskSport(data: TaskCreateSportDto) {
     console.log('task service', data);
@@ -35,21 +36,8 @@ export class TaskService {
 
       //   validation area condition
       const nowDay = moment(date);
-      const areaTimes: Array<{
-        start: string;
-        stop: string;
-      }> = TaskSchedulePartitionArrHelper(area.reserve, nowDay);
-      const schedule: Array<{ start: string; stop: string }> = areaTimes
-        .map((e, i, arr) => {
-          if (i === arr.length - 1) {
-            return null;
-          }
-          return {
-            start: String(e),
-            stop: String(arr[i + 1]),
-          };
-        })
-        .filter(e => Boolean(e));
+      const areaTimes = TaskSchedulePartitionArrHelper(area.reserve, nowDay);
+      const schedule = TaskScheduleStructArrHelper(areaTimes);
 
       // query all reservation
 
