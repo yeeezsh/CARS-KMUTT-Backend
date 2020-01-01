@@ -18,7 +18,7 @@ export class TaskQueryService {
   constructor(
     @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
     private readonly areaService: AreaService,
-  ) {}
+  ) { }
 
   // async valid(areaID: string, time: TimeSchema[]) {
   async getTimesByAreaId(
@@ -47,30 +47,7 @@ export class TaskQueryService {
         return arr;
       });
       console.log('areaTimes', areaTimes);
-
-      // const validTimes = areaTimes
-      //   .map((e, ind, arr) => {
-      //     if (ind === 0) {
-      //       return null;
-      //     }
-      //     return { start: arr[ind - 1], stop: e };
-      //   })
-      //   .filter(e => e);
-      // console.log('valid times', validTimes);
-
       return areaTimes;
-      // .filter(e => Boolean(e));
-
-      // time.forEach(({ start: taskStart, stop: taskStop }) => {
-      //     area.reserve.forEach(
-      //         ({ start, stop, interval, max }) => {
-
-      //         },
-      //     );
-      // })
-      //   const reservedTask = await this.taskModel.find({
-
-      //   })
     } catch (err) {
       throw err;
     }

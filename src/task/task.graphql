@@ -27,12 +27,11 @@ input CreateTaskSportInput {
   area: String
 }
 
-type Mutation {
-    createTaskSport(createTaskSport: CreateTaskSportInput): Task
-}
-
-# Task Available
 type TaskAvailable {
   schedule: [TimeSlot]
   available: [TimeSlot]
+}
+
+type Mutation {
+    createTaskSport(createTaskSport: CreateTaskSportInput): Task
 }
