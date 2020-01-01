@@ -6,6 +6,7 @@ import { TaskCreateSportDto } from './dtos/task.create.sport';
 import * as moment from 'moment';
 import { TaskSchedule } from './interfaces/task.schedule.interface';
 import { AreaService } from 'src/area/area.service';
+import TaskSchedulePartitionArrHelper from './helpers/task.schedule.partition.arr.helper'
 
 // constant
 const FORMAT = 'DD-MM-YYYY-HH:mm:ss';
@@ -37,27 +38,7 @@ export class TaskService {
       const areaTimes: Array<{
         start: string;
         stop: string;
-      }> = area.reserve.flatMap(e => {
-        const allDay = e.allDay;
-        const start = !allDay
-          ? moment(e.start, 'HH:mm:ss')
-          : moment().startOf('day');
-        const stop = !allDay
-          ? moment(e.stop, 'HH:mm:ss')
-          : moment()
-            .startOf('day')
-            .add('1', 'day');
-        let partition = start;
-        const arr = [];
-        arr.push(partition.format(FORMAT));
-        while (partition < stop) {
-          partition = partition.add(e.interval, 'minutes');
-          arr.push(
-            `${nowDay.format(DAY_FORMAT)}-${partition.format(TIME_FORMAT)}`,
-          );
-        }
-        return arr;
-      });
+      }> = TaskSchedulePartitionArrHelper(area.reserve, nowDay);
       const schedule: Array<{ start: string; stop: string }> = areaTimes
         .map((e, i, arr) => {
           if (i === arr.length - 1) {
