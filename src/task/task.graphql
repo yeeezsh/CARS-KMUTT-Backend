@@ -1,5 +1,3 @@
-scalar JSON
-
 type TimeSlot {
   start: String
   stop: String
@@ -27,11 +25,15 @@ input CreateTaskSportInput {
   area: String
 }
 
+type Mutation {
+  createTaskSport(createTaskSport: CreateTaskSportInput): Task
+}
+
 type TaskAvailable {
   schedule: [TimeSlot]
   available: [TimeSlot]
 }
 
-type Mutation {
-    createTaskSport(createTaskSport: CreateTaskSportInput): Task
+type Query {
+  taskSportSchedule(id: String): TaskAvailable
 }
