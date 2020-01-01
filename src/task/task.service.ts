@@ -17,7 +17,7 @@ export class TaskService {
   constructor(
     @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
     private readonly areaService: AreaService,
-  ) { }
+  ) {}
 
   async createTaskSport(data: TaskCreateSportDto) {
     console.log('task service', data);
@@ -50,16 +50,28 @@ export class TaskService {
         }
         return arr;
       });
-      const schedule: Array<{ start: any, stop: any }> = areaTimes.map((e, i, arr) => {
-        console.log(i, arr.length - 1);
-        if (i === arr.length - 1) {
-          return null;
-        }
+      const schedule: Array<{ start: string; stop: string }> = areaTimes
+        .map((e, i, arr) => {
+          console.log(i, arr.length - 1);
+          if (i === arr.length - 1) {
+            return null;
+          }
+          return {
+            start: String(e),
+            stop: String(arr[i + 1]),
+          };
+        })
+        .filter(e => Boolean(e));
+      const available: Array<{
+        start: string;
+        stop: string;
+        n: number;
+      }> = schedule.map(e => {
         return {
-          start: e,
-          stop: arr[i + 1],
+          ...e,
+          n: 1,
         };
-      }).filter(e => Boolean(e));
+      });
       console.log('areaTimes', areaTimes);
       console.log('schedule', schedule);
       // return areaTimes;
@@ -67,8 +79,8 @@ export class TaskService {
       return {
         _id: area._id,
         // schedule: [],
-        schedule: schedule,
-        available: [],
+        schedule,
+        available,
       };
     } catch (err) {
       throw err;
