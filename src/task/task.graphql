@@ -30,6 +30,7 @@ type Mutation {
 }
 
 type TaskAvailable {
+  _id: String
   schedule: [TimeSlot]
   available: [TimeSlot]
 }
