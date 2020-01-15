@@ -1,7 +1,7 @@
 import { Schema, Document } from 'mongoose';
-import { Form } from 'src/form/interfaces/form.interface';
-import { Area } from 'src/area/interfaces/area.interface';
-import { Staff } from 'src/users/interfaces/staff.interface';
+import { Staff } from '../../users/interfaces/staff.interface';
+import { Area } from '../../area/interfaces/area.interface';
+import { Form } from '../../form/interfaces/form.interface';
 
 interface TimeSlot {
   start?: Date;

@@ -1,5 +1,5 @@
 import { Schema, Document } from 'mongoose';
-import { Staff } from 'src/users/interfaces/staff.interface';
+import { Staff } from '../../users/interfaces/staff.interface';
 
 interface Reserve {
   interval: number | -1 | 60;
