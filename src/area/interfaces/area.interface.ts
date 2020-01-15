@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { Schema, Document } from 'mongoose';
 import { Staff } from 'src/users/interfaces/staff.interface';
 
 interface Reserve {
@@ -9,7 +9,7 @@ interface Reserve {
   allDay: boolean;
 }
 
-export interface Area {
+export interface Area extends Document {
   _id: Schema.Types.ObjectId;
   name: string;
   building?: Schema.Types.ObjectId;
