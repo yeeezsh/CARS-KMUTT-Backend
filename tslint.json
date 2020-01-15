@@ -1,5 +1,4 @@
 {
-  "defaultSeverity": "error",
   "extends": [
     "tslint:recommended"
   ],
@@ -19,7 +18,7 @@
     ],
     "max-line-length": [
       true,
-      150
+      120
     ],
     "member-ordering": [
       false

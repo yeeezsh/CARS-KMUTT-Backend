@@ -6,7 +6,7 @@
     // path to output directory
     "outDir": "./dist",
     // enable strict null checks as a best practice
-    "strictNullChecks": true,
+    // "strictNullChecks": true,
     // Search under node_modules for non-relative imports.
     "moduleResolution": "node",
     // Process & infer types from .js files.
@@ -18,14 +18,14 @@
     "module": "esnext",
     "removeComments": true,
     // "alwaysStrict": true,
-    "allowUnreachableCode": false,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true,
+    // "allowUnreachableCode": false,
+    // "noImplicitAny": true,
+    // "noImplicitThis": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noImplicitReturns": true,
+    // "noFallthroughCasesInSwitch": true,
+    // "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
     "typeRoots": ["src/@types", "node_modules/@types"]
   }
