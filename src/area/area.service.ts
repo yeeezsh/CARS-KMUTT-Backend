@@ -82,9 +82,11 @@ export class AreaService {
     }
   }
 
-  async listAreaType(): Promise<AreaBuilding[]> {
+  async listAreaType(type?: string): Promise<AreaBuilding[]> {
     try {
-      const doc = await this.areaBuildingModel.find({}).lean();
+      let query = {};
+      if (type) query = { type };
+      const doc = await this.areaBuildingModel.find(query).lean();
       return doc;
     } catch (err) {
       throw err;

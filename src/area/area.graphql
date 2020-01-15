@@ -62,7 +62,7 @@ input CreateAreaInput {
 
 type Query {
   Areas: [Area]
-  AreaBuildings: [AreaBuilding]
+  AreaBuildings(type: String): [AreaBuilding]
   Area(id: String): Area
   AreaBuilding(id: String): AreaBuilding
 }

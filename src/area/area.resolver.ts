@@ -20,8 +20,8 @@ export class AreaResolver {
   }
 
   @Query('AreaBuildings')
-  async AreaBuildings() {
-    return await this.areaServie.listAreaType();
+  async AreaBuildings(@Args('type') type?: string) {
+    return await this.areaServie.listAreaType(type);
   }
 
   @Query('AreaBuilding')
