@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { Schema, Document } from 'mongoose';
 
 interface Option {
   key: string;
@@ -15,7 +15,7 @@ interface Field {
   options?: [Option];
 }
 
-export interface Form {
+export interface Form extends Document {
   _id: Schema.Types.ObjectId;
   name: string;
   fields: [Field];

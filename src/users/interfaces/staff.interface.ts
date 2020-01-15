@@ -1,6 +1,6 @@
-import { Schema } from 'mongoose';
+import { Schema, Document } from 'mongoose';
 
-export interface Staff {
+export interface Staff extends Document {
   _id: Schema.Types.ObjectId;
   username: string;
   password?: string;
@@ -9,7 +9,7 @@ export interface Staff {
   createAt: Date;
 }
 
-interface StaffPermission {
+interface StaffPermission extends Document {
   position: 'staff' | 'approver' | 'admin';
   approve: boolean;
   permitArea: Schema.Types.ObjectId[] | -1;

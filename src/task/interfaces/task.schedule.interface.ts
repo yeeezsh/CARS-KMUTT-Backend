@@ -1,3 +1,5 @@
+import { Schema } from 'mongoose';
+
 interface TimeSlot {
   start: string;
   stop: string;
@@ -9,7 +11,7 @@ interface TimeSlotAvailable {
 }
 
 export interface TaskSchedule {
-  _id: string;
+  _id: Schema.Types.ObjectId;
   schedule: TimeSlot[];
   available: TimeSlotAvailable[];
 }

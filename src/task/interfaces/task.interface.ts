@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { Schema, Document } from 'mongoose';
 import { Form } from 'src/form/interfaces/form.interface';
 import { Area } from 'src/area/interfaces/area.interface';
 import { Staff } from 'src/users/interfaces/staff.interface';
@@ -13,7 +13,7 @@ interface TaskState {
   [index: number]: 'wait' | 'approve' | 'reject' | 'accept' | 'drop';
 }
 
-export interface Task {
+export interface Task extends Document {
   _id: Schema.Types.ObjectId;
   time: TimeSlot[];
   requestor: Schema.Types.ObjectId[];
