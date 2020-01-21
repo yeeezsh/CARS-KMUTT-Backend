@@ -5,9 +5,9 @@ import { Task } from './interfaces/task.interface';
 import { TaskCreateSportDto } from './dtos/task.create.sport';
 import * as moment from 'moment';
 import { TaskSchedule } from './interfaces/task.schedule.interface';
-import { AreaService } from 'src/area/area.service';
 import TaskSchedulePartitionArrHelper from './helpers/task.schedule.partition.arr.helper';
 import TaskScheduleStructArrHelper from './helpers/task.schedule.struct.arr.helper';
+import { AreaService } from '../area/area.service';
 
 // constant
 const FORMAT = 'DD-MM-YYYY-HH:mm:ss';
@@ -40,6 +40,14 @@ export class TaskService {
       const schedule = TaskScheduleStructArrHelper(areaTimes);
 
       // query all reservation
+      const reserved = await this.taskModel
+        .find({
+          area: area._id,
+        })
+        .lean();
+      console.log('reserved area', reserved);
+      const reservedMapped = reserved.flatMap(e => e.time);
+      console.log('mapped', reservedMapped);
 
       const available: Array<{
         start: string;

@@ -1,6 +1,6 @@
-import { Schema } from 'mongoose';
+import { Schema, Document } from 'mongoose';
 
-export interface AreaBuilding {
+export interface AreaBuilding extends Document {
   _id: Schema.Types.ObjectId;
   name: string;
   type: 'sport' | 'area';

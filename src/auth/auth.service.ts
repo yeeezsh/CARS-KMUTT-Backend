@@ -62,6 +62,7 @@ export class AuthService {
     };
     const sign = await this.jwtService.signAsync(payload);
     return {
+      ...payload,
       access_token: sign,
       Authorization: 'Bearer' + ' ' + sign,
     };

@@ -1,5 +1,5 @@
-import { Schema } from 'mongoose';
-import { Staff } from 'src/users/interfaces/staff.interface';
+import { Schema, Document } from 'mongoose';
+import { Staff } from '../../users/interfaces/staff.interface';
 
 interface Reserve {
   interval: number | -1 | 60;
@@ -9,7 +9,7 @@ interface Reserve {
   allDay: boolean;
 }
 
-export interface Area {
+export interface Area extends Document {
   _id: Schema.Types.ObjectId;
   name: string;
   building?: Schema.Types.ObjectId;

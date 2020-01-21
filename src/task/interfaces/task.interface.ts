@@ -1,7 +1,7 @@
-import { Schema } from 'mongoose';
-import { Form } from 'src/form/interfaces/form.interface';
-import { Area } from 'src/area/interfaces/area.interface';
-import { Staff } from 'src/users/interfaces/staff.interface';
+import { Schema, Document } from 'mongoose';
+import { Staff } from '../../users/interfaces/staff.interface';
+import { Area } from '../../area/interfaces/area.interface';
+import { Form } from '../../form/interfaces/form.interface';
 
 interface TimeSlot {
   start?: Date;
@@ -13,7 +13,7 @@ interface TaskState {
   [index: number]: 'wait' | 'approve' | 'reject' | 'accept' | 'drop';
 }
 
-export interface Task {
+export interface Task extends Document {
   _id: Schema.Types.ObjectId;
   time: TimeSlot[];
   requestor: Schema.Types.ObjectId[];
