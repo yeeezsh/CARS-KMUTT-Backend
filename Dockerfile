@@ -7,6 +7,5 @@ RUN cd /tmp && npm install
 RUN mkdir -p /src && cp -a /tmp/node_modules /src/
 ADD . ./src
 WORKDIR /src
-VOLUME ["/src"]
 CMD ["npm", "run", "start:debug"]
 EXPOSE 3000

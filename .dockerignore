@@ -1,4 +1,16 @@
+# node_modules
+# npm-debug.log
+# .git/
+# /src/dist
+
+.git
+.github
+.vscode
+coverage
+docker-compose.yml
+README.md
+
+# Node Files #
 node_modules
 npm-debug.log
-.git/
-/src/dist
+npm-debug.log.*
