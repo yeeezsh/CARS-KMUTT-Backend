@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { TaskModule } from './task/task.module';
 import { AreaModule } from './area/area.module';
 import { FormModule } from './form/form.module';
+import { InitModule } from './init/init.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { FormModule } from './form/form.module';
     TaskModule,
     AreaModule,
     FormModule,
+    InitModule,
   ],
   controllers: [AppController],
   providers: [AppService],
