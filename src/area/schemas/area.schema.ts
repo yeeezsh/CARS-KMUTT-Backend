@@ -7,7 +7,7 @@ const ReserveSchema = new Schema(
     start: Date,
     stop: Date,
     allDay: { type: Boolean, default: false },
-    week: { type: String, default: '1-7' },
+    week: { type: String, default: '1-7', required: true },
   },
   { _id: false },
 );
@@ -21,6 +21,7 @@ export const AreaSchema = new Schema({
     staff: { type: Number, default: 1 },
     requestor: { type: Number, default: 1 },
   },
+  forward: { type: Number, default: 2, required: true },
   reserve: { type: [ReserveSchema], required: true },
   createAt: { type: Date, default: Date.now },
   updateAt: { type: Date, default: Date.now },

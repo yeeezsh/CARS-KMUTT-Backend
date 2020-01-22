@@ -1,4 +1,9 @@
-import { IsString, IsNotEmpty, ValidateNested } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  ValidateNested,
+  IsBoolean,
+} from 'class-validator';
 import { ObjectType, Field, Int } from 'type-graphql';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
@@ -35,22 +40,30 @@ class Reserve {
   @Field(() => String)
   @IsNotEmpty()
   stop: Date;
+
+  @ApiProperty({ type: Boolean, example: false })
+  @IsBoolean()
+  allDay: boolean;
 }
 
 // tslint:disable-next-line: max-classes-per-file
 @ObjectType()
 class Required {
-  @ApiProperty({ required: false, example: undefined })
+  @ApiProperty({ required: false, example: null })
   @Field(() => String, { nullable: true })
-  form: string;
+  form?: string;
 
   @ApiProperty({ type: [String], example: [] })
   @Field(() => String, { nullable: true })
   staff: string[];
 
-  @ApiProperty({ type: Number, example: 0 })
+  @ApiProperty({ type: Number, example: 1 })
   @Field(() => Int)
   requestor: number;
+
+  @ApiProperty({ type: String, example: '1-7' })
+  @Field(() => String)
+  week: string;
 }
 
 // tslint:disable-next-line: max-classes-per-file
@@ -77,6 +90,10 @@ export class CreateAreaDto {
   @Type(() => Required)
   @ValidateNested({ each: true })
   required: Required;
+
+  @ApiProperty({ type: Number, example: 2 })
+  @Field(() => Int)
+  foward: number;
 
   @ApiProperty({ type: [Reserve] })
   @Field(() => Reserve)
