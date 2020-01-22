@@ -13,6 +13,7 @@ const ReserveSchema = new Schema(
 
 export const AreaSchema = new Schema({
   name: String,
+  label: String,
   building: { type: Schema.Types.ObjectId, ref: 'area.buildings' },
   required: {
     form: { type: Schema.Types.ObjectId, ref: 'forms' }, // required form module

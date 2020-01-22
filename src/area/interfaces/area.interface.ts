@@ -12,6 +12,7 @@ interface Reserve {
 export interface Area extends Document {
   _id: Schema.Types.ObjectId;
   name: string;
+  label?: string;
   building?: Schema.Types.ObjectId;
   required: {
     form?: Schema.Types.ObjectId; // required form module
