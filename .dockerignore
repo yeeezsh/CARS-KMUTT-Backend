@@ -1,7 +1,4 @@
-# node_modules
-# npm-debug.log
-# .git/
-# /src/dist
+/src/dist
 
 .git
 .github
