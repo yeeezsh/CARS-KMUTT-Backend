@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { jwtConstants } from './constants';
 
 @Injectable()
-export class StaffJWTStrategy extends PassportStrategy(Strategy, 'staffJWT') {
+export class StaffJWTStrategy extends PassportStrategy(Strategy, 'staff') {
   constructor() {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

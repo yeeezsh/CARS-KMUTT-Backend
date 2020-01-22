@@ -6,7 +6,7 @@ import { jwtConstants } from './constants';
 @Injectable()
 export class RequestorJWTStrategy extends PassportStrategy(
   Strategy,
-  'requestorJWT',
+  'requestor',
 ) {
   constructor() {
     super({

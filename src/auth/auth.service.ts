@@ -11,60 +11,50 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateStaff(username: string, inputPassword: string): Promise<any> {
+  async loginStaff(username: string, inputPassword: string): Promise<any> {
     try {
       const user = await this.usersService.loginStaff({
         username,
         password: inputPassword,
       });
-      const { password, ...result } = user;
-      return result;
+
+      const payload = {
+        _id: user._id,
+        permission: user.permission,
+        email: user.email,
+      };
+      const sign = await this.jwtService.signAsync(payload);
+      return {
+        access_token: sign,
+        Authorization: 'Bearer' + ' ' + sign,
+      };
     } catch (err) {
       throw err;
     }
   }
 
-  async loginJWTStaff(user: Staff) {
-    const payload = {
-      _id: user._id,
-      permission: user.permission,
-      email: user.email,
-    };
-    const sign = await this.jwtService.signAsync(payload);
-    return {
-      access_token: sign,
-      Authorization: 'Bearer' + ' ' + sign,
-    };
-  }
-
-  async validateRequestor(
-    username: string,
-    inputPassword: string,
-  ): Promise<any> {
+  async loginRequestor(username: string, inputPassword: string): Promise<any> {
     try {
       const user = await this.usersService.loginRequestor({
         username,
         password: inputPassword,
       });
-      return user;
+
+      const payload = {
+        _id: user._id,
+        username: user.username,
+        studentId: user.studentId || null,
+        email: user.email,
+        permission: 'requestor',
+      };
+      const sign = await this.jwtService.signAsync(payload);
+      return {
+        ...payload,
+        access_token: sign,
+        Authorization: 'Bearer' + ' ' + sign,
+      };
     } catch (err) {
       throw err;
     }
-  }
-
-  async loginJWTRequestor(user: Requestor) {
-    const payload = {
-      _id: user._id,
-      username: user.username,
-      studentId: user.studentId || null,
-      email: user.email,
-      permission: 'requestor',
-    };
-    const sign = await this.jwtService.signAsync(payload);
-    return {
-      ...payload,
-      access_token: sign,
-      Authorization: 'Bearer' + ' ' + sign,
-    };
   }
 }

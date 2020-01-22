@@ -4,9 +4,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { StaffJWTStrategy } from './staff.jwt.strategy';
-import { StaffStrategy } from './staff.strategy';
 import { UsersModule } from '../users/users.module';
-import { RequestorStrategy } from './requestor.strategy';
 import { RequestorJWTStrategy } from './requestor.jwt.strategy';
 
 @Module({
@@ -20,13 +18,7 @@ import { RequestorJWTStrategy } from './requestor.jwt.strategy';
       }),
     }),
   ],
-  providers: [
-    AuthService,
-    StaffStrategy,
-    StaffJWTStrategy,
-    RequestorStrategy,
-    RequestorJWTStrategy,
-  ],
+  providers: [AuthService, StaffJWTStrategy, RequestorJWTStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}
