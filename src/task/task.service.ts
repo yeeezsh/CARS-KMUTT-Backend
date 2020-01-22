@@ -28,7 +28,7 @@ export class TaskService {
   }
 
   async getSportSchedule(
-    id: Types.ObjectId,
+    id: string,
     date: Date = new Date(),
   ): Promise<TaskSchedule> {
     try {

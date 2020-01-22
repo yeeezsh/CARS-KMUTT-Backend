@@ -15,9 +15,7 @@ export class TaskResolver {
   }
 
   @Query('taskSportSchedule')
-  async getTaskSportSchedule(
-    @Args('id') id: Types.ObjectId,
-  ): Promise<TaskSchedule> {
+  async getTaskSportSchedule(@Args('id') id: string): Promise<TaskSchedule> {
     const schedule = await this.taskService.getSportSchedule(id);
     return schedule;
   }
