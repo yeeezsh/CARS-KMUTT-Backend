@@ -1,8 +1,8 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { AreaService } from './area.service';
 import { Area } from './interfaces/area.interface';
-import { AreaCreateDto } from './dtos/area.create.dto';
-import { AreaBuildingCreateDto } from './dtos/area.building.create.dto';
+import { CreateAreaDto } from './dtos/area.create.dto';
+import { CreateAreaBuildingDto } from './dtos/area.building.create.dto';
 import { AreaBuilding } from './interfaces/area.building.interface';
 
 @Resolver('Area')
@@ -30,13 +30,13 @@ export class AreaResolver {
   }
 
   @Mutation('createArea')
-  async createArea(@Args('createArea') args: AreaCreateDto): Promise<Area> {
+  async createArea(@Args('createArea') args: CreateAreaDto): Promise<Area> {
     return await this.areaServie.createArea(args);
   }
 
   @Mutation('createAreaBuilding')
   async createAreaBuilding(
-    @Args('createAreaBuilding') args: AreaBuildingCreateDto,
+    @Args('createAreaBuilding') args: CreateAreaBuildingDto,
   ): Promise<AreaBuilding> {
     return await this.areaServie.createAreaBuilding(args);
   }

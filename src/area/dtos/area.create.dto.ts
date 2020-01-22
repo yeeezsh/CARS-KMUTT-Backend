@@ -36,7 +36,7 @@ class Required {
 
 // tslint:disable-next-line: max-classes-per-file
 @ObjectType()
-export class AreaCreateDto {
+export class CreateAreaDto {
   @Field(() => String)
   @IsString()
   @IsNotEmpty()

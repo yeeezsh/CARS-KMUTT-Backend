@@ -2,8 +2,8 @@ import { Injectable, Inject, HttpStatus, HttpException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { Area } from './interfaces/area.interface';
 import { AreaBuilding } from './interfaces/area.building.interface';
-import { AreaBuildingCreateDto } from './dtos/area.building.create.dto';
-import { AreaCreateDto } from './dtos/area.create.dto';
+import { CreateAreaBuildingDto } from './dtos/area.building.create.dto';
+import { CreateAreaDto } from './dtos/area.create.dto';
 import { FormService } from '../form/form.service';
 import { UsersService } from '../users/users.service';
 
@@ -17,7 +17,7 @@ export class AreaService {
     private readonly userService: UsersService,
   ) {}
 
-  async createAreaBuilding(data: AreaBuildingCreateDto): Promise<AreaBuilding> {
+  async createAreaBuilding(data: CreateAreaBuildingDto): Promise<AreaBuilding> {
     try {
       const duplicated = await this.areaBuildingModel.findOne({
         name: data.name,
@@ -36,7 +36,7 @@ export class AreaService {
     }
   }
 
-  async createArea(data: AreaCreateDto): Promise<Area> {
+  async createArea(data: CreateAreaDto): Promise<Area> {
     try {
       const duplicated = await this.areaModel.findOne({ name: data.name });
       if (duplicated) {
@@ -132,9 +132,11 @@ export class AreaService {
     }
   }
 
-  async getAreaBuilding(id: string): Promise<AreaBuilding> {
+  async getAreaBuilding(id?: string): Promise<AreaBuilding | AreaBuilding[]> {
     try {
-      const doc = await this.areaBuildingModel.findById(id).lean();
+      let query = {};
+      if (id) query = { _id: id };
+      const doc = await this.areaBuildingModel.find(query).lean();
       if (!doc) {
         throw Error('_id is not exisiting');
       }
