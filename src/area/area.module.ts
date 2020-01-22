@@ -6,10 +6,12 @@ import { areaProviders } from './area.providers';
 import { JSONScalar } from '../common/json.scalar';
 import { FormModule } from '../form/form.module';
 import { UsersModule } from '../users/users.module';
+import { AreaController } from './area.controller';
 
 @Module({
   imports: [DatabaseModule, FormModule, UsersModule],
   providers: [JSONScalar, AreaService, AreaResolver, ...areaProviders],
   exports: [AreaService],
+  controllers: [AreaController],
 })
 export class AreaModule {}
