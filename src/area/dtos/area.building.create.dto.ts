@@ -9,13 +9,14 @@ export class CreateAreaBuildingDto {
   @IsString()
   name: string;
 
+  @ApiProperty({ type: 'string' })
+  @Field()
+  @IsString()
+  label: string;
+
   @ApiProperty({ enum: ['sport', 'area'] })
   @Field()
   @IsString()
   @IsIn(['sport', 'area'])
   type: string;
-
-  @ApiProperty()
-  @Field(() => String, { nullable: true })
-  category: string;
 }
