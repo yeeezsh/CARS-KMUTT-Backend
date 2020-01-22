@@ -7,6 +7,7 @@ interface Reserve {
   start?: Date;
   stop?: Date;
   allDay: boolean;
+  week: string | '1-7' | '1,2,3';
 }
 
 export interface Area extends Document {

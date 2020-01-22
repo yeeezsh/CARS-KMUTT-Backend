@@ -7,6 +7,7 @@ const ReserveSchema = new Schema(
     start: Date,
     stop: Date,
     allDay: { type: Boolean, default: false },
+    week: { type: String, default: '1-7' },
   },
   { _id: false },
 );
