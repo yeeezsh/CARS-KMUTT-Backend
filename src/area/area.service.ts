@@ -1,5 +1,5 @@
 import { Injectable, Inject, HttpStatus, HttpException } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Area } from './interfaces/area.interface';
 import { AreaBuilding } from './interfaces/area.building.interface';
 import { CreateAreaBuildingDto } from './dtos/area.building.create.dto';
@@ -144,5 +144,9 @@ export class AreaService {
     } catch (err) {
       throw err;
     }
+  }
+
+  async groupByBuilding(id: string): Promise<Area[]> {
+    return await this.areaModel.find({ building: id }).lean();
   }
 }
