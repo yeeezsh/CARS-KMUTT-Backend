@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Task } from './interfaces/task.interface';
 
 import { TaskCreateSportDto } from './dtos/task.create.sport';
@@ -28,7 +28,7 @@ export class TaskService {
   }
 
   async getSportSchedule(
-    id: string,
+    id: Types.ObjectId,
     date: Date = new Date(),
   ): Promise<TaskSchedule> {
     try {
@@ -61,11 +61,9 @@ export class TaskService {
       });
       console.log('areaTimes', areaTimes);
       console.log('schedule', schedule);
-      // return areaTimes;
 
       return {
         _id: area._id,
-        // schedule: [],
         schedule,
         available,
       };
