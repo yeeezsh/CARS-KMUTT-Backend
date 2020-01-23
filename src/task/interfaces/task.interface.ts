@@ -6,27 +6,23 @@ import { Form } from '../../form/interfaces/form.interface';
 interface TimeSlot {
   start?: Date;
   stop?: Date;
-  allDay: boolean;
+  allDay?: boolean;
 }
 
 interface TaskState {
   [index: number]: 'wait' | 'approve' | 'reject' | 'accept' | 'drop';
 }
 
-interface Requestor {
+export interface Requestor {
   username: string;
   confirm: boolean;
 }
 
 export interface Task extends Document {
-  _id: Schema.Types.ObjectId;
-
   reserve: TimeSlot[];
   requestor: Requestor[];
-  confirm: string[];
-  state: TaskState[];
+  state: Array<'wait' | 'approve' | 'reject' | 'accept' | 'drop'>;
   staff?: Staff[];
-  approve: string[];
   area: Area; // required area module
   form?: Form; // required form module
 

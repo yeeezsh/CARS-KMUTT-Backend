@@ -14,6 +14,9 @@ export class TimeSlot {
   @Field(() => String)
   @IsNotEmpty()
   stop: Date;
+
+  @ApiProperty({ type: Boolean })
+  allDay?: boolean;
 }
 
 // tslint:disable-next-line:max-classes-per-file
@@ -37,4 +40,9 @@ export class CreateTaskSportDto {
   @Field()
   @IsNotEmpty()
   area: string;
+
+  @ApiProperty()
+  @Field()
+  @IsNotEmpty()
+  owner: string;
 }

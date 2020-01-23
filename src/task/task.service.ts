@@ -1,8 +1,9 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { Model, Types } from 'mongoose';
+import { Model, ClientSession } from 'mongoose';
+import * as mongoose from 'mongoose';
 import * as moment from 'moment';
 
-import { Task } from './interfaces/task.interface';
+import { Task, Requestor } from './interfaces/task.interface';
 import { Area } from 'src/area/interfaces/area.interface';
 import { TaskSchedule } from './interfaces/task.schedule.interface';
 
@@ -22,38 +23,44 @@ const DAY_FORMAT = 'DD-MM-YYYY';
 export class TaskService {
   constructor(
     @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
+    @Inject('AREA_MODEL') private readonly areaModel: Model<Area>,
     private readonly areaService: AreaService,
   ) {}
 
   private async checkAvailable(
-    areaId: string,
+    area: Area,
     timeSlot: TimeSlot[],
+    s: ClientSession,
   ): Promise<boolean> {
-    const today = moment(new Date());
-    // area validation
-    const area: Area = await this.areaService.getArea(areaId);
-    if (!area) throw new Error('invalid area id');
+    const now = moment();
     const availableArea = area.reserve;
     availableArea.forEach(e => {
       // time validation
-      const timeAreaStart = moment(e.start);
-      const timeAreaStop = moment(e.stop);
+      const timeAreaStart = moment(e.start).set(
+        'date',
+        Number(now.format('DD')),
+      );
+      const timeAreaStop = moment(e.stop).set('date', Number(now.format('DD')));
+
       const timeAreaInterval = e.interval;
       // week validation
       const weeks = WeekParseHelper(e.week);
       timeSlot.forEach(ts => {
         const startTSWeek = Number(moment(ts.start).format('E'));
         const stopTSWeek = Number(moment(ts.stop).format('E'));
+        // console.log(startTSWeek, stopTSWeek, weeks);
         if (!weeks.includes(startTSWeek) || !weeks.includes(stopTSWeek))
           throw new Error('invalid week');
         const startTSTime = moment(ts.start);
         const stopTSTime = moment(ts.stop);
-        if (!startTSTime.isBetween(timeAreaStart, timeAreaStop, null, '[]'))
+
+        if (startTSTime.isAfter(timeAreaStop))
           throw new Error('invalid start time');
-        if (!stopTSTime.isBetween(timeAreaStart, timeAreaStop, null, '[]'))
+        if (stopTSTime.isBetween(timeAreaStart))
           throw new Error('invalid stop time');
+        console.log(stopTSTime.diff(startTSTime, 'minute'));
         const intervalTSValid =
-          startTSTime.diff(stopTSTime, 'minute') === timeAreaInterval;
+          stopTSTime.diff(startTSTime, 'minute') === timeAreaInterval;
         if (!intervalTSValid) throw new Error('invalid interval time');
         // DANGER NEED TO CREATE A TABLE INTERVAL FOR CHECKING VALID TIME
         // DANGER NEED TO CREATE A TABLE INTERVAL FOR CHECKING VALID TIME
@@ -61,7 +68,11 @@ export class TaskService {
       });
     });
 
-    const tasks: Task[] = await this.taskModel.find({ area: area.id });
+    const tasks: Task[] = await this.taskModel
+      .find({ area: area.id })
+      .select('reserve')
+      .session(s)
+      .lean();
     const timeTasks = tasks.map(e => e.reserve).flatMap(e => e);
     timeTasks.forEach(e => {
       const startTaskTime = moment(e.start);
@@ -69,9 +80,9 @@ export class TaskService {
       timeSlot.forEach(ts => {
         const startTSTime = moment(ts.start);
         const stopTSTime = moment(ts.stop);
-        if (startTSTime.isBetween(startTaskTime, stopTaskTime, null, '[]'))
+        if (startTSTime.format('HH:mm') === startTaskTime.format('HH:mm'))
           throw new Error('this slot have beeen reserve <start>');
-        if (stopTSTime.isBetween(startTaskTime, stopTaskTime, null, '[]'))
+        if (stopTSTime.format('HH:mm') === startTaskTime.format('HH:mm'))
           throw new Error('this slot have beeen reserve <stop>');
       });
     });
@@ -80,13 +91,45 @@ export class TaskService {
   }
 
   async createSportTask(data: CreateTaskSportDto) {
+    const s = await mongoose.startSession();
     try {
-      console.log('task service', data);
-      const { area, time } = data;
-      await this.checkAvailable(area, time);
-      // await this.taskQueryService.getTimesByAreaId(data.area);
-      return {};
+      s.startTransaction();
+
+      const { area: areaId, time, owner, requestor } = data;
+      const area: Area = await this.areaModel
+        .findById(areaId)
+        .select(['reserve', 'required'])
+        .session(s)
+        .lean();
+
+      await this.checkAvailable(area, time, s);
+      console.log(requestor, owner);
+      const ownerValid = requestor[0] === owner;
+      if (!ownerValid) throw new Error('invalid owner');
+      const requestorValidNumber =
+        data.requestor.length === area.required.requestor;
+      if (!requestorValidNumber) throw new Error('invalid n of requestor');
+
+      const requestorMapped: Requestor[] = requestor.map(e => ({
+        username: e,
+        confirm: false,
+      }));
+
+      const doc: Task | any = {
+        reserve: time,
+        requestor: requestorMapped,
+        area: area.id,
+        state: requestor.length === 0 ? ['accept'] : ['wait'],
+        cancle: false,
+      };
+
+      await this.taskModel.create(doc);
+      await s.commitTransaction();
+      s.endSession();
+      return;
     } catch (err) {
+      await s.abortTransaction();
+      s.endSession();
       throw err;
     }
   }

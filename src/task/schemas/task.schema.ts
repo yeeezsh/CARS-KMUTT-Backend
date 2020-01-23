@@ -19,10 +19,9 @@ const Requestor = new Schema(
 
 export const TaskSchema = new Schema({
   reserve: [TimeSchema],
-  requestor: { type: [Requestor], index: true },
+  requestor: { type: [Requestor], index: true, required: true },
   state: [String],
   staff: { type: [Schema.Types.ObjectId], ref: 'staffs', index: true },
-  approve: [Boolean],
   area: { type: Schema.Types.ObjectId, ref: 'areas', index: true },
   form: { type: Schema.Types.ObjectId, ref: 'forms' },
 
