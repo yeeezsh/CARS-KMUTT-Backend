@@ -1,5 +1,5 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
-import { TaskCreateSportDto } from './dtos/task.create.sport';
+import { CreateTaskSportDto } from './dtos/task.create.sport';
 import { TaskService } from './task.service';
 import { TaskSchedule } from './interfaces/task.schedule.interface';
 import { Types } from 'mongoose';
@@ -9,8 +9,8 @@ export class TaskResolver {
   constructor(private readonly taskService: TaskService) {}
 
   @Mutation('createTaskSport')
-  async createTaskSport(@Args('createTaskSport') args: TaskCreateSportDto) {
-    await this.taskService.createTaskSport(args);
+  async createTaskSport(@Args('createTaskSport') args: CreateTaskSportDto) {
+    await this.taskService.createSportTask(args);
     return {};
   }
 

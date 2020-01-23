@@ -83,12 +83,11 @@ export class UsersService {
         .findOne({ username: login.username })
         .lean();
       if (!registred) {
-        const doc = new this.requestorModel({
+        const doc = await this.requestorModel.create({
           username: login.username,
           studentId: login.username,
         });
-        const saved = await doc.save();
-        return saved;
+        return doc;
       }
       return registred;
     } catch (err) {
