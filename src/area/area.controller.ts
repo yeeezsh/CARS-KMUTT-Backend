@@ -8,19 +8,19 @@ import { CreateAreaDto } from './dtos/area.create.dto';
 export class AreaController {
   constructor(private readonly areaService: AreaService) {}
 
-  @Get('/sport/area/reserved/:id/:date')
+  @UseGuards(AuthGuard('requestor'))
+  @Get('/sport/area/all')
+  async getSportAreaAll() {
+    return await this.areaService.getAreaBuilding();
+  }
+
+  @Get('/sport/fields/reserved/:id/:date')
   async getSportAreaAvailable(
     @Param('id') id: string,
     @Param('date') date: Date,
   ) {
     console.log(id, date);
     return;
-  }
-
-  @UseGuards(AuthGuard('requestor'))
-  @Get('/sport/area/all')
-  async getSportAreaAll() {
-    return await this.areaService.getAreaBuilding();
   }
 
   @UseGuards(AuthGuard('requestor'))
