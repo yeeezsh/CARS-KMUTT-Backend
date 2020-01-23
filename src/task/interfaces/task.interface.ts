@@ -15,13 +15,16 @@ interface TaskState {
 
 export interface Task extends Document {
   _id: Schema.Types.ObjectId;
-  time: TimeSlot[];
+
+  reserve: TimeSlot[];
   requestor: Schema.Types.ObjectId[];
   state: TaskState[];
   staff?: Staff[];
   approve: string[];
   area: Area; // required area module
   form?: Form; // required form module
+
+  cancle: boolean;
   createAt: Date;
   updateAt: Date;
 }
