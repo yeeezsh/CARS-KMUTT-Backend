@@ -9,16 +9,24 @@ const TimeSchema = new Schema(
   { _id: false },
 );
 
+const Requestor = new Schema(
+  {
+    username: { type: String, required: true },
+    confirm: { type: Boolean, default: false },
+  },
+  { _id: false },
+);
+
 export const TaskSchema = new Schema({
   reserve: [TimeSchema],
-  requestor: { type: [Schema.Types.ObjectId], ref: 'requestors' },
+  requestor: { type: [Requestor], index: true },
   state: [String],
-  staff: { type: [Schema.Types.ObjectId], ref: 'staffs' },
+  staff: { type: [Schema.Types.ObjectId], ref: 'staffs', index: true },
   approve: [Boolean],
-  area: { type: Schema.Types.ObjectId, ref: 'areas' },
+  area: { type: Schema.Types.ObjectId, ref: 'areas', index: true },
   form: { type: Schema.Types.ObjectId, ref: 'forms' },
 
-  cancle: { type: Boolean, default: false },
-  createAt: { type: Date, default: Date.now },
+  cancle: { type: Boolean, default: false, index: true },
+  createAt: { type: Date, default: Date.now, index: true },
   updateAt: { type: Date, default: Date.now },
 });

@@ -13,11 +13,17 @@ interface TaskState {
   [index: number]: 'wait' | 'approve' | 'reject' | 'accept' | 'drop';
 }
 
+interface Requestor {
+  username: string;
+  confirm: boolean;
+}
+
 export interface Task extends Document {
   _id: Schema.Types.ObjectId;
 
   reserve: TimeSlot[];
-  requestor: Schema.Types.ObjectId[];
+  requestor: Requestor[];
+  confirm: string[];
   state: TaskState[];
   staff?: Staff[];
   approve: string[];
