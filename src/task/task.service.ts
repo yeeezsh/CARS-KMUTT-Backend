@@ -1,13 +1,17 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
+import * as moment from 'moment';
+
 import { Task } from './interfaces/task.interface';
+import { Area } from 'src/area/interfaces/area.interface';
+import { TaskSchedule } from './interfaces/task.schedule.interface';
 
 import { CreateTaskSportDto, TimeSlot } from './dtos/task.create.sport';
-import * as moment from 'moment';
-import { TaskSchedule } from './interfaces/task.schedule.interface';
 import TaskSchedulePartitionArrHelper from './helpers/task.schedule.partition.arr.helper';
 import TaskScheduleStructArrHelper from './helpers/task.schedule.struct.arr.helper';
 import { AreaService } from '../area/area.service';
+
+import WeekParseHelper from './helpers/week.parse';
 
 // constant
 const FORMAT = 'DD-MM-YYYY-HH:mm:ss';
@@ -21,10 +25,58 @@ export class TaskService {
     private readonly areaService: AreaService,
   ) {}
 
-  private async checkAvailable(areaId: string, timeSlot: TimeSlot[]) {
-    const area = await this.areaService.getArea(areaId);
+  private async checkAvailable(
+    areaId: string,
+    timeSlot: TimeSlot[],
+  ): Promise<boolean> {
+    const today = moment(new Date());
+    // area validation
+    const area: Area = await this.areaService.getArea(areaId);
     if (!area) throw new Error('invalid area id');
-    const tasks = await this.taskModel.find({ area: area.id });
+    const availableArea = area.reserve;
+    availableArea.forEach(e => {
+      // time validation
+      const timeAreaStart = moment(e.start);
+      const timeAreaStop = moment(e.stop);
+      const timeAreaInterval = e.interval;
+      // week validation
+      const weeks = WeekParseHelper(e.week);
+      timeSlot.forEach(ts => {
+        const startTSWeek = Number(moment(ts.start).format('E'));
+        const stopTSWeek = Number(moment(ts.stop).format('E'));
+        if (!weeks.includes(startTSWeek) || !weeks.includes(stopTSWeek))
+          throw new Error('invalid week');
+        const startTSTime = moment(ts.start);
+        const stopTSTime = moment(ts.stop);
+        if (!startTSTime.isBetween(timeAreaStart, timeAreaStop, null, '[]'))
+          throw new Error('invalid start time');
+        if (!stopTSTime.isBetween(timeAreaStart, timeAreaStop, null, '[]'))
+          throw new Error('invalid stop time');
+        const intervalTSValid =
+          startTSTime.diff(stopTSTime, 'minute') === timeAreaInterval;
+        if (!intervalTSValid) throw new Error('invalid interval time');
+        // DANGER NEED TO CREATE A TABLE INTERVAL FOR CHECKING VALID TIME
+        // DANGER NEED TO CREATE A TABLE INTERVAL FOR CHECKING VALID TIME
+        // DANGER NEED TO CREATE A TABLE INTERVAL FOR CHECKING VALID TIME
+      });
+    });
+
+    const tasks: Task[] = await this.taskModel.find({ area: area.id });
+    const timeTasks = tasks.map(e => e.reserve).flatMap(e => e);
+    timeTasks.forEach(e => {
+      const startTaskTime = moment(e.start);
+      const stopTaskTime = moment(e.stop);
+      timeSlot.forEach(ts => {
+        const startTSTime = moment(ts.start);
+        const stopTSTime = moment(ts.stop);
+        if (startTSTime.isBetween(startTaskTime, stopTaskTime, null, '[]'))
+          throw new Error('this slot have beeen reserve <start>');
+        if (stopTSTime.isBetween(startTaskTime, stopTaskTime, null, '[]'))
+          throw new Error('this slot have beeen reserve <stop>');
+      });
+    });
+
+    return true;
   }
 
   async createSportTask(data: CreateTaskSportDto) {
