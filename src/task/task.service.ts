@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
 import { Task } from './interfaces/task.interface';
 
-import { TaskCreateSportDto } from './dtos/task.create.sport';
+import { CreateTaskSportDto, TimeSlot } from './dtos/task.create.sport';
 import * as moment from 'moment';
 import { TaskSchedule } from './interfaces/task.schedule.interface';
 import TaskSchedulePartitionArrHelper from './helpers/task.schedule.partition.arr.helper';
@@ -21,10 +21,22 @@ export class TaskService {
     private readonly areaService: AreaService,
   ) {}
 
-  async createTaskSport(data: TaskCreateSportDto) {
-    console.log('task service', data);
-    // await this.taskQueryService.getTimesByAreaId(data.area);
-    return {};
+  private async checkAvailable(areaId: string, timeSlot: TimeSlot[]) {
+    const area = await this.areaService.getArea(areaId);
+    if (!area) throw new Error('invalid area id');
+    const tasks = await this.taskModel.find({ area: area.id });
+  }
+
+  async createSportTask(data: CreateTaskSportDto) {
+    try {
+      console.log('task service', data);
+      const { area, time } = data;
+      await this.checkAvailable(area, time);
+      // await this.taskQueryService.getTimesByAreaId(data.area);
+      return {};
+    } catch (err) {
+      throw err;
+    }
   }
 
   async getSportSchedule(

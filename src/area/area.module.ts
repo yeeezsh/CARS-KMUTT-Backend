@@ -11,7 +11,7 @@ import { AreaController } from './area.controller';
 @Module({
   imports: [DatabaseModule, FormModule, UsersModule],
   providers: [JSONScalar, AreaService, AreaResolver, ...areaProviders],
-  exports: [AreaService],
+  exports: [AreaService, ...areaProviders],
   controllers: [AreaController],
 })
 export class AreaModule {}
