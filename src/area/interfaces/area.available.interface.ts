@@ -1,5 +1,6 @@
 import { Schema, Document } from 'mongoose';
 import { Staff } from '../../users/interfaces/staff.interface';
+import { Moment } from 'moment';
 
 interface Reserve {
   interval: number | -1 | 60;
@@ -10,7 +11,7 @@ interface Reserve {
   week: string | '1-7' | '1,2,3';
 }
 
-export interface Area extends Document {
+export interface AreaAvailble {
   _id: Schema.Types.ObjectId;
   name: string;
   label?: string;
@@ -21,6 +22,7 @@ export interface Area extends Document {
     requestor: number;
   };
   forward: number;
+  disabled: string[];
   reserve: Reserve[];
   createAt: Date;
   updateAt: Date;
