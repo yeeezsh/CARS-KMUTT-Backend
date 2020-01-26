@@ -32,7 +32,7 @@ export class TaskService {
     timeSlot: TimeSlot[],
     s: ClientSession,
   ): Promise<boolean> {
-    const now = moment();
+    const now = moment(timeSlot[0].start);
     const availableArea = area.reserve;
     availableArea.forEach(e => {
       // time validation
@@ -46,9 +46,11 @@ export class TaskService {
       // week validation
       const weeks = WeekParseHelper(e.week);
       timeSlot.forEach(ts => {
+        console.log(moment(ts.start).format('DD-MM-YYYY HH:mm'));
+        console.log(moment(ts.stop).format('DD-MM-YYYY HH:mm'));
         const startTSWeek = Number(moment(ts.start).format('E'));
         const stopTSWeek = Number(moment(ts.stop).format('E'));
-        // console.log(startTSWeek, stopTSWeek, weeks);
+        console.log(startTSWeek, stopTSWeek, weeks);
         if (!weeks.includes(startTSWeek) || !weeks.includes(stopTSWeek))
           throw new Error('invalid week');
         const startTSTime = moment(ts.start);
@@ -82,7 +84,7 @@ export class TaskService {
         const stopTSTime = moment(ts.stop);
         if (startTSTime.format('HH:mm') === startTaskTime.format('HH:mm'))
           throw new Error('this slot have beeen reserve <start>');
-        if (stopTSTime.format('HH:mm') === startTaskTime.format('HH:mm'))
+        if (stopTSTime.format('HH:mm') === stopTaskTime.format('HH:mm'))
           throw new Error('this slot have beeen reserve <stop>');
       });
     });
@@ -118,8 +120,8 @@ export class TaskService {
       const doc: Task | any = {
         reserve: time,
         requestor: requestorMapped,
-        area: area.id,
-        state: requestor.length === 0 ? ['accept'] : ['wait'],
+        area: area._id,
+        state: requestor.length === 1 ? ['accept'] : ['wait'],
         cancle: false,
       };
 
