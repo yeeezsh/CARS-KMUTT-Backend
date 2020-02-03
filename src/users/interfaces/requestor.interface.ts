@@ -9,5 +9,6 @@ export interface Requestor extends Document {
     firstName: string;
     lastName: string;
   };
-  createAt: Date;
+  createAt?: Date;
+  updateAt?: Date;
 }

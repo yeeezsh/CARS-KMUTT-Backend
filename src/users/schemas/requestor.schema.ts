@@ -9,4 +9,5 @@ export const RequestorSchema = new Schema({
     lastName: String,
   },
   createAt: { type: Date, default: Date.now },
+  updateAt: { type: Date, default: Date.now },
 });

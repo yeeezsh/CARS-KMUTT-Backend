@@ -7,6 +7,7 @@ export interface Staff extends Document {
   email: string;
   permission: StaffPermission;
   createAt: Date;
+  updateAt: Date;
 }
 
 interface StaffPermission extends Document {

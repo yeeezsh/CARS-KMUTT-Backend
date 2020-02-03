@@ -11,4 +11,5 @@ export const StaffSchema = new Schema({
     enum: ['staff', 'approver', 'admin'],
   },
   createAt: { type: Date, default: Date.now },
+  updateAt: { type: Date, default: Date.now },
 });
