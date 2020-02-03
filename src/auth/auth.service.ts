@@ -11,7 +11,10 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async loginStaff(username: string, inputPassword: string): Promise<any> {
+  async loginStaff(
+    username: string,
+    inputPassword: string,
+  ): Promise<{ access_token: string; Authorization: string }> {
     try {
       const user = await this.usersService.loginStaff({
         username,
@@ -33,7 +36,18 @@ export class AuthService {
     }
   }
 
-  async loginRequestor(username: string, inputPassword: string): Promise<any> {
+  async loginRequestor(
+    username: string,
+    inputPassword: string,
+  ): Promise<{
+    _id: any;
+    username: string;
+    studentId: string | undefined;
+    email: string | undefined;
+    permission: string;
+    access_token: string;
+    Authorization: string;
+  }> {
     try {
       const user = await this.usersService.loginRequestor({
         username,
@@ -43,8 +57,8 @@ export class AuthService {
       const payload = {
         _id: user._id,
         username: user.username,
-        studentId: user.studentId || null,
-        email: user.email,
+        studentId: user.studentId || undefined,
+        email: user.email || undefined,
         permission: 'requestor',
       };
       const sign = await this.jwtService.signAsync(payload);
