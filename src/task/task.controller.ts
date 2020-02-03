@@ -30,11 +30,9 @@ export class TaskController {
   ) {
     try {
       const { owner } = body;
-      const { user } = req;
-      console.log(req.user);
+      const user = req.cookies.user._id;
       //   force self checking
-      if (owner !== user.username)
-        throw new Error('first requestor must be an owner');
+      // if (owner !== user) throw new Error('first requestor must be an owner');
       await this.taskService.createSportTask(body);
 
       return res.sendStatus(200);
