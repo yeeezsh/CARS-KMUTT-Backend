@@ -187,4 +187,25 @@ export class TaskService {
       throw err;
     }
   }
+
+  async getLastestTask(username: string): Promise<Task> {
+    try {
+      const lastTask = await this.taskModel
+        .find({
+          requestor: {
+            $elemMatch: {
+              username,
+            },
+          },
+        })
+        .sort({ createDate: -1 })
+        .limit(1)
+        .select(['reserve', 'state', 'area'])
+        .populate('area')
+        .lean();
+      return lastTask[0];
+    } catch (err) {
+      throw err;
+    }
+  }
 }

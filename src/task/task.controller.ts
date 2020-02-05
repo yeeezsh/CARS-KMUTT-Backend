@@ -24,6 +24,14 @@ export class TaskController {
   ) {}
 
   @UseGuards(AuthGuard('requestor'))
+  @Get('/last')
+  async getLastestTask(@UserInfo() user: UserSession) {
+    const username = user.username;
+    const data = await this.taskService.getLastestTask(username);
+    return data;
+  }
+
+  @UseGuards(AuthGuard('requestor'))
   @Post('/sport')
   async createSportTask(
     @Body() body: CreateTaskSportDto,
