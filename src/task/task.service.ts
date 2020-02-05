@@ -105,6 +105,7 @@ export class TaskService {
       s.startTransaction();
 
       const { area: areaId, time, owner, requestor } = data;
+
       const area: Area = await this.areaModel
         .findById(areaId)
         .select(['reserve', 'required'])
@@ -112,7 +113,7 @@ export class TaskService {
         .lean();
 
       await this.checkAvailable(area, time, s);
-      console.log(requestor, owner);
+      // console.log(requestor, owner);
       const ownerValid = requestor[0] === owner;
       if (!ownerValid) throw new Error('invalid owner');
       const requestorValidNumber =
@@ -188,7 +189,7 @@ export class TaskService {
     }
   }
 
-  async getLastestTask(username: string): Promise<Task> {
+  async getLastestTask(username: string): Promise<Task | undefined> {
     try {
       const lastTask = await this.taskModel
         .find({
@@ -203,6 +204,13 @@ export class TaskService {
         .select(['reserve', 'state', 'area'])
         .populate('area')
         .lean();
+
+      const past =
+        new Date(moment().toISOString()) >
+        new Date(lastTask[0].reserve[0].stop);
+
+      if (past) return undefined;
+
       return lastTask[0];
     } catch (err) {
       throw err;
