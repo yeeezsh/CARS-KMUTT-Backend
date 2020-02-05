@@ -9,10 +9,6 @@ interface TimeSlot {
   allDay?: boolean;
 }
 
-interface TaskState {
-  [index: number]: 'wait' | 'approve' | 'reject' | 'accept' | 'drop';
-}
-
 export interface Requestor {
   username: string;
   confirm: boolean;
