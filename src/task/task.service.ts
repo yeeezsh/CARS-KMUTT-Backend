@@ -46,21 +46,28 @@ export class TaskService {
       // week validation
       const weeks = WeekParseHelper(e.week);
       timeSlot.forEach(ts => {
-        console.log(moment(ts.start).format('DD-MM-YYYY HH:mm'));
-        console.log(moment(ts.stop).format('DD-MM-YYYY HH:mm'));
+        // console.log(moment(ts.start).format('DD-MM-YYYY HH:mm'));
+        // console.log(moment(ts.stop).format('DD-MM-YYYY HH:mm'));
         const startTSWeek = Number(moment(ts.start).format('E'));
         const stopTSWeek = Number(moment(ts.stop).format('E'));
-        console.log(startTSWeek, stopTSWeek, weeks);
+        // console.log(startTSWeek, stopTSWeek, weeks);
         if (!weeks.includes(startTSWeek) || !weeks.includes(stopTSWeek))
           throw new Error('invalid week');
         const startTSTime = moment(ts.start);
         const stopTSTime = moment(ts.stop);
 
-        if (startTSTime.isAfter(timeAreaStop))
-          throw new Error('invalid start time');
-        if (stopTSTime.isBetween(timeAreaStart))
-          throw new Error('invalid stop time');
-        console.log(stopTSTime.diff(startTSTime, 'minute'));
+        // DANGER NEED TIME VALIDATORS
+        // DANGER NEED TIME VALIDATORS
+        // DANGER NEED TIME VALIDATORS
+
+        // if (
+        //   moment(startTSTime.format('HH:MM')) >
+        //   moment(timeAreaStop.format('HH:MM'))
+        // )
+        //   throw new Error('invalid start time');
+        // if (stopTSTime.isBetween(timeAreaStart))
+        //   throw new Error('invalid stop time');
+
         const intervalTSValid =
           stopTSTime.diff(startTSTime, 'minute') === timeAreaInterval;
         if (!intervalTSValid) throw new Error('invalid interval time');
