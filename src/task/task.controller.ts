@@ -32,16 +32,12 @@ export class TaskController {
     @UserInfo() user: UserSession,
   ) {
     try {
-      console.log(user);
-      // const { owner } = body;
-      // const user = req.cookies.user._id;
-      //   force self checking
-      // if (owner !== user) throw new Error('first requestor must be an owner');
+      if (body.requestor[0] !== user.studentId)
+        throw new Error('user owner request invalid');
       await this.taskService.createSportTask(body);
 
       return res.sendStatus(200);
     } catch (err) {
-      console.log(err);
       return res.status(HttpStatus.BAD_REQUEST).send({
         msg: String(err),
       });
