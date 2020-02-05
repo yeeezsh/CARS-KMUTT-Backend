@@ -119,9 +119,9 @@ export class TaskService {
         data.requestor.length === area.required.requestor;
       if (!requestorValidNumber) throw new Error('invalid n of requestor');
 
-      const requestorMapped: Requestor[] = requestor.map(e => ({
+      const requestorMapped: Requestor[] = requestor.map((e, i) => ({
         username: e,
-        confirm: false,
+        confirm: i === 0 ? true : false,
       }));
 
       const doc: Task | any = {
