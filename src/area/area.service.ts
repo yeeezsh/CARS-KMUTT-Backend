@@ -165,8 +165,8 @@ export class AreaService {
     const maxForward = fields.reduce((prev, cur) =>
       prev.forward > cur.forward ? prev : cur,
     ).forward;
-    const startDay = moment(date);
-    const stopDay = moment(startDay).add(maxForward, 'day');
+    const startDay = moment(moment(date).startOf('day'));
+    const stopDay = moment(startDay).add(1, 'day');
     // console.log('maxforward', maxForward);
     // console.log(startDay.format('DD-MM-YYYY'));
     // console.log(stopDay.format('DD-MM-YYYY'));
@@ -176,9 +176,13 @@ export class AreaService {
       return this.taskModel
         .find({
           area: e._id,
-          createAt: {
-            $gte: new Date(startDay.toISOString()),
-            $lte: new Date(stopDay.toISOString()),
+          reserve: {
+            $elemMatch: {
+              start: {
+                $gte: new Date(startDay.toISOString()),
+                $lte: new Date(stopDay.toISOString()),
+              },
+            },
           },
           cancle: false,
         })
