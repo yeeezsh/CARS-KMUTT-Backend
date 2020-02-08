@@ -198,18 +198,19 @@ export class TaskService {
               username,
             },
           },
+          // reserve: {
+          //   $elemMatch: {
+          //     stop: {
+          //       $gte: new Date(),
+          //     },
+          //   },
+          // },
         })
         .sort({ createDate: -1 })
         .limit(1)
         .select(['reserve', 'state', 'area'])
         .populate('area')
         .lean();
-
-      const past =
-        new Date(moment().toISOString()) >
-        new Date(lastTask[0].reserve[0].stop);
-
-      if (past) return undefined;
 
       return lastTask[0];
     } catch (err) {
