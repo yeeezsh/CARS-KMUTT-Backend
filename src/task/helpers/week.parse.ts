@@ -9,7 +9,7 @@ export default (str: string): number[] => {
       const start = Number(strSplit[0]);
       const end = Number(strSplit[1]);
       let cur: number = start;
-      while (cur < end) {
+      while (cur <= end) {
         arr.push(cur);
         cur++;
       }
