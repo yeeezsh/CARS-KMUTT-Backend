@@ -1,6 +1,5 @@
 export interface Quota {
-  sport: number;
-  area: number;
+  n: number;
 }
 
 export type QuotaType = Quota;
