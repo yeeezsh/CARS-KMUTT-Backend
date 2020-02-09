@@ -6,9 +6,15 @@ import { usersProviders } from './users.providers';
 import { AuthModule } from '../auth/auth.module';
 import { UsersController } from './users.controller';
 import { JSONScalar } from '../common/json.scalar';
+import { TaskModule } from 'src/task/task.module';
 
 @Module({
-  imports: [HttpModule, DatabaseModule, forwardRef(() => AuthModule)],
+  imports: [
+    HttpModule,
+    DatabaseModule,
+    forwardRef(() => AuthModule),
+    forwardRef(() => TaskModule),
+  ],
   providers: [JSONScalar, UsersService, ...usersProviders, UsersResolver],
   exports: [UsersService],
   controllers: [UsersController],

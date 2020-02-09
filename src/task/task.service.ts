@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { Model, ClientSession } from 'mongoose';
 import * as mongoose from 'mongoose';
 import * as moment from 'moment';
@@ -24,6 +24,7 @@ export class TaskService {
   constructor(
     @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
     @Inject('AREA_MODEL') private readonly areaModel: Model<Area>,
+    @Inject(forwardRef(() => AreaService))
     private readonly areaService: AreaService,
   ) {}
 

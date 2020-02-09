@@ -6,6 +6,7 @@ import {
   Get,
   UseGuards,
   Inject,
+  forwardRef,
 } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { Response } from 'express';
@@ -15,12 +16,15 @@ import { UserSession } from './interfaces/user.session.interface';
 import { QuotaType } from './interfaces/quota.interface';
 import { Model } from 'mongoose';
 import { Task } from 'src/task/interfaces/task.interface';
+import { TaskService } from 'src/task/task.service';
 
 @Controller('users')
 export class UsersController {
   constructor(
+    @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
-    @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
+    @Inject(forwardRef(() => TaskService))
+    private readonly taskService: TaskService, // @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
   ) {}
   @Post('/auth/staff')
   async loginStaff(@Body() body, @Res() res: Response) {

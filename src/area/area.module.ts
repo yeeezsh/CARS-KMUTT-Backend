@@ -13,7 +13,7 @@ import { TaskModule } from 'src/task/task.module';
   imports: [
     DatabaseModule,
     FormModule,
-    UsersModule,
+    forwardRef(() => UsersModule),
     forwardRef(() => TaskModule),
   ],
   providers: [JSONScalar, AreaService, AreaResolver, ...areaProviders],
