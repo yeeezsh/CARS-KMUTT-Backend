@@ -199,13 +199,13 @@ export class TaskService {
               username,
             },
           },
-          // reserve: {
-          //   $elemMatch: {
-          //     stop: {
-          //       $gte: new Date(),
-          //     },
-          //   },
-          // },
+          reserve: {
+            $elemMatch: {
+              stop: {
+                $gte: new Date(),
+              },
+            },
+          },
         })
         .sort({ createDate: -1 })
         .limit(1)
