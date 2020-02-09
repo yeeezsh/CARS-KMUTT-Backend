@@ -12,6 +12,6 @@ import { TaskController } from './task.controller';
   imports: [DatabaseModule, AreaModule, FormModule],
   providers: [JSONScalar, TaskService, ...taskProviders, TaskResolver],
   controllers: [TaskController],
-  exports: [...taskProviders],
+  exports: [...taskProviders, TaskService],
 })
 export class TaskModule {}
