@@ -23,8 +23,7 @@ export class UsersController {
   constructor(
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
-    @Inject(forwardRef(() => TaskService))
-    private readonly taskService: TaskService, // @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
+    @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
   ) {}
   @Post('/auth/staff')
   async loginStaff(@Body() body, @Res() res: Response) {
@@ -53,9 +52,28 @@ export class UsersController {
   @UseGuards(AuthGuard('requestor'))
   @Get('/quota')
   async quotaRequestor(@UserInfo() user: UserSession): Promise<QuotaType> {
+    const MAX_QUOTAS = 1;
+    const username = user.username;
+    const reserve = await this.taskModel
+      .find({
+        cancle: false,
+        requestor: {
+          $elemMatch: {
+            username,
+          },
+        },
+        reserve: {
+          $elemMatch: {
+            start: {
+              $gte: new Date(),
+            },
+          },
+        },
+      })
+      .countDocuments();
+
     return {
-      area: 0,
-      sport: 0,
+      n: MAX_QUOTAS - reserve,
     };
   }
 }
