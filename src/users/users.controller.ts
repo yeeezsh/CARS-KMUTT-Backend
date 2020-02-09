@@ -1,10 +1,27 @@
-import { Controller, Post, Body, Res, Get, Req } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Res,
+  Get,
+  UseGuards,
+  Inject,
+} from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { Response } from 'express';
+import { AuthGuard } from '@nestjs/passport';
+import { UserInfo } from 'src/common/user.decorator';
+import { UserSession } from './interfaces/user.session.interface';
+import { QuotaType } from './interfaces/quota.interface';
+import { Model } from 'mongoose';
+import { Task } from 'src/task/interfaces/task.interface';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
+  ) {}
   @Post('/auth/staff')
   async loginStaff(@Body() body, @Res() res: Response) {
     const { username, password } = body;
@@ -27,5 +44,14 @@ export class UsersController {
   async userLogout(@Res() res: Response) {
     res.clearCookie('user');
     return res.clearCookie('Authorization');
+  }
+
+  @UseGuards(AuthGuard('requestor'))
+  @Get('/quota')
+  async quotaRequestor(@UserInfo() user: UserSession): Promise<QuotaType> {
+    return {
+      area: 0,
+      sport: 0,
+    };
   }
 }
