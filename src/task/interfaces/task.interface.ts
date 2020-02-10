@@ -20,7 +20,8 @@ export interface Task extends Document {
   state: Array<'wait' | 'approve' | 'reject' | 'accept' | 'drop'>;
   staff?: Staff[];
   area: Area; // required area module
-  form?: Form; // required form module
+  // form?: Form; // required form module
+  form?: any;
 
   cancle: boolean;
   createAt: Date;

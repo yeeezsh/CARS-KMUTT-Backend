@@ -23,7 +23,8 @@ export const TaskSchema = new Schema({
   state: [String],
   staff: { type: [Schema.Types.ObjectId], ref: 'staffs', index: true },
   area: { type: Schema.Types.ObjectId, ref: 'areas', index: true },
-  form: { type: Schema.Types.ObjectId, ref: 'forms' },
+  // form: { type: Schema.Types.ObjectId, ref: 'forms' },
+  form: Object,
 
   cancle: { type: Boolean, default: false, index: true },
   createAt: { type: Date, default: Date.now, index: true },
