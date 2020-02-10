@@ -130,7 +130,7 @@ export class TaskService {
         reserve: time,
         requestor: requestorMapped,
         area: area._id,
-        state: requestor.length === 1 ? ['accept'] : ['wait'],
+        state: requestor.length === 1 ? ['accept'] : ['requested'],
         cancle: false,
       };
 

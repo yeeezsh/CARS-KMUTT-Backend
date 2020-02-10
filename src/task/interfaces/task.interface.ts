@@ -17,7 +17,7 @@ export interface Requestor {
 export interface Task extends Document {
   reserve: TimeSlot[];
   requestor: Requestor[];
-  state: Array<'wait' | 'approve' | 'reject' | 'accept' | 'drop'>;
+  state: Array<'wait' | 'approve' | 'reject' | 'accept' | 'drop' | 'requested'>;
   staff?: Staff[];
   area: Area; // required area module
   // form?: Form; // required form module
