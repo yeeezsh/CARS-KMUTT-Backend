@@ -60,4 +60,11 @@ export class TaskController {
     const { username } = user;
     return this.historyService.getAllHistory(username);
   }
+
+  @UseGuards(AuthGuard('requestor'))
+  @Get('/requested')
+  async getRequested(@UserInfo() user: UserSession) {
+    const { username } = user;
+    return this.historyService.getAllRequested(username);
+  }
 }
