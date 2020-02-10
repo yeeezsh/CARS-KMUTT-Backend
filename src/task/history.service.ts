@@ -2,7 +2,7 @@ import { Model } from 'mongoose';
 import { Injectable, Inject } from '@nestjs/common';
 import { Task } from './interfaces/task.interface';
 
-const DEFAULT_SELECT = 'state cancle reserve requestor area createAt';
+const DEFAULT_SELECT = '_id state cancle reserve requestor area createAt';
 const DEAFAULT_POPULATE = 'area';
 const DEAFAULT_POPULATE_SELECT = '_id name label building';
 
