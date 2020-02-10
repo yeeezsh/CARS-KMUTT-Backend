@@ -163,9 +163,9 @@ export class TaskService {
           area: area._id,
         })
         .lean();
-      console.log('reserved area', reserved);
+      // console.log('reserved area', reserved);
       const reservedMapped = reserved.flatMap(e => e.time);
-      console.log('mapped', reservedMapped);
+      // console.log('mapped', reservedMapped);
 
       const available: Array<{
         start: string;
@@ -177,8 +177,8 @@ export class TaskService {
           n: 1,
         };
       });
-      console.log('areaTimes', areaTimes);
-      console.log('schedule', schedule);
+      // console.log('areaTimes', areaTimes);
+      // console.log('schedule', schedule);
 
       return {
         _id: area._id,
