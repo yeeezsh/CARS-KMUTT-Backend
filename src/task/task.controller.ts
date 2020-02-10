@@ -67,4 +67,11 @@ export class TaskController {
     const { username } = user;
     return this.historyService.getAllRequested(username);
   }
+
+  @UseGuards(AuthGuard('requestor'))
+  @Get('/wait')
+  async getWait(@UserInfo() user: UserSession) {
+    const { username } = user;
+    return this.historyService.getAllWait(username);
+  }
 }

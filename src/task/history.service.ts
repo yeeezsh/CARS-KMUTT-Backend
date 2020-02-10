@@ -40,4 +40,22 @@ export class HistoryService {
       .populate(DEAFAULT_POPULATE, DEAFAULT_POPULATE_SELECT)
       .sort({ createAt: -1 });
   }
+
+  async getAllWait(username: string): Promise<Task[]> {
+    return await this.taskModel
+      .find({
+        requestor: {
+          $elemMatch: {
+            username,
+          },
+        },
+        state: {
+          $in: ['requested', 'wait'],
+          $nin: ['accept'],
+        },
+      })
+      .select(DEFAULT_SELECT)
+      .populate(DEAFAULT_POPULATE, DEAFAULT_POPULATE_SELECT)
+      .sort({ createAt: -1 });
+  }
 }
