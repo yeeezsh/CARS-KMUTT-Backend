@@ -15,12 +15,14 @@ import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 import { UserInfo } from 'src/common/user.decorator';
 import { UserSession } from 'src/users/interfaces/user.session.interface';
+import { HistoryService } from './history.service';
 
 @Controller('task')
 export class TaskController {
   constructor(
     private readonly areaService: AreaService,
     private readonly taskService: TaskService,
+    private readonly historyService: HistoryService,
   ) {}
 
   @UseGuards(AuthGuard('requestor'))
@@ -50,5 +52,12 @@ export class TaskController {
         msg: String(err),
       });
     }
+  }
+
+  @UseGuards(AuthGuard('requestor'))
+  @Get('/history')
+  async getHistory(@UserInfo() user: UserSession) {
+    const { username } = user;
+    return this.historyService.getAllHistory(username);
   }
 }
