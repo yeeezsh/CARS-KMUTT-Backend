@@ -8,6 +8,7 @@ import { FormModule } from '../form/form.module';
 import { JSONScalar } from '../common/json.scalar';
 import { TaskController } from './task.controller';
 import { HistoryService } from './history.service';
+import { TaskSportController } from './task.sport.controller';
 
 @Module({
   imports: [DatabaseModule, AreaModule, FormModule],
@@ -18,7 +19,7 @@ import { HistoryService } from './history.service';
     TaskResolver,
     HistoryService,
   ],
-  controllers: [TaskController],
+  controllers: [TaskController, TaskSportController],
   exports: [...taskProviders, TaskService],
 })
 export class TaskModule {}
