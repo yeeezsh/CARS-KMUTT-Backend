@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards, Param } from '@nestjs/common';
 import { AreaService } from 'src/area/area.service';
 import { TaskService } from './task.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -41,5 +41,13 @@ export class TaskController {
   async getWait(@UserInfo() user: UserSession) {
     const { username } = user;
     return this.historyService.getAllWait(username);
+  }
+
+  @UseGuards(AuthGuard('requestor'))
+  @Get('/:id')
+  async getTask(@UserInfo() user: UserSession, @Param('id') taskId: string) {
+    // for checking authorized nxt patch
+    const { username } = user;
+    return this.taskService.getTaskById(taskId);
   }
 }

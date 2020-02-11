@@ -218,4 +218,12 @@ export class TaskService {
       throw err;
     }
   }
+
+  async getTaskById(id: string): Promise<Task> {
+    return await this.taskModel
+      .findById(id)
+      .select(['reserve', 'state', 'area', 'requestor'])
+      .populate('area', '_id name label')
+      .lean();
+  }
 }
