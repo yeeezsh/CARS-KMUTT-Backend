@@ -194,6 +194,7 @@ export class TaskService {
     try {
       const lastTask = await this.taskModel
         .find({
+          cancle: false,
           requestor: {
             $elemMatch: {
               username,
