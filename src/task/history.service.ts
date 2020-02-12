@@ -51,7 +51,7 @@ export class HistoryService {
         },
         state: {
           $in: ['requested', 'wait'],
-          $nin: ['accept'],
+          $nin: ['accept', 'drop'],
         },
       })
       .select(DEFAULT_SELECT)
