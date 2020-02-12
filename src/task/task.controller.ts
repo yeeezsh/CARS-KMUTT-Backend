@@ -83,7 +83,13 @@ export class TaskController {
     @Param('id') taskId: string,
     @Res() res: Response,
   ) {
-    console.log('confirm task', taskId);
-    return res.sendStatus(200);
+    try {
+      console.log('confirm task', taskId);
+      const { username } = user;
+      await this.taskService.confirmTaskById(taskId, username);
+      return res.sendStatus(200);
+    } catch (err) {
+      return new BadRequestException(err);
+    }
   }
 }

@@ -238,4 +238,27 @@ export class TaskService {
     await doc.save();
     return;
   }
+
+  async confirmTaskById(id: string, username: string): Promise<void> {
+    const doc = await this.taskModel.findById(id);
+    if (!doc) throw new Error('this task is not exisiting');
+    const validConfirm = doc.requestor
+      .flatMap(e => e.username)
+      .includes(username);
+    if (!validConfirm) throw new Error('action is not permit');
+    const requestor = doc.requestor.map(e => {
+      if (e.username === username) {
+        return { username, confirm: true };
+      }
+      return e;
+    });
+    doc.requestor = requestor;
+    const completeTask = requestor.every(e => e.confirm === true);
+    console.log('complete task', completeTask);
+    if (completeTask) {
+      doc.state.push('accept');
+    }
+    await doc.save();
+    return;
+  }
 }
