@@ -1,10 +1,18 @@
-import { Controller, Get, UseGuards, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  UseGuards,
+  Param,
+  Res,
+  BadRequestException,
+} from '@nestjs/common';
 import { AreaService } from 'src/area/area.service';
 import { TaskService } from './task.service';
 import { AuthGuard } from '@nestjs/passport';
 import { UserInfo } from 'src/common/user.decorator';
 import { UserSession } from 'src/users/interfaces/user.session.interface';
 import { HistoryService } from './history.service';
+import { Response } from 'express';
 
 @Controller('task')
 export class TaskController {
@@ -49,5 +57,33 @@ export class TaskController {
     // for checking authorized nxt patch
     const { username } = user;
     return this.taskService.getTaskById(taskId);
+  }
+
+  @UseGuards(AuthGuard('requestor'))
+  @Get('/:id/cancle')
+  async cancleTask(
+    @UserInfo() user: UserSession,
+    @Param('id') taskId: string,
+    @Res() res: Response,
+  ) {
+    try {
+      console.log('cancle task', taskId);
+      const { username } = user;
+      await this.taskService.cancleTaskById(taskId, username);
+      return res.sendStatus(200);
+    } catch (err) {
+      return new BadRequestException(err);
+    }
+  }
+
+  @UseGuards(AuthGuard('requestor'))
+  @Get('/:id/confirm')
+  async confirmTask(
+    @UserInfo() user: UserSession,
+    @Param('id') taskId: string,
+    @Res() res: Response,
+  ) {
+    console.log('confirm task', taskId);
+    return res.sendStatus(200);
   }
 }

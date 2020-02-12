@@ -226,4 +226,15 @@ export class TaskService {
       .populate('area', '_id name label')
       .lean();
   }
+
+  async cancleTaskById(id: string, username: string): Promise<void> {
+    const doc = await this.taskModel.findById(id);
+    if (!doc) throw new Error('this task is not exisiting');
+    const validCancle = doc.requestor[0].username === username;
+    if (!validCancle) throw new Error('action is not permit');
+    doc.cancle = true;
+    doc.state.push('drop');
+    await doc.save();
+    return;
+  }
 }
