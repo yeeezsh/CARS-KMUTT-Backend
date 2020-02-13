@@ -46,7 +46,8 @@ export class UsersController {
   @Get('/auth/logout')
   async userLogout(@Res() res: Response) {
     res.clearCookie('user');
-    return res.clearCookie('Authorization');
+    res.clearCookie('Authorization');
+    return res.sendStatus(200);
   }
 
   @UseGuards(AuthGuard('requestor'))
