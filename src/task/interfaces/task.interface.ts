@@ -27,3 +27,7 @@ export interface Task extends Document {
   createAt: Date;
   updateAt: Date;
 }
+
+export interface TaskLastCard extends Task {
+  owner: string;
+}

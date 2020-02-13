@@ -3,7 +3,7 @@ import { Model, ClientSession } from 'mongoose';
 import * as mongoose from 'mongoose';
 import * as moment from 'moment';
 
-import { Task, Requestor } from './interfaces/task.interface';
+import { Task, Requestor, TaskLastCard } from './interfaces/task.interface';
 import { Area } from 'src/area/interfaces/area.interface';
 import { TaskSchedule } from './interfaces/task.schedule.interface';
 
@@ -190,7 +190,7 @@ export class TaskService {
     }
   }
 
-  async getLastestTask(username: string): Promise<Task | undefined> {
+  async getLastestTask(username: string): Promise<TaskLastCard | undefined> {
     try {
       const lastTask = await this.taskModel
         .find({
@@ -210,11 +210,12 @@ export class TaskService {
         })
         .sort({ createAt: -1 })
         .limit(1)
-        .select(['reserve', 'state', 'area'])
+        .select(['reserve', 'state', 'area', 'requestor'])
         .populate('area')
         .lean();
 
-      return lastTask[0];
+      const task = lastTask[0];
+      return { ...task, owner: task.requestor[0].username };
     } catch (err) {
       throw err;
     }
