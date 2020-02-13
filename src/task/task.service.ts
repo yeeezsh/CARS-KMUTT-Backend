@@ -158,13 +158,13 @@ export class TaskService {
       const schedule = TaskScheduleStructArrHelper(areaTimes);
 
       // query all reservation
-      const reserved = await this.taskModel
-        .find({
-          area: area._id,
-        })
-        .lean();
+      // const reserved = await this.taskModel
+      //   .find({
+      //     area: area._id,
+      //   })
+      //   .lean();
       // console.log('reserved area', reserved);
-      const reservedMapped = reserved.flatMap(e => e.time);
+      // const reservedMapped = reserved.flatMap(e => e.time);
       // console.log('mapped', reservedMapped);
 
       const available: Array<{
@@ -229,36 +229,56 @@ export class TaskService {
   }
 
   async cancleTaskById(id: string, username: string): Promise<void> {
-    const doc = await this.taskModel.findById(id);
-    if (!doc) throw new Error('this task is not exisiting');
-    const validCancle = doc.requestor[0].username === username;
-    if (!validCancle) throw new Error('action is not permit');
-    doc.cancle = true;
-    doc.state.push('drop');
-    await doc.save();
-    return;
+    const s = await mongoose.startSession();
+    try {
+      s.startTransaction();
+      const doc = await this.taskModel.findById(id).session(s);
+      if (!doc) throw new Error('this task is not exisiting');
+      const validCancle = doc.requestor[0].username === username;
+      if (!validCancle) throw new Error('action is not permit');
+      doc.cancle = true;
+      doc.state.push('drop');
+      await doc.save({ session: s });
+      await s.commitTransaction();
+      s.endSession();
+      return;
+    } catch (err) {
+      await s.abortTransaction();
+      s.endSession();
+      throw new Error(err);
+    }
   }
 
   async confirmTaskById(id: string, username: string): Promise<void> {
-    const doc = await this.taskModel.findById(id);
-    if (!doc) throw new Error('this task is not exisiting');
-    const validConfirm = doc.requestor
-      .flatMap(e => e.username)
-      .includes(username);
-    if (!validConfirm) throw new Error('action is not permit');
-    const requestor = doc.requestor.map(e => {
-      if (e.username === username) {
-        return { username, confirm: true };
+    const s = await mongoose.startSession();
+    try {
+      s.startTransaction();
+      const doc = await this.taskModel.findById(id).session(s);
+      if (!doc) throw new Error('this task is not exisiting');
+      const validConfirm = doc.requestor
+        .flatMap(e => e.username)
+        .includes(username);
+      if (!validConfirm) throw new Error('action is not permit');
+      const requestor = doc.requestor.map(e => {
+        if (e.username === username) {
+          return { username, confirm: true };
+        }
+        return e;
+      });
+      doc.requestor = requestor;
+      const completeTask = requestor.every(e => e.confirm === true);
+      console.log('complete task', completeTask);
+      if (completeTask) {
+        doc.state.push('accept');
       }
-      return e;
-    });
-    doc.requestor = requestor;
-    const completeTask = requestor.every(e => e.confirm === true);
-    console.log('complete task', completeTask);
-    if (completeTask) {
-      doc.state.push('accept');
+      await doc.save({ session: s });
+      await s.commitTransaction();
+      s.endSession();
+      return;
+    } catch (err) {
+      await s.abortTransaction();
+      s.endSession();
+      throw new Error(err);
     }
-    await doc.save();
-    return;
   }
 }
