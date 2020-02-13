@@ -215,7 +215,11 @@ export class TaskService {
         .lean();
 
       const task = lastTask[0];
-      return { ...task, owner: task.requestor[0].username };
+      if (!task) return undefined;
+      return {
+        ...task,
+        owner: (task && task.requestor[0].username) || '',
+      };
     } catch (err) {
       throw err;
     }
