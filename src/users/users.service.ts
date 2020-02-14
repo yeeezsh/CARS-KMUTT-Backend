@@ -19,7 +19,7 @@ import { RequestorLoginDto } from './dtos/requestor.login.dto';
 // helpers
 import { Hash } from './helpers/hash';
 
-const BYPASS_USER = ['11111111111', 'k.t'];
+const BYPASS_USER = ['11111111111', 'k.t', 't.1', 't.2', 't.3', 't.4', 't.5'];
 
 @Injectable()
 export class UsersService {
