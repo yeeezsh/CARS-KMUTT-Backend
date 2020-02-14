@@ -17,6 +17,10 @@ import { QuotaType } from './interfaces/quota.interface';
 import { Model } from 'mongoose';
 import { Task } from 'src/task/interfaces/task.interface';
 import { TaskService } from 'src/task/task.service';
+import { CreateStaffInput } from './dtos/staff.input';
+import { UsersService } from './users.service';
+import { StaffDto } from './dtos/staff.dto';
+import { CreateStaffDto } from './dtos/staff.create.dto';
 
 @Controller('users')
 export class UsersController {
@@ -24,6 +28,7 @@ export class UsersController {
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
     @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
+    private readonly usersService: UsersService,
   ) {}
   @Post('/auth/staff')
   async loginStaff(@Body() body, @Res() res: Response) {
@@ -76,5 +81,10 @@ export class UsersController {
     return {
       n: MAX_QUOTAS - reserve,
     };
+  }
+
+  @Post('/staff')
+  async createStaff(@Body() body: CreateStaffDto) {
+    return this.usersService.createStaff(body);
   }
 }

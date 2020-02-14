@@ -18,8 +18,11 @@ import { RequestorLoginDto } from './dtos/requestor.login.dto';
 
 // helpers
 import { Hash } from './helpers/hash';
+import { StaffDto } from './dtos/staff.dto';
+import { CreateStaffDto } from './dtos/staff.create.dto';
 
 const BYPASS_USER = ['11111111111', 'k.t', 't.1', 't.2', 't.3', 't.4', 't.5'];
+const BYPASS_STAFF = ['staff.1', 'staff.2'];
 
 @Injectable()
 export class UsersService {
@@ -30,7 +33,7 @@ export class UsersService {
     private readonly httpService: HttpService,
   ) {}
 
-  async createStaff(create: CreateStaffInput): Promise<Staff> {
+  async createStaff(create: CreateStaffDto): Promise<Staff> {
     const duplicated = await Promise.all([
       this.staffModel.findOne({ username: create.username }),
       this.staffModel.findOne({ email: create.email }),
@@ -43,9 +46,10 @@ export class UsersService {
       );
     }
 
-    const parse: CreateStaffInput = {
+    const parse = {
       ...create,
       password: await Hash.encrypt(create.password),
+      permission: 'staff',
     };
     const doc = new this.staffModel(parse);
     const saved = await doc.save();
