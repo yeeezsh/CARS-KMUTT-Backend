@@ -127,12 +127,15 @@ export class TaskService {
         confirm: i === 0 ? true : false,
       }));
 
+      const now = new Date();
       const doc: Task | any = {
         reserve: time,
         requestor: requestorMapped,
         area: area._id,
         state: requestor.length === 1 ? ['accept'] : ['requested'],
         cancle: false,
+        createAt: now,
+        updateAt: now,
       };
 
       await this.taskModel.create(doc);
@@ -288,9 +291,44 @@ export class TaskService {
     }
   }
 
-  // @Interval(60000)
-  @Interval(1000)
-  async handleWaitTask() {
-    console.log('handle wait task');
+  // delete timeout task every 60s
+  @Interval(60000)
+  async handleRequestedTask() {
+    const s = await mongoose.startSession();
+    try {
+      s.startTransaction();
+      const EXPIRE_TIME = 60; // minutes units
+      const now = new Date();
+      const waitTask = await this.taskModel
+        .find({
+          state: {
+            $in: ['requested'],
+            $nin: ['accept', 'drop'],
+          },
+        })
+        .session(s)
+        .select('_id createAt')
+        .lean();
+      const dropList: string[] = waitTask
+        .filter(e => moment(now).diff(e.createAt, 'minute') > EXPIRE_TIME)
+        .map(e => e._id);
+
+      const updated = await this.taskModel
+        .update(
+          {
+            _id: { $in: dropList },
+          },
+          {
+            state: ['requested', 'drop'],
+          },
+        )
+        .session(s);
+      console.log('drop timout : ', updated.n, 'task');
+      await s.commitTransaction();
+      s.endSession();
+    } catch (err) {
+      await s.abortTransaction();
+      throw err;
+    }
   }
 }
