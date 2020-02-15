@@ -24,9 +24,11 @@ export class AuthService {
         _id: user._id,
         permission: user.permission,
         email: user.email,
+        username: user.username,
       };
       const sign = await this.jwtService.signAsync(payload);
       return {
+        ...payload,
         Authorization: sign,
       };
     } catch (err) {
