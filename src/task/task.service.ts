@@ -247,6 +247,7 @@ export class TaskService {
       if (!validCancle) throw new Error('action is not permit');
       doc.cancle = true;
       doc.state.push('drop');
+      doc.updateAt = new Date();
       await doc.save({ session: s });
       await s.commitTransaction();
       s.endSession();
@@ -280,6 +281,7 @@ export class TaskService {
       if (completeTask) {
         doc.state.push('accept');
       }
+      doc.updateAt = new Date();
       await doc.save({ session: s });
       await s.commitTransaction();
       s.endSession();
