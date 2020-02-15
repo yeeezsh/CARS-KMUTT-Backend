@@ -320,6 +320,7 @@ export class TaskService {
           },
           {
             state: ['requested', 'drop'],
+            updateAt: now,
           },
         )
         .session(s);
