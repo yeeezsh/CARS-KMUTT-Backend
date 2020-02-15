@@ -314,7 +314,7 @@ export class TaskService {
         .map(e => e._id);
 
       const updated = await this.taskModel
-        .update(
+        .updateMany(
           {
             _id: { $in: dropList },
           },
