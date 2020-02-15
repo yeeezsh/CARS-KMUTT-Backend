@@ -62,6 +62,9 @@ export class UsersController {
     const reserve = await this.taskModel
       .find({
         cancle: false,
+        state: {
+          $nin: ['drop', 'reject'],
+        },
         requestor: {
           $elemMatch: {
             username,
