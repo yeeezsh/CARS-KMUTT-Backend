@@ -11,14 +11,14 @@ import { InitModule } from './init/init.module';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot({
-      typePaths: ['./**/*.graphql'],
-      installSubscriptionHandlers: true,
-      context: ({ req }) => ({ req }),
-      // resolvers: { JSON: GraphQLJSON },
-      // context: ({ req }) => ({ req }),
-      // autoSchemaFile: 'schema.gql',
-    }),
+    // GraphQLModule.forRoot({
+    //   typePaths: ['./**/*.graphql'],
+    //   installSubscriptionHandlers: true,
+    //   context: ({ req }) => ({ req }),
+    //   // resolvers: { JSON: GraphQLJSON },
+    //   // context: ({ req }) => ({ req }),
+    //   // autoSchemaFile: 'schema.gql',
+    // }),
     AuthModule,
     UsersModule,
     TaskModule,
