@@ -12,14 +12,13 @@ import { Staff } from './interfaces/staff.interface';
 import { Requestor } from './interfaces/requestor.interface';
 
 // dtos
-import { CreateStaffInput } from './dtos/staff.input';
 import { StaffLoginDto } from './dtos/staff.login.dto';
 import { RequestorLoginDto } from './dtos/requestor.login.dto';
+import { StaffDto } from './dtos/staff.dto';
+import { CreateStaffDto } from './dtos/staff.create.dto';
 
 // helpers
 import { Hash } from './helpers/hash';
-import { StaffDto } from './dtos/staff.dto';
-import { CreateStaffDto } from './dtos/staff.create.dto';
 
 const BYPASS_USER = ['11111111111', 'k.t', 't.1', 't.2', 't.3', 't.4', 't.5'];
 const BYPASS_STAFF = ['staff.1', 'staff.2'];
