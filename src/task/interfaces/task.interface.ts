@@ -9,13 +9,15 @@ interface TimeSlot {
   allDay?: boolean;
 }
 
+type TimeSlotType = TimeSlot[];
+
 export interface Requestor {
   username: string;
   confirm: boolean;
 }
 
 export interface Task extends Document {
-  reserve: TimeSlot[];
+  reserve: TimeSlotType;
   requestor: Requestor[];
   state: Array<'wait' | 'approve' | 'reject' | 'accept' | 'drop' | 'requested'>;
   staff?: Staff[];
