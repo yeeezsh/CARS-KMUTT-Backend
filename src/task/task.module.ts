@@ -7,9 +7,10 @@ import { FormModule } from '../form/form.module';
 import { TaskController } from './task.controller';
 import { HistoryService } from './history.service';
 import { TaskSportController } from './task.sport.controller';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
-  imports: [DatabaseModule, AreaModule, FormModule],
+  imports: [DatabaseModule, AreaModule, FormModule, ScheduleModule.forRoot()],
   providers: [TaskService, ...taskProviders, HistoryService],
   controllers: [TaskController, TaskSportController],
   exports: [...taskProviders, TaskService],

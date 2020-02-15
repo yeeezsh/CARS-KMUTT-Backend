@@ -13,6 +13,7 @@ import TaskScheduleStructArrHelper from './helpers/task.schedule.struct.arr.help
 import { AreaService } from '../area/area.service';
 
 import WeekParseHelper from './helpers/week.parse';
+import { Interval } from '@nestjs/schedule';
 
 // constant
 const FORMAT = 'DD-MM-YYYY-HH:mm:ss';
@@ -285,5 +286,11 @@ export class TaskService {
       s.endSession();
       throw new Error(err);
     }
+  }
+
+  // @Interval(60000)
+  @Interval(1000)
+  async handleWaitTask() {
+    console.log('handle wait task');
   }
 }
