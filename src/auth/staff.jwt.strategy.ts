@@ -1,6 +1,6 @@
 import { Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { jwtConstants } from './constants';
 import { CookieExtracter } from './helpers/cookie.extractor';
 
@@ -15,6 +15,7 @@ export class StaffJWTStrategy extends PassportStrategy(Strategy, 'staff') {
   }
 
   async validate(payload: any) {
+    if (payload.permission !== 'staff') throw new UnauthorizedException();
     return {
       _id: payload._id,
       permission: payload.permission,
