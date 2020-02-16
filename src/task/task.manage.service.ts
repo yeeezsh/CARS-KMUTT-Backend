@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 
-import { Model, mongo } from 'mongoose';
+import { Model } from 'mongoose';
 
 import { Task } from './interfaces/task.interface';
 import moment = require('moment');
