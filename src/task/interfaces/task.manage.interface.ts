@@ -9,4 +9,5 @@ export interface TaskManage {
   };
   createAt: Date;
   type: string;
+  state: string[];
 }

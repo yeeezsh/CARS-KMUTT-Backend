@@ -58,6 +58,7 @@ export class TaskManageService {
           'area.name': 1,
           type: '$type.type',
           createAt: 1,
+          state: 1,
         },
       },
     ]);
