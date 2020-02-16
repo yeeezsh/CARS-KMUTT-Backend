@@ -10,7 +10,12 @@ import { TaskManage } from './interfaces/task.manage.interface';
 export class TaskManageService {
   constructor(@Inject('TASK_MODEL') private readonly taskModel: Model<Task>) {}
 
-  async getAcceptTask(offset?: Date, limit?: Date): Promise<TaskManage[]> {
+  async getAcceptTask(
+    offset?: Date,
+    limit?: Date,
+    // tslint:disable-next-line: ban-types
+    query: Object = {},
+  ): Promise<TaskManage[]> {
     if (!offset || !limit) {
       const now = moment().startOf('day');
       offset = now.toDate();
@@ -24,6 +29,7 @@ export class TaskManageService {
             $gte: offset,
             $lte: limit,
           },
+          ...query,
         },
       },
       {
