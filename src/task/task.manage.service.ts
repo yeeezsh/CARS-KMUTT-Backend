@@ -19,15 +19,16 @@ export class TaskManageService {
     if (!offset || !limit) {
       const now = moment().startOf('day');
       offset = now.toDate();
-      limit = now.add('1', 'day').toDate();
+      limit = moment(now)
+        .add('1', 'day')
+        .toDate();
     }
-
     const docs: TaskManage[] = await this.taskModel.aggregate([
       {
         $match: {
           createAt: {
-            $gte: offset,
-            $lte: limit,
+            $gte: moment(offset).toDate(),
+            $lte: moment(limit).toDate(),
           },
           ...query,
         },
