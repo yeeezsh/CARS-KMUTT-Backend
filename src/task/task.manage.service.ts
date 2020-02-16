@@ -10,7 +10,7 @@ import { TaskManage } from './interfaces/task.manage.interface';
 export class TaskManageService {
   constructor(@Inject('TASK_MODEL') private readonly taskModel: Model<Task>) {}
 
-  async getAcceptTask(
+  async getAllTask(
     offset?: Date,
     limit?: Date,
     // tslint:disable-next-line: ban-types
@@ -63,5 +63,30 @@ export class TaskManageService {
     ]);
 
     return docs;
+  }
+
+  async getWaitTask(offset?: Date, limit?: Date) {
+    return await this.getAllTask(offset, limit, {
+      state: {
+        $in: ['wait', 'requested'],
+        $nin: ['drop', 'reject'],
+      },
+    });
+  }
+
+  async getAcceptTask(offset?: Date, limit?: Date) {
+    return await this.getAllTask(offset, limit, {
+      state: {
+        $in: ['accept'],
+      },
+    });
+  }
+
+  async getRejectTask(offset?: Date, limit?: Date) {
+    return await this.getAllTask(offset, limit, {
+      state: {
+        $in: ['reject', 'drop'],
+      },
+    });
   }
 }
