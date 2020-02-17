@@ -23,12 +23,14 @@ export class TaskManageService {
         .add('1', 'day')
         .toDate();
     }
+
     const docs: TaskManage[] = await this.taskModel.aggregate([
       {
         $match: {
+          // back verse query
           createAt: {
-            $gte: moment(offset).toDate(),
-            $lte: moment(limit).toDate(),
+            $lte: moment(offset).toDate(),
+            $gte: moment(limit).toDate(),
           },
           ...query,
         },
