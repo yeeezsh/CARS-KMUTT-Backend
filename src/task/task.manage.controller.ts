@@ -35,4 +35,11 @@ export class TaskManageController {
     const { offset, limit } = query;
     return await this.taskManageService.getAcceptTask(offset, limit);
   }
+
+  @UseGuards(AuthGuard('staff'))
+  @Get('/drop')
+  async getDrop(@Query() query: TaskManagerQuery) {
+    const { offset, limit } = query;
+    return await this.taskManageService.getDropTask(offset, limit);
+  }
 }

@@ -28,10 +28,10 @@ export class TaskManageService {
       {
         $match: {
           // back verse query
-          createAt: {
-            $lte: moment(offset).toDate(),
-            $gte: moment(limit).toDate(),
-          },
+          // createAt: {
+          //   $lte: moment(offset).toDate(),
+          //   $gte: moment(limit).toDate(),
+          // },
           ...query,
         },
       },
@@ -73,7 +73,7 @@ export class TaskManageService {
     return await this.getAllTask(offset, limit, {
       state: {
         $in: ['wait', 'requested'],
-        $nin: ['drop', 'reject'],
+        $nin: ['drop', 'reject', 'accept'],
       },
     });
   }
@@ -89,7 +89,16 @@ export class TaskManageService {
   async getRejectTask(offset?: Date, limit?: Date) {
     return await this.getAllTask(offset, limit, {
       state: {
-        $in: ['reject', 'drop'],
+        $in: ['reject'],
+      },
+    });
+  }
+
+  async getDropTask(offset?: Date, limit?: Date) {
+    return await this.getAllTask(offset, limit, {
+      state: {
+        $nin: ['accept'],
+        $in: ['drop'],
       },
     });
   }
