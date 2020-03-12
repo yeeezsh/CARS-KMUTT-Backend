@@ -10,10 +10,17 @@ import { TaskSportController } from './task.sport.controller';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskManageService } from './task.manage.service';
 import { TaskManageController } from './task.manage.controller';
+import { TaskCronsService } from './task.crons.service';
 
 @Module({
   imports: [DatabaseModule, AreaModule, FormModule, ScheduleModule.forRoot()],
-  providers: [TaskService, ...taskProviders, HistoryService, TaskManageService],
+  providers: [
+    TaskService,
+    HistoryService,
+    TaskManageService,
+    TaskCronsService,
+    ...taskProviders,
+  ],
   controllers: [TaskController, TaskSportController, TaskManageController],
   exports: [...taskProviders, TaskService],
 })
