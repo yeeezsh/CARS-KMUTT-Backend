@@ -25,6 +25,7 @@ export const TaskSchema = new Schema({
   area: { type: Schema.Types.ObjectId, ref: 'areas', index: true },
   // form: { type: Schema.Types.ObjectId, ref: 'forms' },
   form: Object,
+  desc: String,
 
   cancle: { type: Boolean, default: false, index: true },
   createAt: { type: Date, default: Date.now, index: true },

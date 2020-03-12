@@ -23,7 +23,8 @@ export interface Task extends Document {
   staff?: Staff[];
   area: Area; // required area module
   // form?: Form; // required form module
-  form?: any;
+  form?: Object;
+  desc?: string;
 
   cancle: boolean;
   createAt: Date;
