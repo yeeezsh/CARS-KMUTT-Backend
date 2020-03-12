@@ -5,6 +5,8 @@ import {
   Param,
   Res,
   BadRequestException,
+  Body,
+  Post,
 } from '@nestjs/common';
 import { AreaService } from 'src/area/area.service';
 import { TaskService } from './task.service';
@@ -13,6 +15,7 @@ import { UserInfo } from 'src/common/user.decorator';
 import { UserSession } from 'src/users/interfaces/user.session.interface';
 import { HistoryService } from './history.service';
 import { Response } from 'express';
+import { TaskCancelByStaff } from './dtos/task.cancel.byStaff.dto';
 
 @Controller('task')
 export class TaskController {
@@ -77,15 +80,16 @@ export class TaskController {
   }
 
   @UseGuards(AuthGuard('staff'))
-  @Get('/:id/cancle/staff')
+  @Post('/cancle/byStaff')
   async cancleTaskByStaff(
     @UserInfo() user: UserSession,
-    @Param('id') taskId: string,
+    @Body() data: TaskCancelByStaff,
     @Res() res: Response,
   ) {
     try {
       const { username } = user;
-      await this.taskService.cancleTaskById(taskId, username, true);
+      const { _id: taskId, desc } = data;
+      await this.taskService.cancleTaskById(taskId, username, true, desc);
       return res.sendStatus(200);
     } catch (err) {
       return err;

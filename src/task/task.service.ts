@@ -261,6 +261,7 @@ export class TaskService {
     id: string,
     username: string,
     staff: boolean = false,
+    desc?: string,
   ): Promise<void> {
     const s = await mongoose.startSession();
     try {
@@ -276,6 +277,7 @@ export class TaskService {
       doc.cancle = true;
       doc.state.push('drop');
       doc.updateAt = new Date();
+      doc.desc = desc;
       await doc.save({ session: s });
       await s.commitTransaction();
       s.endSession();
