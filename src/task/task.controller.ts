@@ -72,7 +72,23 @@ export class TaskController {
       await this.taskService.cancleTaskById(taskId, username);
       return res.sendStatus(200);
     } catch (err) {
-      return new BadRequestException(err);
+      return err;
+    }
+  }
+
+  @UseGuards(AuthGuard('staff'))
+  @Get('/:id/cancle/staff')
+  async cancleTaskByStaff(
+    @UserInfo() user: UserSession,
+    @Param('id') taskId: string,
+    @Res() res: Response,
+  ) {
+    try {
+      const { username } = user;
+      await this.taskService.cancleTaskById(taskId, username, true);
+      return res.sendStatus(200);
+    } catch (err) {
+      return err;
     }
   }
 

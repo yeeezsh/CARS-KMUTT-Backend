@@ -1,4 +1,9 @@
-import { Injectable, Inject, forwardRef } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  forwardRef,
+  BadRequestException,
+} from '@nestjs/common';
 import { Model, ClientSession } from 'mongoose';
 import * as mongoose from 'mongoose';
 import * as moment from 'moment';
@@ -252,14 +257,22 @@ export class TaskService {
     };
   }
 
-  async cancleTaskById(id: string, username: string): Promise<void> {
+  async cancleTaskById(
+    id: string,
+    username: string,
+    staff: boolean = false,
+  ): Promise<void> {
     const s = await mongoose.startSession();
     try {
       s.startTransaction();
       const doc = await this.taskModel.findById(id).session(s);
       if (!doc) throw new Error('this task is not exisiting');
-      const validCancle = doc.requestor[0].username === username;
-      if (!validCancle) throw new Error('action is not permit');
+      const validCancel = doc.requestor[0].username === username;
+      if (!validCancel) {
+        if (!staff) {
+          throw new BadRequestException('action is not permit');
+        }
+      }
       doc.cancle = true;
       doc.state.push('drop');
       doc.updateAt = new Date();
