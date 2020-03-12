@@ -1,5 +1,6 @@
 import { Schema, Document } from 'mongoose';
 import { Staff } from '../../users/interfaces/staff.interface';
+import { AreaBuilding } from './area.building.interface';
 
 interface Reserve {
   interval: number | -1 | 60;
@@ -11,10 +12,9 @@ interface Reserve {
 }
 
 export interface Area extends Document {
-  _id: Schema.Types.ObjectId;
   name: string;
   label?: string;
-  building?: Schema.Types.ObjectId;
+  building?: AreaBuilding;
   required: {
     form?: Schema.Types.ObjectId; // required form module
     staff?: Staff[];
