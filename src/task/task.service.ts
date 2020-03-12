@@ -13,6 +13,7 @@ import TaskScheduleStructArrHelper from './helpers/task.schedule.struct.arr.help
 import { AreaService } from '../area/area.service';
 
 import WeekParseHelper from './helpers/week.parse';
+import { AreaBuilding } from 'src/area/interfaces/area.building.interface';
 
 // constant
 const FORMAT = 'DD-MM-YYYY-HH:mm:ss';
@@ -24,6 +25,8 @@ export class TaskService {
   constructor(
     @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
     @Inject('AREA_MODEL') private readonly areaModel: Model<Area>,
+    @Inject('AREA_BUILDING_MODEL')
+    private readonly areaBuildingModel: Model<AreaBuilding>,
     @Inject(forwardRef(() => AreaService))
     private readonly areaService: AreaService,
   ) {}
@@ -229,11 +232,24 @@ export class TaskService {
   }
 
   async getTaskById(id: string): Promise<Task> {
-    return await this.taskModel
+    const task = await this.taskModel
       .findById(id)
       .select(['reserve', 'state', 'area', 'requestor'])
-      .populate('area', '_id name label')
+      .populate('area', '_id name label building')
       .lean();
+
+    const buildingId = task.area.building._id;
+    const building = await this.areaBuildingModel
+      .findById(buildingId)
+      .select('_id name type label');
+
+    return {
+      ...task,
+      area: {
+        ...task.area,
+        building,
+      },
+    };
   }
 
   async cancleTaskById(id: string, username: string): Promise<void> {
