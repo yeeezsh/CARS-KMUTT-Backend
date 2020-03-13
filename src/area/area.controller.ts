@@ -58,4 +58,9 @@ export class AreaController {
     await this.areaService.createArea(body);
     return;
   }
+
+  @Get('/table')
+  async getAreaTable() {
+    return this.areaService.getAreaTable();
+  }
 }

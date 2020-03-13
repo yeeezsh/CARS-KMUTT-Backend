@@ -10,6 +10,7 @@ import { Moment } from 'moment';
 import { AreaAvailble } from './interfaces/area.available.interface';
 import { Task } from 'src/task/interfaces/task.interface';
 import moment = require('moment');
+import { AreaTableAPI } from './interfaces/area.table.interface';
 
 @Injectable()
 export class AreaService {
@@ -21,6 +22,26 @@ export class AreaService {
     private readonly formService: FormService,
     private readonly userService: UsersService,
   ) {}
+
+  async getAreaTable(): Promise<AreaTableAPI[]> {
+    try {
+      const areas = await this.areaModel
+        .find({})
+        .populate('building', 'name label')
+        .select({
+          reserve: 0,
+          required: 0,
+          forward: 0,
+          createAt: 0,
+          updateAt: 0,
+        })
+        .lean();
+
+      return areas;
+    } catch (err) {
+      throw err;
+    }
+  }
 
   async createAreaBuilding(data: CreateAreaBuildingDto): Promise<AreaBuilding> {
     try {
