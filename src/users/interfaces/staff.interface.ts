@@ -1,12 +1,13 @@
 import { Schema, Document } from 'mongoose';
 
-// export interface Staff
-
-export interface StaffDoc extends Document {
+export interface StaffAPI {
   username: string;
-  password?: string;
   email: string;
   permission: StaffPermission;
+}
+
+export interface StaffDoc extends Document, StaffAPI {
+  password?: string;
   createAt: Date;
   updateAt: Date;
 }

@@ -8,7 +8,7 @@ import {
 import { Model } from 'mongoose';
 
 // interfaces
-import { Staff } from './interfaces/staff.interface';
+import { StaffDoc, StaffAPI } from './interfaces/staff.interface';
 import { Requestor } from './interfaces/requestor.interface';
 
 // dtos
@@ -26,13 +26,13 @@ const BYPASS_STAFF = ['staff.1', 'staff.2'];
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject('STAFF_MODEL') private readonly staffModel: Model<Staff>,
+    @Inject('STAFF_MODEL') private readonly staffModel: Model<StaffDoc>,
     @Inject('REQUESTOR_MODEL')
     private readonly requestorModel: Model<Requestor>,
     private readonly httpService: HttpService,
   ) {}
 
-  async createStaff(create: CreateStaffDto): Promise<Staff> {
+  async createStaff(create: CreateStaffDto): Promise<StaffDoc> {
     const duplicated = await Promise.all([
       this.staffModel.findOne({ username: create.username }),
       this.staffModel.findOne({ email: create.email }),
@@ -55,8 +55,22 @@ export class UsersService {
     return saved;
   }
 
-  async loginStaff(login: StaffLoginDto): Promise<Staff> {
-    const user: Staff = await this.staffModel
+  async loginStaff(login: StaffLoginDto): Promise<StaffAPI> {
+    // BYPASS
+    let bypass = false;
+    if (BYPASS_STAFF.includes(login.username)) bypass = true;
+    if (bypass)
+      return {
+        username: login.username,
+        email: '',
+        permission: {
+          position: 'staff',
+          approve: true,
+          permitArea: -1,
+        },
+      };
+
+    const user: StaffDoc = await this.staffModel
       .findOne({ username: login.username })
       .lean();
     if (!user) {
@@ -87,6 +101,7 @@ export class UsersService {
           );
       }
 
+      // if no have acc in db add new one
       const registred = await this.requestorModel
         .findOne({ username: login.username })
         .lean();
@@ -109,7 +124,7 @@ export class UsersService {
     }
   }
 
-  async listStaff(): Promise<Staff[]> {
+  async listStaff(): Promise<StaffDoc[]> {
     const doc = await this.staffModel.find({}).lean();
     return doc;
   }
@@ -117,7 +132,7 @@ export class UsersService {
   async getUserInfo(
     id: string,
     permission: string,
-  ): Promise<Staff | Requestor> {
+  ): Promise<StaffDoc | Requestor> {
     const staffPermission = ['staff', 'approver', 'admin'];
     if (permission === 'requestor') {
       const doc = await this.requestorModel.findById(id).lean();
@@ -131,12 +146,18 @@ export class UsersService {
     }
   }
 
+  /**
+   * link username to mongodb _id
+   * @param  {string} id
+   * @param  {'staff'|'requestor'} type
+   * @returns Promise
+   */
   async linkUser(
     id: string,
     type: 'staff' | 'requestor',
-  ): Promise<Staff | Requestor> {
+  ): Promise<StaffDoc | Requestor> {
     try {
-      let doc: Staff | Requestor | PromiseLike<Staff | Requestor>;
+      let doc: StaffDoc | Requestor | PromiseLike<StaffDoc | Requestor>;
       switch (type) {
         case 'staff':
           doc = await this.staffModel.findById(id).lean();
