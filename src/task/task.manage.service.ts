@@ -64,6 +64,7 @@ export class TaskManageService {
           state: 1,
         },
       },
+      { $sort: { createAt: -1 } },
     ]);
 
     return docs;
