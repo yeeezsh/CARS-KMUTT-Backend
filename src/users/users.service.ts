@@ -61,6 +61,7 @@ export class UsersService {
     if (BYPASS_STAFF.includes(login.username)) bypass = true;
     if (bypass)
       return {
+        _id: undefined,
         username: login.username,
         email: '',
         permission: {
