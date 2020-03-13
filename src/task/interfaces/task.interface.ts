@@ -1,5 +1,5 @@
 import { Schema, Document } from 'mongoose';
-import { Staff } from '../../users/interfaces/staff.interface';
+import { StaffDoc } from '../../users/interfaces/staff.interface';
 import { Area } from '../../area/interfaces/area.interface';
 import { Form } from '../../form/interfaces/form.interface';
 
@@ -20,7 +20,7 @@ export interface Task extends Document {
   reserve: TimeSlotType;
   requestor: Requestor[];
   state: Array<'wait' | 'approve' | 'reject' | 'accept' | 'drop' | 'requested'>;
-  staff?: Staff[];
+  staff?: StaffDoc[];
   area: Area; // required area module
   // form?: Form; // required form module
   form?: Object;

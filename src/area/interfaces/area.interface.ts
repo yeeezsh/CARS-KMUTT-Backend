@@ -1,5 +1,5 @@
 import { Schema, Document } from 'mongoose';
-import { Staff } from '../../users/interfaces/staff.interface';
+import { StaffDoc } from '../../users/interfaces/staff.interface';
 import { AreaBuilding } from './area.building.interface';
 
 interface Reserve {
@@ -17,7 +17,7 @@ export interface Area extends Document {
   building?: AreaBuilding;
   required: {
     form?: Schema.Types.ObjectId; // required form module
-    staff?: Staff[];
+    staff?: StaffDoc[];
     requestor: number;
   };
   forward: number;
