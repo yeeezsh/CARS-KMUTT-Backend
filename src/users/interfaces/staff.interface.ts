@@ -1,12 +1,14 @@
-import { Schema, Document } from 'mongoose';
+import { Schema, Document, Types } from 'mongoose';
 
 export interface StaffAPI {
+  _id: undefined | Types.ObjectId;
   username: string;
   email: string;
   permission: StaffPermission;
 }
 
 export interface StaffDoc extends Document, StaffAPI {
+  _id: Types.ObjectId;
   password?: string;
   createAt: Date;
   updateAt: Date;
