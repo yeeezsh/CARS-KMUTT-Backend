@@ -1,5 +1,5 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Injectable, Inject, BadRequestException } from '@nestjs/common';
+import { Model, Types } from 'mongoose';
 import { Area } from './interfaces/area.interface';
 import { AreaBuilding } from './interfaces/area.building.interface';
 
@@ -8,6 +8,8 @@ import { AreaAvailble } from './interfaces/area.available.interface';
 import { Task } from 'src/task/interfaces/task.interface';
 import moment = require('moment');
 import { AreaTableAPI } from './interfaces/area.table.interface';
+import { AreaAvailableStaff } from './interfaces/area.available.staff.interface';
+import weekParse from 'src/task/helpers/week.parse';
 
 @Injectable()
 export class AreaQueryService {
@@ -17,6 +19,115 @@ export class AreaQueryService {
     @Inject('AREA_BUILDING_MODEL')
     private readonly areaBuildingModel: Model<AreaBuilding>,
   ) {}
+
+  private async getReservedAreaTimeInOneDay(
+    areaId: string,
+    date?: Moment,
+  ): Promise<Array<{ value: Date }>> {
+    if (!date) return;
+    return await this.taskModel.aggregate([
+      {
+        $match: {
+          area: Types.ObjectId(areaId),
+          // createAt: {
+          //   $gte: new Date(date.toISOString()),
+          //   $lte: new Date(moment(date.add(1, 'day')).toISOString()),
+          // },
+          reserve: {
+            $elemMatch: {
+              start: {
+                $gte: new Date(date.toISOString()),
+                $lte: new Date(moment(date.add(1, 'day')).toISOString()),
+              },
+            },
+          },
+          state: {
+            $in: ['wait', 'requested'],
+            $nin: ['drop', 'reject', 'accept'],
+          },
+        },
+      },
+      { $group: { _id: '$area', values: { $push: '$$ROOT.reserve' } } },
+
+      { $unwind: '$values' },
+      { $unwind: '$values' },
+      { $project: { value: '$values.start', _id: 0 } },
+    ]);
+  }
+
+  async getAvailabelAreaByStaff(areaId: string): Promise<AreaAvailableStaff[]> {
+    try {
+      const area = await this.areaModel
+        .findById(areaId)
+        .populate('building', 'label name')
+        .select('name label building forward reserve');
+
+      if (!area) throw new BadRequestException('bad area id');
+
+      const today = moment().startOf('day');
+      const forward = area.forward;
+      const weeks = weekParse(area.reserve[0].week);
+      const validDay = Array(forward)
+        .fill([])
+        .map((e, i) => {
+          const day = moment(today).add(1, 'day');
+          if (weeks.includes(Number(day.format('E')))) {
+            return {
+              date: moment(day).add(i, 'day'),
+            };
+          }
+          return 0;
+        })
+        .filter(e => e !== 0);
+
+      console.log(validDay);
+
+      const availableDays = await Promise.all(
+        validDay.map(e =>
+          this.getReservedAreaTimeInOneDay(area._id, e && e.date),
+        ),
+      );
+
+      console.log(availableDays);
+
+      const mapped = validDay.map((e, i) => ({
+        ...e,
+        name: area.name,
+        label: area.label,
+        building: {
+          _id: area.building._id,
+          name: area.building.name,
+          label: area.building.label,
+        },
+        disabled: availableDays[i],
+        date: e && e.date,
+      }));
+
+      return mapped;
+
+      // const areas = Array(forward)
+      //   .fill([])
+      //   .map(() => area);
+
+      //   console.log(weeks);
+
+      // console.log('kcxxxx', areas);
+
+      // console.log('hhajsajs', availableDays);
+
+      // const areasMapped = areas.map((e, i) => ({
+      // ...e,
+      // disabled: availableDays[i],
+      // date: moment(today).add(i, 'day'),
+      // }));
+      // console.log(availableDays);
+
+      // return areasMapped;
+      return [];
+    } catch (err) {
+      throw err;
+    }
+  }
 
   async getAreaTable(): Promise<AreaTableAPI[]> {
     try {
@@ -76,7 +187,7 @@ export class AreaQueryService {
     }
   }
 
-  async getAreaBuilding(id?: string): Promise<AreaBuilding | AreaBuilding[]> {
+  async getAreaBuilding(id?: string): Promise<AreaBuilding[]> {
     try {
       let query = {};
       if (id) query = { _id: id };

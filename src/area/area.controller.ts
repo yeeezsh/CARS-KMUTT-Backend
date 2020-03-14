@@ -67,4 +67,9 @@ export class AreaController {
   async getAreaTable() {
     return this.areaQueryService.getAreaTable();
   }
+
+  @Get('/available/:id')
+  async getAvailabelArea(@Param('id') areaId: string) {
+    return await this.areaQueryService.getAvailabelAreaByStaff(areaId);
+  }
 }
