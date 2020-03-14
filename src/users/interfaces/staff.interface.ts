@@ -4,7 +4,8 @@ export interface StaffAPI {
   _id: undefined | Types.ObjectId;
   username: string;
   email: string;
-  permission: StaffPermission;
+  // permission: StaffPermission;
+  permission: 'staff';
 }
 
 export interface StaffDoc extends Document, StaffAPI {
