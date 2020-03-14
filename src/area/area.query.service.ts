@@ -10,6 +10,7 @@ import moment = require('moment');
 import { AreaTableAPI } from './interfaces/area.table.interface';
 import { AreaAvailableStaff } from './interfaces/area.available.staff.interface';
 import weekParse from 'src/task/helpers/week.parse';
+import { TimeNode } from './interfaces/timenode.interface';
 
 @Injectable()
 export class AreaQueryService {
@@ -23,7 +24,7 @@ export class AreaQueryService {
   private async getReservedAreaTimeInOneDay(
     areaId: string,
     date?: Moment,
-  ): Promise<Array<{ value: Date }>> {
+  ): Promise<TimeNode[]> {
     if (!date) return;
     return await this.taskModel.aggregate([
       {
@@ -51,7 +52,7 @@ export class AreaQueryService {
 
       { $unwind: '$values' },
       { $unwind: '$values' },
-      { $project: { value: '$values.start', _id: 0 } },
+      { $project: { value: '$values.start', _id: 0, type: 'disabled' } },
     ]);
   }
 
@@ -80,18 +81,15 @@ export class AreaQueryService {
         })
         .filter(e => e !== 0);
 
-      console.log(validDay);
-
       const availableDays = await Promise.all(
         validDay.map(e =>
           this.getReservedAreaTimeInOneDay(area._id, e && e.date),
         ),
       );
 
-      console.log(availableDays);
-
       const mapped = validDay.map((e, i) => ({
         ...e,
+        _id: area._id,
         name: area.name,
         label: area.label,
         building: {
@@ -100,30 +98,10 @@ export class AreaQueryService {
           label: area.building.label,
         },
         disabled: availableDays[i],
-        date: e && e.date,
+        date: e && new Date(e.date.toISOString()),
       }));
 
       return mapped;
-
-      // const areas = Array(forward)
-      //   .fill([])
-      //   .map(() => area);
-
-      //   console.log(weeks);
-
-      // console.log('kcxxxx', areas);
-
-      // console.log('hhajsajs', availableDays);
-
-      // const areasMapped = areas.map((e, i) => ({
-      // ...e,
-      // disabled: availableDays[i],
-      // date: moment(today).add(i, 'day'),
-      // }));
-      // console.log(availableDays);
-
-      // return areasMapped;
-      return [];
     } catch (err) {
       throw err;
     }
