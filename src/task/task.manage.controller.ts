@@ -6,38 +6,38 @@ import { UserInfo } from 'src/common/user.decorator';
 
 @Controller('task/manage')
 export class TaskManageController {
-  constructor(private readonly taskManageService: TaskManageService) {}
+  constructor(private readonly taskManageService: TaskManageService) { }
 
-  @UseGuards(AuthGuard('staff'))
   @Get('/all')
+  @UseGuards(AuthGuard('staff'))
   async getAllTask(@Query() query: TaskManagerQuery) {
     const { offset, limit } = query;
     return await this.taskManageService.getAllTask(offset, limit);
   }
 
-  @UseGuards(AuthGuard('staff'))
   @Get('/wait')
+  @UseGuards(AuthGuard('staff'))
   async getRejectTask(@Query() query: TaskManagerQuery, @UserInfo() info) {
     const { offset, limit } = query;
     return await this.taskManageService.getWaitTask(offset, limit);
   }
 
-  @UseGuards(AuthGuard('staff'))
   @Get('/reject')
+  @UseGuards(AuthGuard('staff'))
   async getReject(@Query() query: TaskManagerQuery) {
     const { offset, limit } = query;
     return await this.taskManageService.getRejectTask(offset, limit);
   }
 
-  @UseGuards(AuthGuard('staff'))
   @Get('/accept')
+  // @UseGuards(AuthGuard('staff'))
   async getAccept(@Query() query: TaskManagerQuery) {
     const { offset, limit } = query;
     return await this.taskManageService.getAcceptTask(offset, limit);
   }
 
-  @UseGuards(AuthGuard('staff'))
   @Get('/drop')
+  // @UseGuards(AuthGuard('staff'))
   async getDrop(@Query() query: TaskManagerQuery) {
     const { offset, limit } = query;
     return await this.taskManageService.getDropTask(offset, limit);

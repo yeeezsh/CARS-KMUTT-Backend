@@ -30,7 +30,7 @@ export class UsersService {
     @Inject('REQUESTOR_MODEL')
     private readonly requestorModel: Model<Requestor>,
     private readonly httpService: HttpService,
-  ) {}
+  ) { }
 
   async createStaff(create: CreateStaffDto): Promise<StaffDoc> {
     const duplicated = await Promise.all([
@@ -64,11 +64,7 @@ export class UsersService {
         _id: undefined,
         username: login.username,
         email: '',
-        permission: {
-          position: 'staff',
-          approve: true,
-          permitArea: -1,
-        },
+        permission: 'staff',
       };
 
     const user: StaffDoc = await this.staffModel
