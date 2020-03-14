@@ -4,15 +4,19 @@ import { AreaService } from './area.service';
 import { CreateAreaBuildingDto } from './dtos/area.building.create.dto';
 import { CreateAreaDto } from './dtos/area.create.dto';
 import moment = require('moment');
+import { AreaQueryService } from './area.query.service';
 
 @Controller('area')
 export class AreaController {
-  constructor(private readonly areaService: AreaService) {}
+  constructor(
+    private readonly areaService: AreaService,
+    private readonly areaQueryService: AreaQueryService,
+  ) {}
 
   @UseGuards(AuthGuard('requestor'))
   @Get('/sport/area/all')
   async getSportAreaAll() {
-    return await this.areaService.getAreaBuilding();
+    return await this.areaQueryService.getAreaBuilding();
   }
 
   // @Get('/sport/fields/reserved/:id/:date')
@@ -37,7 +41,7 @@ export class AreaController {
       // async test() {
       // const now = moment().startOf('day');
       // console.log('on', moment(date).format('DD-MM-YYYY HH:mm'));
-      return await this.areaService.getAvailableSportAreaFields(
+      return await this.areaQueryService.getAvailableSportAreaFields(
         id,
         moment(date),
       );
@@ -61,6 +65,6 @@ export class AreaController {
 
   @Get('/table')
   async getAreaTable() {
-    return this.areaService.getAreaTable();
+    return this.areaQueryService.getAreaTable();
   }
 }

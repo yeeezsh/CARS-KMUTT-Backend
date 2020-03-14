@@ -19,6 +19,7 @@ import { AreaService } from '../area/area.service';
 
 import WeekParseHelper from './helpers/week.parse';
 import { AreaBuilding } from 'src/area/interfaces/area.building.interface';
+import { AreaQueryService } from 'src/area/area.query.service';
 
 // constant
 const FORMAT = 'DD-MM-YYYY-HH:mm:ss';
@@ -32,8 +33,8 @@ export class TaskService {
     @Inject('AREA_MODEL') private readonly areaModel: Model<Area>,
     @Inject('AREA_BUILDING_MODEL')
     private readonly areaBuildingModel: Model<AreaBuilding>,
-    @Inject(forwardRef(() => AreaService))
-    private readonly areaService: AreaService,
+    @Inject(forwardRef(() => AreaQueryService))
+    private readonly areaQueryService: AreaQueryService,
   ) {}
 
   private async checkAvailable(
@@ -161,7 +162,7 @@ export class TaskService {
     date: Date = new Date(),
   ): Promise<TaskSchedule> {
     try {
-      const area = await this.areaService.getArea(id);
+      const area = await this.areaQueryService.getArea(id);
 
       //   validation area condition
       const nowDay = moment(date);
