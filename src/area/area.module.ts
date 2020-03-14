@@ -6,6 +6,8 @@ import { FormModule } from '../form/form.module';
 import { UsersModule } from '../users/users.module';
 import { AreaController } from './area.controller';
 import { TaskModule } from 'src/task/task.module';
+import { BuildingController } from './building.controller';
+import { AreaQueryService } from './area.query.service';
 
 @Module({
   imports: [
@@ -14,8 +16,8 @@ import { TaskModule } from 'src/task/task.module';
     forwardRef(() => UsersModule),
     forwardRef(() => TaskModule),
   ],
-  providers: [AreaService, ...areaProviders],
-  exports: [AreaService, ...areaProviders],
-  controllers: [AreaController],
+  providers: [AreaService, AreaQueryService, ...areaProviders],
+  exports: [AreaService, AreaQueryService, ...areaProviders],
+  controllers: [AreaController, BuildingController],
 })
 export class AreaModule {}
