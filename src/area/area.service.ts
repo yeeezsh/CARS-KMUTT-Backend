@@ -6,17 +6,12 @@ import { CreateAreaBuildingDto } from './dtos/area.building.create.dto';
 import { CreateAreaDto } from './dtos/area.create.dto';
 import { FormService } from '../form/form.service';
 import { UsersService } from '../users/users.service';
-import { Moment } from 'moment';
-import { AreaAvailble } from './interfaces/area.available.interface';
 import { Task } from 'src/task/interfaces/task.interface';
-import moment = require('moment');
-import { AreaTableAPI } from './interfaces/area.table.interface';
 
 @Injectable()
 export class AreaService {
   constructor(
     @Inject('AREA_MODEL') private readonly areaModel: Model<Area>,
-    @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
     @Inject('AREA_BUILDING_MODEL')
     private readonly areaBuildingModel: Model<AreaBuilding>,
     private readonly formService: FormService,

@@ -1,10 +1,8 @@
-import { Injectable, Inject, HttpStatus, HttpException } from '@nestjs/common';
-import { Model, Types } from 'mongoose';
+import { Injectable, Inject } from '@nestjs/common';
+import { Model } from 'mongoose';
 import { Area } from './interfaces/area.interface';
 import { AreaBuilding } from './interfaces/area.building.interface';
 
-import { FormService } from '../form/form.service';
-import { UsersService } from '../users/users.service';
 import { Moment } from 'moment';
 import { AreaAvailble } from './interfaces/area.available.interface';
 import { Task } from 'src/task/interfaces/task.interface';
