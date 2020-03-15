@@ -3,4 +3,5 @@ export interface QuickTaskAPI {
   _id: string;
   state: string;
   username: string;
+  date: Date;
 }

@@ -348,7 +348,7 @@ export class TaskService {
           },
         },
       })
-      .select('_id requestor state')
+      .select('_id requestor state reserve')
       .lean();
 
     return tasks.map(e => ({
@@ -356,7 +356,9 @@ export class TaskService {
       key: e._id,
       username: e.requestor[0].username,
       state: e.state.slice(-1)[0],
+      date: e.reserve[0].start,
       requestor: undefined,
+      reserve: undefined,
     }));
   }
 }
