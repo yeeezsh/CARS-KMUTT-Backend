@@ -13,8 +13,8 @@ export class AreaController {
     private readonly areaQueryService: AreaQueryService,
   ) {}
 
-  @UseGuards(AuthGuard('requestor'))
   @Get('/sport/area/all')
+  @UseGuards(AuthGuard('requestor'))
   async getSportAreaAll() {
     return await this.areaQueryService.getAreaBuilding();
   }
@@ -34,8 +34,8 @@ export class AreaController {
   //   return await this.areaService.getSportAreaFields(id);
   // }
 
-  @UseGuards(AuthGuard('requestor'))
   @Get('/sport/fields/:id/:date')
+  @UseGuards(AuthGuard('requestor'))
   async getSportAreaFields(@Param('id') id: string, @Param('date') date: Date) {
     try {
       // async test() {
@@ -57,6 +57,7 @@ export class AreaController {
     return;
   }
 
+  // create area
   @Post('/')
   async createArea(@Body() body: CreateAreaDto) {
     await this.areaService.createArea(body);
@@ -71,5 +72,10 @@ export class AreaController {
   @Get('/available/:id')
   async getAvailabelArea(@Param('id') areaId: string) {
     return await this.areaQueryService.getAvailabelAreaByStaff(areaId);
+  }
+
+  @Get('/:id')
+  async getAreaById(@Param('id') areaId: string) {
+    return this.areaQueryService.getArea(areaId);
   }
 }
