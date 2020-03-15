@@ -27,7 +27,6 @@ export const TaskSchema = new Schema({
   form: Object,
   desc: String,
 
-  cancle: { type: Boolean, default: false, index: true },
   createAt: { type: Date, default: Date.now, index: true },
   updateAt: { type: Date, default: Date.now },
 });

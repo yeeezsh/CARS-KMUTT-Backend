@@ -141,7 +141,6 @@ export class TaskService {
         requestor: requestorMapped,
         area: area._id,
         state: requestor.length === 1 ? ['accept'] : ['requested'],
-        cancle: false,
         createAt: now,
         updateAt: now,
       };
@@ -206,7 +205,6 @@ export class TaskService {
     try {
       const lastTask = await this.taskModel
         .find({
-          cancle: false,
           requestor: {
             $elemMatch: {
               username,
@@ -275,7 +273,7 @@ export class TaskService {
           throw new BadRequestException('action is not permit');
         }
       }
-      doc.cancle = true;
+
       doc.state.push('drop');
       doc.updateAt = new Date();
       doc.desc = desc;

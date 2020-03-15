@@ -26,7 +26,6 @@ export interface Task extends Document {
   form?: Object;
   desc?: string;
 
-  cancle: boolean;
   createAt: Date;
   updateAt: Date;
 }
