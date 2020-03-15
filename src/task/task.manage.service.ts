@@ -83,6 +83,7 @@ export class TaskManageService {
     return await this.getAllTask(offset, limit, {
       state: {
         $in: ['accept'],
+        $nin: ['reject', 'drop'],
       },
     });
   }
