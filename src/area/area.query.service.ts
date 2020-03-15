@@ -31,11 +31,7 @@ export class AreaQueryService {
     date?: Moment,
   ): Promise<TimeNode[]> {
     if (!date) return;
-    console.log(
-      new Date(date.toISOString()).toLocaleString(),
-      '-',
-      new Date(moment(date.add(1, 'day')).toISOString()).toLocaleString(),
-    );
+
     return await this.taskModel.aggregate([
       {
         $match: {
@@ -113,7 +109,6 @@ export class AreaQueryService {
         date: e && new Date(e.date.subtract(1, 'day').toISOString()),
       }));
 
-      console.log(mapped);
       return mapped;
     } catch (err) {
       throw err;
