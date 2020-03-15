@@ -9,7 +9,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { AreaService } from 'src/area/area.service';
+// import { AreaService } from 'src/area/area.service';
 import { TaskService } from './task.service';
 import { AuthGuard } from '@nestjs/passport';
 import { UserInfo } from 'src/common/user.decorator';
@@ -22,13 +22,13 @@ import * as moment from 'moment';
 @Controller('task')
 export class TaskController {
   constructor(
-    private readonly areaService: AreaService,
+    // private readonly areaService: AreaService,
     private readonly taskService: TaskService,
     private readonly historyService: HistoryService,
   ) {}
 
-  @UseGuards(AuthGuard('staff'))
   @Get('/quickTask')
+  @UseGuards(AuthGuard('staff'))
   async getQuickTask(
     @Query('id') areaId: string,
     @Query('start') start: string,
@@ -37,45 +37,45 @@ export class TaskController {
     return this.taskService.getQuickTask(areaId, moment(start), moment(stop));
   }
 
-  @UseGuards(AuthGuard('requestor'))
   @Get('/last')
+  @UseGuards(AuthGuard('requestor'))
   async getLastestTask(@UserInfo() user: UserSession) {
     const username = user.username;
     const data = await this.taskService.getLastestTask(username);
     return data;
   }
 
-  @UseGuards(AuthGuard('requestor'))
   @Get('/history')
+  @UseGuards(AuthGuard('requestor'))
   async getHistory(@UserInfo() user: UserSession) {
     const { username } = user;
     return this.historyService.getAllHistory(username);
   }
 
-  @UseGuards(AuthGuard('requestor'))
   @Get('/requested')
+  @UseGuards(AuthGuard('requestor'))
   async getRequested(@UserInfo() user: UserSession) {
     const { username } = user;
     return this.historyService.getAllRequested(username);
   }
 
-  @UseGuards(AuthGuard('requestor'))
   @Get('/wait')
+  @UseGuards(AuthGuard('requestor'))
   async getWait(@UserInfo() user: UserSession) {
     const { username } = user;
     return this.historyService.getAllWait(username);
   }
 
-  @UseGuards(AuthGuard('requestor'))
   @Get('/:id')
+  @UseGuards(AuthGuard('requestor'))
   async getTask(@UserInfo() user: UserSession, @Param('id') taskId: string) {
     // for checking authorized nxt patch
     const { username } = user;
     return this.taskService.getTaskById(taskId);
   }
 
-  @UseGuards(AuthGuard('requestor'))
   @Get('/:id/cancle')
+  @UseGuards(AuthGuard('requestor'))
   async cancleTask(
     @UserInfo() user: UserSession,
     @Param('id') taskId: string,
@@ -91,8 +91,8 @@ export class TaskController {
     }
   }
 
-  @UseGuards(AuthGuard('staff'))
   @Post('/cancle/byStaff')
+  @UseGuards(AuthGuard('staff'))
   async cancleTaskByStaff(
     @UserInfo() user: UserSession,
     @Body() data: TaskCancelByStaff,
@@ -108,8 +108,8 @@ export class TaskController {
     }
   }
 
-  @UseGuards(AuthGuard('requestor'))
   @Get('/:id/confirm')
+  @UseGuards(AuthGuard('requestor'))
   async confirmTask(
     @UserInfo() user: UserSession,
     @Param('id') taskId: string,
