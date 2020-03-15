@@ -7,6 +7,7 @@ import {
   BadRequestException,
   Body,
   Post,
+  Query,
 } from '@nestjs/common';
 import { AreaService } from 'src/area/area.service';
 import { TaskService } from './task.service';
@@ -16,6 +17,7 @@ import { UserSession } from 'src/users/interfaces/user.session.interface';
 import { HistoryService } from './history.service';
 import { Response } from 'express';
 import { TaskCancelByStaff } from './dtos/task.cancel.byStaff.dto';
+import * as moment from 'moment';
 
 @Controller('task')
 export class TaskController {
@@ -24,6 +26,16 @@ export class TaskController {
     private readonly taskService: TaskService,
     private readonly historyService: HistoryService,
   ) {}
+
+  @UseGuards(AuthGuard('staff'))
+  @Get('/quickTask')
+  async getQuickTask(
+    @Query('id') areaId: string,
+    @Query('start') start: string,
+    @Query('stop') stop: string,
+  ) {
+    return this.taskService.getQuickTask(areaId, moment(start), moment(stop));
+  }
 
   @UseGuards(AuthGuard('requestor'))
   @Get('/last')

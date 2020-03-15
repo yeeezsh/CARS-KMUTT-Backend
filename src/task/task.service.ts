@@ -20,6 +20,7 @@ import { AreaService } from '../area/area.service';
 import WeekParseHelper from './helpers/week.parse';
 import { AreaBuilding } from 'src/area/interfaces/area.building.interface';
 import { AreaQueryService } from 'src/area/area.query.service';
+import { QuickTaskAPI } from './interfaces/task.quick.interface';
 
 // constant
 const FORMAT = 'DD-MM-YYYY-HH:mm:ss';
@@ -320,5 +321,42 @@ export class TaskService {
       s.endSession();
       throw new Error(err);
     }
+  }
+
+  async getQuickTask(
+    areaId: string,
+    start: moment.Moment,
+    stop: moment.Moment,
+  ): Promise<QuickTaskAPI[]> {
+    const validaAreaId = await this.areaModel.findById(areaId).select('_id');
+    if (!validaAreaId) throw new BadRequestException('bad area id');
+
+    console.log('qt st', start.format('DD-MM'));
+    console.log('qt st', stop.format('DD-MM'));
+    const tasks = await this.taskModel
+      .find({
+        area: mongoose.Types.ObjectId(areaId),
+        state: {
+          $nin: ['drop', 'reject'],
+        },
+        reserve: {
+          $elemMatch: {
+            start: {
+              $gte: new Date(start.toISOString()),
+              $lt: new Date(stop.toISOString()),
+            },
+          },
+        },
+      })
+      .select('_id requestor state')
+      .lean();
+
+    return tasks.map(e => ({
+      ...e,
+      key: e._id,
+      username: e.requestor[0].username,
+      state: e.state.slice(-1)[0],
+      requestor: undefined,
+    }));
   }
 }
