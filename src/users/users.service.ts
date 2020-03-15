@@ -5,7 +5,7 @@ import {
   HttpStatus,
   HttpService,
 } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 // interfaces
 import { StaffDoc, StaffAPI } from './interfaces/staff.interface';
@@ -30,7 +30,7 @@ export class UsersService {
     @Inject('REQUESTOR_MODEL')
     private readonly requestorModel: Model<Requestor>,
     private readonly httpService: HttpService,
-  ) { }
+  ) {}
 
   async createStaff(create: CreateStaffDto): Promise<StaffDoc> {
     const duplicated = await Promise.all([
@@ -61,7 +61,7 @@ export class UsersService {
     if (BYPASS_STAFF.includes(login.username)) bypass = true;
     if (bypass)
       return {
-        _id: undefined,
+        _id: new Types.ObjectId('111111111111'),
         username: login.username,
         email: '',
         permission: 'staff',

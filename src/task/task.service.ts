@@ -21,6 +21,7 @@ import WeekParseHelper from './helpers/week.parse';
 import { AreaBuilding } from 'src/area/interfaces/area.building.interface';
 import { AreaQueryService } from 'src/area/area.query.service';
 import { QuickTaskAPI } from './interfaces/task.quick.interface';
+import { CreateTaskByStaffDto } from './dtos/task.create.bystaff.dto';
 
 // constant
 const FORMAT = 'DD-MM-YYYY-HH:mm:ss';
@@ -108,6 +109,42 @@ export class TaskService {
     });
 
     return true;
+  }
+
+  async createTaskByStaff(data: CreateTaskByStaffDto): Promise<Task> {
+    const s = await mongoose.startSession();
+    try {
+      s.startTransaction();
+      const { area: areaId, time, owner, requestor } = data;
+
+      const area = await this.areaModel
+        .findById(areaId)
+        .select(['reserve', 'required'])
+        .session(s)
+        .lean();
+
+      await this.checkAvailable(area, time, s);
+      const now = new Date();
+      const task = new this.taskModel({
+        reserve: time,
+        area: area._id,
+        state: ['accept'],
+        requestor: requestor.map(e => ({ username: e, comfirm: true })),
+        owner,
+        createAt: now,
+        updateAt: now,
+      });
+
+      await task.save({ session: s });
+      await s.commitTransaction();
+      s.endSession();
+
+      return task;
+    } catch (err) {
+      await s.abortTransaction();
+      s.endSession();
+      throw err;
+    }
   }
 
   async createSportTask(data: CreateTaskSportDto) {
