@@ -348,6 +348,7 @@ export class TaskService {
           },
         },
       })
+      .sort({ createAt: -1 })
       .select('_id requestor state reserve')
       .lean();
 
