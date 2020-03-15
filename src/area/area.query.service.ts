@@ -43,8 +43,8 @@ export class AreaQueryService {
             },
           },
           state: {
-            $in: ['wait', 'requested'],
-            $nin: ['drop', 'reject', 'accept'],
+            $in: ['wait', 'requested', 'accept'],
+            $nin: ['drop', 'reject'],
           },
         },
       },
@@ -212,7 +212,10 @@ export class AreaQueryService {
               },
             },
           },
-          cancle: false,
+          state: {
+            $in: ['wait', 'requested', 'accept'],
+            $nin: ['drop', 'reject'],
+          },
         })
         .lean();
     });
