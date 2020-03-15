@@ -9,7 +9,7 @@ import * as mongoose from 'mongoose';
 import * as moment from 'moment';
 
 import { Task, Requestor, TaskLastCard } from './interfaces/task.interface';
-import { Area } from 'src/area/interfaces/area.interface';
+import { AreaDoc } from 'src/area/interfaces/area.interface';
 import { TaskSchedule } from './interfaces/task.schedule.interface';
 
 import { CreateTaskSportDto, TimeSlot } from './dtos/task.create.sport';
@@ -30,7 +30,7 @@ const DAY_FORMAT = 'DD-MM-YYYY';
 export class TaskService {
   constructor(
     @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
-    @Inject('AREA_MODEL') private readonly areaModel: Model<Area>,
+    @Inject('AREA_MODEL') private readonly areaModel: Model<AreaDoc>,
     @Inject('AREA_BUILDING_MODEL')
     private readonly areaBuildingModel: Model<AreaBuilding>,
     @Inject(forwardRef(() => AreaQueryService))
@@ -38,7 +38,7 @@ export class TaskService {
   ) {}
 
   private async checkAvailable(
-    area: Area,
+    area: AreaDoc,
     timeSlot: TimeSlot[],
     s: ClientSession,
   ): Promise<boolean> {
@@ -116,7 +116,7 @@ export class TaskService {
 
       const { area: areaId, time, owner, requestor } = data;
 
-      const area: Area = await this.areaModel
+      const area: AreaDoc = await this.areaModel
         .findById(areaId)
         .select(['reserve', 'required'])
         .session(s)

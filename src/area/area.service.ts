@@ -1,6 +1,6 @@
 import { Injectable, Inject, HttpStatus, HttpException } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
-import { Area } from './interfaces/area.interface';
+import { AreaDoc } from './interfaces/area.interface';
 import { AreaBuilding } from './interfaces/area.building.interface';
 import { CreateAreaBuildingDto } from './dtos/area.building.create.dto';
 import { CreateAreaDto } from './dtos/area.create.dto';
@@ -11,7 +11,7 @@ import { Task } from 'src/task/interfaces/task.interface';
 @Injectable()
 export class AreaService {
   constructor(
-    @Inject('AREA_MODEL') private readonly areaModel: Model<Area>,
+    @Inject('AREA_MODEL') private readonly areaModel: Model<AreaDoc>,
     @Inject('AREA_BUILDING_MODEL')
     private readonly areaBuildingModel: Model<AreaBuilding>,
     private readonly formService: FormService,
@@ -37,7 +37,7 @@ export class AreaService {
     }
   }
 
-  async createArea(data: CreateAreaDto): Promise<Area> {
+  async createArea(data: CreateAreaDto): Promise<AreaDoc> {
     try {
       const duplicated = await this.areaModel.findOne({ name: data.name });
       if (duplicated) {

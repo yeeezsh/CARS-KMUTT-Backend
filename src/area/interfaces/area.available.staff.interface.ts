@@ -1,7 +1,8 @@
 import { TimeNode } from './timenode.interface';
+import { Types } from 'mongoose';
 
 export interface AreaAvailableStaff {
-  _id: string;
+  _id: string | Types.ObjectId;
   name: string;
   label: string;
   building: {

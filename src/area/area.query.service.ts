@@ -1,6 +1,6 @@
 import { Injectable, Inject, BadRequestException } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
-import { Area } from './interfaces/area.interface';
+import { AreaDoc, AreaAPI } from './interfaces/area.interface';
 import { AreaBuilding } from './interfaces/area.building.interface';
 
 import { Moment } from 'moment';
@@ -15,21 +15,21 @@ import { TimeNode } from './interfaces/timenode.interface';
 @Injectable()
 export class AreaQueryService {
   constructor(
-    @Inject('AREA_MODEL') private readonly areaModel: Model<Area>,
+    @Inject('AREA_MODEL') private readonly areaModel: Model<AreaDoc>,
     @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
     @Inject('AREA_BUILDING_MODEL')
     private readonly areaBuildingModel: Model<AreaBuilding>,
   ) {}
 
   private async getReservedAreaTimeInOneDay(
-    areaId: string,
+    areaId: string | Types.ObjectId,
     date?: Moment,
   ): Promise<TimeNode[]> {
     if (!date) return;
     return await this.taskModel.aggregate([
       {
         $match: {
-          area: Types.ObjectId(areaId),
+          area: new Types.ObjectId(areaId),
           // createAt: {
           //   $gte: new Date(date.toISOString()),
           //   $lte: new Date(moment(date.add(1, 'day')).toISOString()),
@@ -138,7 +138,7 @@ export class AreaQueryService {
     }
   }
 
-  async listArea(): Promise<Area[]> {
+  async listArea(): Promise<AreaDoc[]> {
     try {
       const doc = await this.areaModel
         .find({})
@@ -150,11 +150,11 @@ export class AreaQueryService {
     }
   }
 
-  async getArea(id: string): Promise<Area> {
+  async getArea(id: string): Promise<AreaAPI> {
     try {
       const doc = await this.areaModel
         .findById(id)
-        .populate(['building'])
+        .populate('building', 'name label')
         .lean();
       if (!doc) {
         throw Error('_id is not exisiting');
@@ -179,7 +179,7 @@ export class AreaQueryService {
     }
   }
 
-  async getSportAreaFields(id: string): Promise<Area[]> {
+  async getSportAreaFields(id: string): Promise<AreaDoc[]> {
     return await this.areaModel.find({ building: id }).lean();
   }
 
@@ -189,7 +189,9 @@ export class AreaQueryService {
   ): Promise<AreaAvailble[]> {
     // ): Promise<any[]> {
     // ): Promise<any> {
-    const fields: Area[] = await this.areaModel.find({ building: id }).lean();
+    const fields: AreaDoc[] = await this.areaModel
+      .find({ building: id })
+      .lean();
     const maxForward = fields.reduce((prev, cur) =>
       prev.forward > cur.forward ? prev : cur,
     ).forward;

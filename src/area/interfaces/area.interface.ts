@@ -1,4 +1,4 @@
-import { Schema, Document } from 'mongoose';
+import { Schema, Document, Types } from 'mongoose';
 import { StaffDoc } from '../../users/interfaces/staff.interface';
 import { AreaBuilding } from './area.building.interface';
 
@@ -11,7 +11,8 @@ interface Reserve {
   week: string | '1-7' | '1,2,3';
 }
 
-export interface Area extends Document {
+export interface Area {
+  _id: string | Types.ObjectId;
   name: string;
   label?: string;
   building?: AreaBuilding;
@@ -25,3 +26,8 @@ export interface Area extends Document {
   createAt: Date;
   updateAt: Date;
 }
+
+export interface AreaDoc extends Area, Document {
+  _id: Types.ObjectId;
+}
+export interface AreaAPI extends Area {}
