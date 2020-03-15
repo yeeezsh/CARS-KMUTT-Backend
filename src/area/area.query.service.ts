@@ -1,4 +1,9 @@
-import { Injectable, Inject, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  BadRequestException,
+  ConflictException,
+} from '@nestjs/common';
 import { Model, Types } from 'mongoose';
 import { AreaDoc, AreaAPI } from './interfaces/area.interface';
 import { AreaBuilding } from './interfaces/area.building.interface';
@@ -26,6 +31,11 @@ export class AreaQueryService {
     date?: Moment,
   ): Promise<TimeNode[]> {
     if (!date) return;
+    console.log(
+      new Date(date.toISOString()).toLocaleString(),
+      '-',
+      new Date(moment(date.add(1, 'day')).toISOString()).toLocaleString(),
+    );
     return await this.taskModel.aggregate([
       {
         $match: {
@@ -65,16 +75,17 @@ export class AreaQueryService {
 
       if (!area) throw new BadRequestException('bad area id');
 
-      const today = moment().startOf('day');
+      const today = moment(moment()).startOf('day');
       const forward = area.forward;
       const weeks = weekParse(area.reserve[0].week);
       const validDay = Array(forward)
         .fill([])
-        .map((e, i) => {
-          const day = moment(today).add(1, 'day');
+        .map((_e, i) => {
+          const day = moment(today).add(i, 'day');
           if (weeks.includes(Number(day.format('E')))) {
             return {
-              date: moment(day).add(i, 'day'),
+              // HOT FIX for overlaps day
+              date: moment(day).subtract(1, 'day'),
             };
           }
           return 0;
@@ -98,9 +109,11 @@ export class AreaQueryService {
           label: area.building.label,
         },
         disabled: availableDays[i],
-        date: e && new Date(e.date.toISOString()),
+        // HOT FIX bad overlaps day
+        date: e && new Date(e.date.subtract(1, 'day').toISOString()),
       }));
 
+      console.log(mapped);
       return mapped;
     } catch (err) {
       throw err;
