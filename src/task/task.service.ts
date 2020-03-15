@@ -37,7 +37,7 @@ export class TaskService {
     private readonly areaBuildingModel: Model<AreaBuilding>,
     @Inject(forwardRef(() => AreaQueryService))
     private readonly areaQueryService: AreaQueryService,
-  ) {}
+  ) { }
 
   private async checkAvailable(
     area: AreaDoc,
@@ -123,7 +123,8 @@ export class TaskService {
         .session(s)
         .lean();
 
-      await this.checkAvailable(area, time, s);
+      // DANGER BYPASS
+      // await this.checkAvailable(area, time, s);
       const now = new Date();
       const task = new this.taskModel({
         reserve: time,
