@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  Inject,
-  BadRequestException,
-  ConflictException,
-} from '@nestjs/common';
+import { Injectable, Inject, BadRequestException } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
 import { AreaDoc, AreaAPI } from './interfaces/area.interface';
 import { AreaBuilding } from './interfaces/area.building.interface';
@@ -172,12 +167,22 @@ export class AreaQueryService {
       throw err;
     }
   }
-
-  async getAreaBuilding(id?: string): Promise<AreaBuilding[]> {
+  /**
+   * @param  {string} id? when null is query all possible
+   * @returns Promise
+   */
+  async getAreaSportBuilding(id?: string): Promise<AreaBuilding[]> {
     try {
-      let query = {};
-      if (id) query = { _id: id };
-      const doc = await this.areaBuildingModel.find(query).lean();
+      return this.getAreaBuilding(undefined, { type: 'sport' });
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getAreaBuilding(id?: string, query?: {}): Promise<AreaBuilding[]> {
+    try {
+      const rawQuery = { ...query, id };
+      const doc = await this.areaBuildingModel.find(rawQuery).lean();
       if (!doc) {
         throw Error('_id is not exisiting');
       }

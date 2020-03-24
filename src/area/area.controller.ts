@@ -16,7 +16,7 @@ export class AreaController {
   @Get('/sport/area/all')
   @UseGuards(AuthGuard('requestor'))
   async getSportAreaAll() {
-    return await this.areaQueryService.getAreaBuilding();
+    return await this.areaQueryService.getAreaSportBuilding();
   }
 
   // @Get('/sport/fields/reserved/:id/:date')
