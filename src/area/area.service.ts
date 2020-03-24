@@ -6,7 +6,6 @@ import { CreateAreaBuildingDto } from './dtos/area.building.create.dto';
 import { CreateAreaDto } from './dtos/area.create.dto';
 import { FormService } from '../form/form.service';
 import { UsersService } from '../users/users.service';
-import { Task } from 'src/task/interfaces/task.interface';
 
 @Injectable()
 export class AreaService {
