@@ -167,13 +167,22 @@ export class AreaQueryService {
       throw err;
     }
   }
+
   /**
    * @param  {string} id? when null is query all possible
    * @returns Promise
    */
   async getAreaSportBuilding(id?: string): Promise<AreaBuilding[]> {
     try {
-      return this.getAreaBuilding(undefined, { type: 'sport' });
+      return this.getAreaBuilding(id, { type: 'sport' });
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getAreaCommonBuilding(id?: string): Promise<AreaBuilding[]> {
+    try {
+      return this.getAreaBuilding(id, { type: 'common' });
     } catch (err) {
       throw err;
     }
