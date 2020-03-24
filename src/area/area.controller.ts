@@ -13,7 +13,7 @@ export class AreaController {
     private readonly areaQueryService: AreaQueryService,
   ) {}
 
-  @Get('/sport/area/all')
+  @Get('/sport/building/all')
   @UseGuards(AuthGuard('requestor'))
   async getSportAreaAll() {
     return await this.areaQueryService.getAreaSportBuilding();
