@@ -19,34 +19,22 @@ export class AreaController {
     return await this.areaQueryService.getAreaSportBuilding();
   }
 
-  // @Get('/sport/fields/reserved/:id/:date')
-  // async getSportAreaFieldsResevered(
-  //   @Param('id') id: string,
-  //   @Param('date') date: Date,
-  // ) {
-  //   console.log(id, date);
-  //   return;
-  // }
-
-  // @UseGuards(AuthGuard('requestor'))
-  // @Get('/sport/fields/:id')
-  // async getSportAreaFields(@Param('id') id: string) {
-  //   return await this.areaService.getSportAreaFields(id);
-  // }
+  @Get('/common/building/all')
+  @UseGuards(AuthGuard('requestor'))
+  async getCommonAreaAll() {
+    return this.areaQueryService.getAreaCommonBuilding();
+  }
 
   @Get('/sport/fields/:id/:date')
   @UseGuards(AuthGuard('requestor'))
   async getSportAreaFields(@Param('id') id: string, @Param('date') date: Date) {
     try {
-      // async test() {
-      // const now = moment().startOf('day');
-      // console.log('on', moment(date).format('DD-MM-YYYY HH:mm'));
       return await this.areaQueryService.getAvailableSportAreaFields(
         id,
         moment(date),
       );
     } catch (err) {
-      console.error(err);
+      throw err;
     }
   }
 
