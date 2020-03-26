@@ -5,11 +5,14 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es2019",
+    "target": "ES2017",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "lib": ["es2019"]
-  }
+    "lib": [
+      "es2019"
+    ]
+  },
+  "exclude": ["node_modules", "dist"]
 }
