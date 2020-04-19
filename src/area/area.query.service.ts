@@ -188,10 +188,12 @@ export class AreaQueryService {
     }
   }
 
-  async getAreaBuilding(id?: string, query?: {}): Promise<AreaBuilding[]> {
+  // tslint:disable-next-line: variable-name
+  async getAreaBuilding(_id?: string, query?: {}): Promise<AreaBuilding[]> {
     try {
-      const rawQuery = { ...query, id };
+      const rawQuery = { ...query, _id };
       const doc = await this.areaBuildingModel.find(rawQuery).lean();
+
       if (!doc) {
         throw Error('_id is not exisiting');
       }
