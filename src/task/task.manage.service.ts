@@ -24,7 +24,8 @@ export class TaskManageService {
         .toDate();
     }
 
-    const docs: TaskManage[] = await this.taskModel.aggregate([
+    // only sport n' meeting
+    const sportAndMeetingdocs: TaskManage[] = await this.taskModel.aggregate([
       {
         $match: {
           // back verse query
@@ -67,7 +68,43 @@ export class TaskManageService {
       { $sort: { createAt: -1 } },
     ]);
 
-    return docs;
+    const taskForm = await this.taskModel.aggregate([
+      {
+        $match: {
+          ...query,
+          building: { $exists: true },
+        },
+      },
+
+      // building bind
+      {
+        $lookup: {
+          from: 'area.buildings',
+          localField: 'building',
+          foreignField: '_id',
+          as: 'area',
+        },
+      },
+      { $unwind: '$area' },
+
+      // project
+      {
+        $project: {
+          _id: 1,
+          requestor: 1,
+          'area.label': 1,
+          'area.name': 1,
+          type: '$area.type',
+          createAt: 1,
+          state: 1,
+        },
+      },
+
+      // sort
+      { $sort: { createAt: -1 } },
+    ]);
+
+    return [...sportAndMeetingdocs, ...taskForm];
   }
 
   async getWaitTask(offset?: Date, limit?: Date) {
