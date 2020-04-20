@@ -16,13 +16,19 @@ export interface Requestor {
   confirm: boolean;
 }
 
+export interface StaffRequested {
+  group?: string;
+  id?: string[];
+}
+
 export interface Task extends Document {
-  reserve: TimeSlotType;
+  reserve?: TimeSlotType;
   requestor: Requestor[];
   // requested for sport (have timeout) / wait for normaly task
   state: Array<'wait' | 'approve' | 'reject' | 'accept' | 'drop' | 'requested'>;
-  staff?: StaffDoc[];
-  area: AreaDoc; // required area module
+  staff?: StaffRequested[];
+  area?: AreaDoc; // required area module
+  building?: string;
   form?: any[];
   desc?: string;
 
