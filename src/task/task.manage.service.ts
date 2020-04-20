@@ -103,8 +103,13 @@ export class TaskManageService {
       // sort
       { $sort: { createAt: -1 } },
     ]);
+    const merge = [...sportAndMeetingdocs, ...taskForm];
+    const sorted = merge.sort(
+      (a, b) =>
+        -(new Date(a.createAt).getTime() - new Date(b.createAt).getTime()),
+    );
 
-    return [...sportAndMeetingdocs, ...taskForm];
+    return sorted;
   }
 
   async getWaitTask(offset?: Date, limit?: Date) {
