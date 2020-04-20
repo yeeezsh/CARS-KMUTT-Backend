@@ -9,11 +9,11 @@ class AreaBuildingAPI {
 
 // tslint:disable-next-line: max-classes-per-file
 export class TaskFormCreateDto {
-  @IsNotEmpty()
-  @ValidateNested({ each: true })
+  // @IsNotEmpty()
+  // @ValidateNested({ each: true })
   area: AreaBuildingAPI;
 
-  @IsNotEmpty()
-  @IsArray()
-  form: any[];
+  // @IsNotEmpty()
+  // @IsArray()
+  forms: any[];
 }

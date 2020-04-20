@@ -13,7 +13,8 @@ export class TaskFormService {
 
   async createTask(requestorUsername: string, data: TaskFormCreateDto) {
     try {
-      const projectForm = data.form[INDEX_RESERVE_FORM];
+      console.log(data);
+      const projectForm = data.forms[INDEX_RESERVE_FORM];
       const {
         projectStartTime,
         projectStopTime,
@@ -63,6 +64,7 @@ export class TaskFormService {
       }
 
       const doc = new this.taskModel({
+        state: ['wait'],
         reserve: reserveMapped,
         requestor: [{ username: requestorUsername, confirm: true }],
         building: data.area._id,
