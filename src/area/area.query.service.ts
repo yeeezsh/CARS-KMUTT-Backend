@@ -191,7 +191,7 @@ export class AreaQueryService {
   // tslint:disable-next-line: variable-name
   async getAreaBuilding(_id?: string, query?: {}): Promise<AreaBuilding[]> {
     try {
-      const rawQuery = { ...query, _id };
+      const rawQuery = _id ? { ...query, _id } : { ...query };
       const doc = await this.areaBuildingModel.find(rawQuery).lean();
 
       if (!doc) {
