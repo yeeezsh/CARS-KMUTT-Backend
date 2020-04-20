@@ -1,7 +1,7 @@
-import { Schema, Document } from 'mongoose';
+// import { Schema, Document } from 'mongoose';
+import { Document } from 'mongoose';
 import { StaffDoc } from '../../users/interfaces/staff.interface';
 import { AreaDoc } from '../../area/interfaces/area.interface';
-import { Form } from '../../form/interfaces/form.interface';
 
 interface TimeSlot {
   start?: Date;
@@ -19,11 +19,11 @@ export interface Requestor {
 export interface Task extends Document {
   reserve: TimeSlotType;
   requestor: Requestor[];
+  // requested for sport (have timeout) / wait for normaly task
   state: Array<'wait' | 'approve' | 'reject' | 'accept' | 'drop' | 'requested'>;
   staff?: StaffDoc[];
   area: AreaDoc; // required area module
-  // form?: Form; // required form module
-  form?: Object;
+  form?: any[];
   desc?: string;
 
   createAt: Date;
