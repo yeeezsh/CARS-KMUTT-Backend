@@ -8,9 +8,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 
-import { AreaService } from 'src/area/area.service';
 import { TaskService } from './task.service';
-import { HistoryService } from './history.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 import { CreateTaskSportDto } from './dtos/task.create.sport';
@@ -20,9 +18,7 @@ import { UserSession } from 'src/users/interfaces/user.session.interface';
 @Controller('task/sport')
 export class TaskSportController {
   constructor(
-    private readonly areaService: AreaService,
-    private readonly taskService: TaskService,
-    private readonly historyService: HistoryService,
+    private readonly taskService: TaskService, // private readonly historyService: HistoryService,
   ) {}
 
   @UseGuards(AuthGuard('requestor'))
