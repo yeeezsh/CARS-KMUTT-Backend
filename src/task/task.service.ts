@@ -37,7 +37,7 @@ export class TaskService {
     private readonly areaBuildingModel: Model<AreaBuilding>,
     @Inject(forwardRef(() => AreaQueryService))
     private readonly areaQueryService: AreaQueryService,
-  ) { }
+  ) {}
 
   private async checkAvailable(
     area: AreaDoc,
@@ -259,15 +259,19 @@ export class TaskService {
         })
         .sort({ createAt: -1 })
         .limit(1)
-        .select(['reserve', 'state', 'area', 'requestor'])
+        .select(['reserve', 'state', 'area', 'requestor', 'building'])
         .populate('area')
         .lean();
 
       const task = lastTask[0];
+      const building = await this.areaBuildingModel.findOne({
+        _id: task.building,
+      });
       if (!task) return undefined;
       return {
         ...task,
         owner: (task && task.requestor[0].username) || '',
+        area: task.area || building,
       };
     } catch (err) {
       throw err;
