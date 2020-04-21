@@ -6,6 +6,8 @@ import moment = require('moment');
 import { TimeSlot } from './dtos/task.create.sport';
 
 const INDEX_RESERVE_FORM = 1;
+const DAY_FORMAT = 'DD-MM-YYYY';
+const TIME_FORMAT = 'HH:mm';
 
 @Injectable()
 export class TaskFormService {
@@ -13,7 +15,6 @@ export class TaskFormService {
 
   async createTask(requestorUsername: string, data: TaskFormCreateDto) {
     try {
-      console.log(data);
       const projectForm = data.forms[INDEX_RESERVE_FORM];
       const {
         projectStartTime,
@@ -27,16 +28,16 @@ export class TaskFormService {
         projectStopDate = projectStartDate;
         reserveMapped.push({
           start: moment(
-            `${moment(projectStartDate).format('DD-MM-YYYY')} ${moment(
+            `${moment(projectStartDate).format(DAY_FORMAT)} ${moment(
               projectStartTime,
-            ).format('HH:mm')}`,
-            'DD-MM-YYYY HH:mm',
+            ).format(TIME_FORMAT)}`,
+            `${DAY_FORMAT} ${TIME_FORMAT}`,
           ).toDate(),
           stop: moment(
-            `${moment(projectStartDate).format('DD-MM-YYYY')} ${moment(
+            `${moment(projectStartDate).format(DAY_FORMAT)} ${moment(
               projectStopTime,
             ).format('HH:mm')}`,
-            'DD-MM-YYYY HH:mm',
+            `${DAY_FORMAT} ${TIME_FORMAT}`,
           ).toDate(),
         });
       } else {
@@ -47,16 +48,16 @@ export class TaskFormService {
         while (curDay.valueOf() < stopDay.valueOf()) {
           reserveMapped.push({
             start: moment(
-              `${curDay.format('DD-MM-YYYY')} ${moment(projectStartTime).format(
-                'HH:mm',
+              `${curDay.format(DAY_FORMAT)} ${moment(projectStartTime).format(
+                TIME_FORMAT,
               )}`,
-              'DD-MM-YYYY HH:mm',
+              `${DAY_FORMAT} ${TIME_FORMAT}`,
             ).toDate(),
             stop: moment(
-              `${curDay.format('DD-MM-YYYY')} ${moment(projectStartTime).format(
-                'HH:mm',
+              `${curDay.format(DAY_FORMAT)} ${moment(projectStartTime).format(
+                TIME_FORMAT,
               )}`,
-              'DD-MM-YYYY HH:mm',
+              `${DAY_FORMAT} ${TIME_FORMAT}`,
             ).toDate(),
           });
           curDay = moment(curDay.add(1, 'day'));

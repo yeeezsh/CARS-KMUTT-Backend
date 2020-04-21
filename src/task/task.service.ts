@@ -15,7 +15,7 @@ import { TaskSchedule } from './interfaces/task.schedule.interface';
 import { CreateTaskSportDto, TimeSlot } from './dtos/task.create.sport';
 import TaskSchedulePartitionArrHelper from './helpers/task.schedule.partition.arr.helper';
 import TaskScheduleStructArrHelper from './helpers/task.schedule.struct.arr.helper';
-import { AreaService } from '../area/area.service';
+// import { AreaService } from '../area/area.service';
 
 import WeekParseHelper from './helpers/week.parse';
 import { AreaBuilding } from 'src/area/interfaces/area.building.interface';
@@ -24,9 +24,9 @@ import { QuickTaskAPI } from './interfaces/task.quick.interface';
 import { CreateTaskByStaffDto } from './dtos/task.create.bystaff.dto';
 
 // constant
-const FORMAT = 'DD-MM-YYYY-HH:mm:ss';
-const TIME_FORMAT = 'HH:mm:ss';
-const DAY_FORMAT = 'DD-MM-YYYY';
+// const FORMAT = 'DD-MM-YYYY-HH:mm:ss';
+// const TIME_FORMAT = 'HH:mm:ss';
+// const DAY_FORMAT = 'DD-MM-YYYY';
 
 @Injectable()
 export class TaskService {

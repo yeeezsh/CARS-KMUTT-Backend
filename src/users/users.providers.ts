@@ -8,13 +8,13 @@ export const usersProviders = [
   {
     provide: 'STAFF_MODEL',
     useFactory: async (connection: Connection) =>
-      await connection.model('staffs', StaffSchema),
+      connection.model('staffs', StaffSchema),
     inject: ['DATABASE_CONNECTION'],
   },
   {
     provide: 'REQUESTOR_MODEL',
     useFactory: async (connection: Connection) =>
-      await connection.model('requestors', RequestorSchema),
+      connection.model('requestors', RequestorSchema),
     inject: ['DATABASE_CONNECTION'],
   },
 ];

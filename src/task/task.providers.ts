@@ -6,7 +6,7 @@ export const taskProviders = [
   {
     provide: 'TASK_MODEL',
     useFactory: async (connection: Connection) =>
-      await connection.model('tasks', TaskSchema),
+      connection.model('tasks', TaskSchema),
     inject: ['DATABASE_CONNECTION'],
   },
 ];

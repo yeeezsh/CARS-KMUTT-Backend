@@ -7,13 +7,13 @@ export const areaProviders = [
   {
     provide: 'AREA_MODEL',
     useFactory: async (connection: Connection) =>
-      await connection.model('areas', AreaSchema),
+      connection.model('areas', AreaSchema),
     inject: ['DATABASE_CONNECTION'],
   },
   {
     provide: 'AREA_BUILDING_MODEL',
     useFactory: async (connection: Connection) =>
-      await connection.model('area.buildings', AreaBuildingSchema),
+      connection.model('area.buildings', AreaBuildingSchema),
     inject: ['DATABASE_CONNECTION'],
   },
 ];

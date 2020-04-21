@@ -5,7 +5,7 @@ export const formProviders = [
   {
     provide: 'FORM_MODEL',
     useFactory: async (connection: Connection) =>
-      await connection.model('forms', FormSchema),
+      connection.model('forms', FormSchema),
     inject: ['DATABASE_CONNECTION'],
   },
 ];
