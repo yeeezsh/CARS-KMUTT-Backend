@@ -281,14 +281,21 @@ export class TaskService {
   async getTaskById(id: string): Promise<Task> {
     const task = await this.taskModel
       .findById(id)
-      .select(['reserve', 'state', 'area', 'requestor'])
+      .select(['reserve', 'state', 'area', 'requestor', 'building'])
       .populate('area', '_id name label building')
       .lean();
 
-    const buildingId = task.area.building._id;
+    const buildingId =
+      (task.area && task.area.building._id) || task.building._id;
     const building = await this.areaBuildingModel
       .findById(buildingId)
       .select('_id name type label');
+    if (!task.area) {
+      // when only building
+      task.area = {
+        label: building.label,
+      };
+    }
 
     return {
       ...task,
