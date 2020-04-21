@@ -61,6 +61,10 @@ export class UsersController {
     const username = user.username;
     const reserve = await this.taskModel
       .find({
+        building: {
+          // not include common/sport area reservation
+          $exists: false,
+        },
         state: {
           $nin: ['drop', 'reject'],
         },
