@@ -27,7 +27,7 @@ export class TaskFormController {
     return 'test';
   }
 
-  @Post('/')
+  @Post('/common')
   @UseGuards(AuthGuard('requestor'))
   async createTaskForm(
     @Body() data: TaskFormCreateDto,
@@ -36,7 +36,7 @@ export class TaskFormController {
   ) {
     try {
       console.log('/task from post');
-      this.taskFormService.createTask(user.username, data);
+      this.taskFormService.createCommonTask(user.username, data);
       return res.sendStatus(200);
     } catch (err) {
       throw new InternalServerErrorException(err);

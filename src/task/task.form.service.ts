@@ -13,7 +13,7 @@ const TIME_FORMAT = 'HH:mm';
 export class TaskFormService {
   constructor(@Inject('TASK_MODEL') private readonly taskModel: Model<Task>) {}
 
-  async createTask(requestorUsername: string, data: TaskFormCreateDto) {
+  async createCommonTask(requestorUsername: string, data: TaskFormCreateDto) {
     try {
       const projectForm = data.forms[INDEX_RESERVE_FORM];
       const {
