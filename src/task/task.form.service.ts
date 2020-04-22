@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { Task } from './interfaces/task.interface';
+import { Task, TaskType } from './interfaces/task.interface';
 import { TaskFormCreateDto } from './dtos/task.form.create.dto';
 import moment = require('moment');
 import { TimeSlot } from './dtos/task.create.sport';
@@ -13,7 +13,11 @@ const TIME_FORMAT = 'HH:mm';
 export class TaskFormService {
   constructor(@Inject('TASK_MODEL') private readonly taskModel: Model<Task>) {}
 
-  async createCommonTask(requestorUsername: string, data: TaskFormCreateDto) {
+  async createTask(
+    requestorUsername: string,
+    data: TaskFormCreateDto,
+    type: TaskType,
+  ) {
     try {
       const projectForm = data.forms[INDEX_RESERVE_FORM];
       const {
@@ -65,11 +69,12 @@ export class TaskFormService {
       }
 
       const doc = new this.taskModel({
+        forms: data.forms,
         state: ['wait'],
         reserve: reserveMapped,
         requestor: [{ username: requestorUsername, confirm: true }],
         building: data.area._id,
-        type: 'common',
+        type,
       });
 
       await doc.save();

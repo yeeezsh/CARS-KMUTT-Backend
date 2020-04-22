@@ -37,7 +37,7 @@ export const TaskSchema = new Schema({
   area: { type: Schema.Types.ObjectId, ref: 'areas', index: true },
   building: { type: Schema.Types.ObjectId, ref: 'area.buildings', index: true },
   // form: { type: Schema.Types.ObjectId, ref: 'forms' },
-  form: Object,
+  forms: [{}],
   desc: String,
 
   // use for common/area reserve
