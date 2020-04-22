@@ -32,6 +32,9 @@ export interface Task extends Document {
   form?: any[];
   desc?: string;
 
+  // use for common/area reserve
+  type: 'common' | 'common-sport';
+
   createAt: Date;
   updateAt: Date;
 }

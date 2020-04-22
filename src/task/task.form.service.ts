@@ -69,6 +69,7 @@ export class TaskFormService {
         reserve: reserveMapped,
         requestor: [{ username: requestorUsername, confirm: true }],
         building: data.area._id,
+        type: 'common',
       });
 
       await doc.save();
