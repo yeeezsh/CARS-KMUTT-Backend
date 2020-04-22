@@ -29,14 +29,28 @@ export class TaskFormController {
 
   @Post('/common')
   @UseGuards(AuthGuard('requestor'))
-  async createTaskForm(
+  async createTaskFormCommon(
     @Body() data: TaskFormCreateDto,
     @UserInfo() user: UserSession,
     @Res() res: Response,
   ) {
     try {
-      console.log('/task from post');
-      this.taskFormService.createCommonTask(user.username, data);
+      this.taskFormService.createTask(user.username, data, 'common');
+      return res.sendStatus(200);
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
+  }
+
+  @Post('/sport')
+  @UseGuards(AuthGuard('requestor'))
+  async createTaskFormSport(
+    @Body() data: TaskFormCreateDto,
+    @UserInfo() user: UserSession,
+    @Res() res: Response,
+  ) {
+    try {
+      this.taskFormService.createTask(user.username, data, 'common-sport');
       return res.sendStatus(200);
     } catch (err) {
       throw new InternalServerErrorException(err);
