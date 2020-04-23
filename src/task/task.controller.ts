@@ -71,7 +71,7 @@ export class TaskController {
   @UseGuards(AuthGuard('requestor'))
   async getTask(@UserInfo() user: UserSession, @Param('id') taskId: string) {
     // for checking authorized nxt patch
-    const { username } = user;
+    // const { username } = user;
     return this.taskService.getTaskById(taskId);
   }
 
