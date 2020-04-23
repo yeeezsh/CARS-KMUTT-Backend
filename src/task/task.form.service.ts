@@ -58,7 +58,7 @@ export class TaskFormService {
               `${DAY_FORMAT} ${TIME_FORMAT}`,
             ).toDate(),
             stop: moment(
-              `${curDay.format(DAY_FORMAT)} ${moment(projectStartTime).format(
+              `${curDay.format(DAY_FORMAT)} ${moment(projectStopTime).format(
                 TIME_FORMAT,
               )}`,
               `${DAY_FORMAT} ${TIME_FORMAT}`,
