@@ -8,7 +8,12 @@ import { Model, ClientSession } from 'mongoose';
 import * as mongoose from 'mongoose';
 import * as moment from 'moment';
 
-import { Task, Requestor, TaskLastCard } from './interfaces/task.interface';
+import {
+  TaskDoc,
+  Requestor,
+  TaskLastCard,
+  Task,
+} from './interfaces/task.interface';
 import { AreaDoc } from 'src/area/interfaces/area.interface';
 import { TaskSchedule } from './interfaces/task.schedule.interface';
 
@@ -31,7 +36,7 @@ import { CreateTaskByStaffDto } from './dtos/task.create.bystaff.dto';
 @Injectable()
 export class TaskService {
   constructor(
-    @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
+    @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc>,
     @Inject('AREA_MODEL') private readonly areaModel: Model<AreaDoc>,
     @Inject('AREA_BUILDING_MODEL')
     private readonly areaBuildingModel: Model<AreaBuilding>,
@@ -89,7 +94,7 @@ export class TaskService {
       });
     });
 
-    const tasks: Task[] = await this.taskModel
+    const tasks: TaskDoc[] = await this.taskModel
       .find({ area: area.id })
       .select('reserve')
       .session(s)
@@ -111,7 +116,7 @@ export class TaskService {
     return true;
   }
 
-  async createTaskByStaff(data: CreateTaskByStaffDto): Promise<Task> {
+  async createTaskByStaff(data: CreateTaskByStaffDto): Promise<TaskDoc> {
     const s = await mongoose.startSession();
     try {
       s.startTransaction();
@@ -175,11 +180,12 @@ export class TaskService {
       }));
 
       const now = new Date();
-      const doc: Task | any = {
+      const doc: Task = {
         reserve: time,
         requestor: requestorMapped,
         area: area._id,
         state: requestor.length === 1 ? ['accept'] : ['requested'],
+        type: 'sport',
         createAt: now,
         updateAt: now,
       };
@@ -278,7 +284,7 @@ export class TaskService {
     }
   }
 
-  async getTaskById(id: string): Promise<Task> {
+  async getTaskById(id: string): Promise<TaskDoc> {
     const task = await this.taskModel
       .findById(id)
       .select([

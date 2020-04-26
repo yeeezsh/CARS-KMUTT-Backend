@@ -2,13 +2,15 @@ import { Injectable, Inject } from '@nestjs/common';
 
 import { Model } from 'mongoose';
 
-import { Task } from './interfaces/task.interface';
+import { TaskDoc } from './interfaces/task.interface';
 import moment = require('moment');
 import { TaskManage } from './interfaces/task.manage.interface';
 
 @Injectable()
 export class TaskManageService {
-  constructor(@Inject('TASK_MODEL') private readonly taskModel: Model<Task>) {}
+  constructor(
+    @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc>,
+  ) {}
 
   async getAllTask(
     offset?: Date,

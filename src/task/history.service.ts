@@ -1,6 +1,6 @@
 import { Model } from 'mongoose';
 import { Injectable, Inject } from '@nestjs/common';
-import { Task } from './interfaces/task.interface';
+import { TaskDoc } from './interfaces/task.interface';
 
 const DEFAULT_SELECT = '_id state cancle reserve requestor area createAt';
 const DEAFAULT_POPULATE = 'area building';
@@ -13,9 +13,9 @@ function mapAreaBuilding(e) {
 @Injectable()
 export class HistoryService {
   constructor(
-    @Inject('TASK_MODEL') private readonly taskModel: Model<Task | any>,
+    @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc | any>,
   ) {}
-  async getAllHistory(username: string): Promise<Task[]> {
+  async getAllHistory(username: string): Promise<TaskDoc[]> {
     const doc = await this.taskModel
       .find({
         requestor: {
@@ -32,7 +32,7 @@ export class HistoryService {
     return parsed;
   }
 
-  async getAllRequested(username: string): Promise<Task[]> {
+  async getAllRequested(username: string): Promise<TaskDoc[]> {
     const doc = await this.taskModel
       .find({
         requestor: {
@@ -54,7 +54,7 @@ export class HistoryService {
     return parsed;
   }
 
-  async getAllWait(username: string): Promise<Task[]> {
+  async getAllWait(username: string): Promise<TaskDoc[]> {
     const doc = await this.taskModel
       .find({
         requestor: {

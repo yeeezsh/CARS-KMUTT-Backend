@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { Task, TaskType } from './interfaces/task.interface';
+import { TaskDoc, TaskType } from './interfaces/task.interface';
 import { TaskFormCreateDto } from './dtos/task.form.create.dto';
 import moment = require('moment');
 import { TimeSlot } from './dtos/task.create.sport';
@@ -11,7 +11,9 @@ const TIME_FORMAT = 'HH:mm';
 
 @Injectable()
 export class TaskFormService {
-  constructor(@Inject('TASK_MODEL') private readonly taskModel: Model<Task>) {}
+  constructor(
+    @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc>,
+  ) {}
 
   async createTask(
     requestorUsername: string,

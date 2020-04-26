@@ -3,11 +3,13 @@ import { Interval } from '@nestjs/schedule';
 import { Model } from 'mongoose';
 import * as mongoose from 'mongoose';
 import * as moment from 'moment';
-import { Task } from './interfaces/task.interface';
+import { TaskDoc } from './interfaces/task.interface';
 
 @Injectable()
 export class TaskCronsService {
-  constructor(@Inject('TASK_MODEL') private readonly taskModel: Model<Task>) {}
+  constructor(
+    @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc>,
+  ) {}
 
   // delete timeout task every 60s
   @Interval(60000)

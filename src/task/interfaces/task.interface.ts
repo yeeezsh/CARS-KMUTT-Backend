@@ -1,5 +1,5 @@
 // import { Schema, Document } from 'mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 // import { StaffDoc } from '../../users/interfaces/staff.interface';
 import { AreaDoc } from '../../area/interfaces/area.interface';
 
@@ -23,13 +23,13 @@ export interface StaffRequested {
 
 export type TaskType = 'common' | 'common-sport' | 'sport' | 'meeting';
 
-export interface Task extends Document {
+export interface Task {
   reserve?: TimeSlotType;
   requestor: Requestor[];
   // requested for sport (have timeout) / wait for normaly task
   state: Array<'wait' | 'approve' | 'reject' | 'accept' | 'drop' | 'requested'>;
   staff?: StaffRequested[];
-  area?: AreaDoc; // required area module
+  area?: string | Types.ObjectId; // required area module
   building?: string;
   forms?: any[];
   desc?: string;
@@ -40,7 +40,7 @@ export interface Task extends Document {
   createAt: Date;
   updateAt: Date;
 }
-
-export interface TaskLastCard extends Task {
+export interface TaskDoc extends Task, Document {}
+export interface TaskLastCard extends TaskDoc {
   owner: string;
 }

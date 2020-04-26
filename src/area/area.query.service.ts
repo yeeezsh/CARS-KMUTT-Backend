@@ -5,7 +5,7 @@ import { AreaBuilding } from './interfaces/area.building.interface';
 
 import { Moment } from 'moment';
 import { AreaAvailble } from './interfaces/area.available.interface';
-import { Task } from 'src/task/interfaces/task.interface';
+import { TaskDoc } from 'src/task/interfaces/task.interface';
 import moment = require('moment');
 import { AreaTableAPI } from './interfaces/area.table.interface';
 import { AreaAvailableStaff } from './interfaces/area.available.staff.interface';
@@ -16,7 +16,7 @@ import { TimeNode } from './interfaces/timenode.interface';
 export class AreaQueryService {
   constructor(
     @Inject('AREA_MODEL') private readonly areaModel: Model<AreaDoc>,
-    @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
+    @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc>,
     @Inject('AREA_BUILDING_MODEL')
     private readonly areaBuildingModel: Model<AreaBuilding>,
   ) {}
@@ -245,7 +245,7 @@ export class AreaQueryService {
         })
         .lean();
     });
-    const tasks: Task[] = (await Promise.all(taskQuery)).flatMap(e => e);
+    const tasks: TaskDoc[] = (await Promise.all(taskQuery)).flatMap(e => e);
     // console.log('all tsk', tasks);
     const mappedTask = fields.map(e => ({
       ...e,

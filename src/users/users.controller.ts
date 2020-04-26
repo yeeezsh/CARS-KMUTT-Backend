@@ -15,10 +15,10 @@ import { UserInfo } from 'src/common/user.decorator';
 import { UserSession } from './interfaces/user.session.interface';
 import { QuotaType } from './interfaces/quota.interface';
 import { Model } from 'mongoose';
-import { Task } from 'src/task/interfaces/task.interface';
-import { TaskService } from 'src/task/task.service';
+import { TaskDoc } from 'src/task/interfaces/task.interface';
+// import { TaskService } from 'src/task/task.service';
 import { UsersService } from './users.service';
-import { StaffDto } from './dtos/staff.dto';
+// import { StaffDto } from './dtos/staff.dto';
 import { CreateStaffDto } from './dtos/staff.create.dto';
 
 @Controller('users')
@@ -26,7 +26,7 @@ export class UsersController {
   constructor(
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
-    @Inject('TASK_MODEL') private readonly taskModel: Model<Task>,
+    @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc>,
     private readonly usersService: UsersService,
   ) {}
   @Post('/auth/staff')
