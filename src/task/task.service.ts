@@ -281,7 +281,15 @@ export class TaskService {
   async getTaskById(id: string): Promise<Task> {
     const task = await this.taskModel
       .findById(id)
-      .select(['reserve', 'state', 'area', 'requestor', 'building', 'forms'])
+      .select([
+        'reserve',
+        'state',
+        'area',
+        'requestor',
+        'building',
+        'forms',
+        'type',
+      ])
       .populate('area', '_id name label building')
       .lean();
 

@@ -21,7 +21,7 @@ export interface StaffRequested {
   id?: string[];
 }
 
-export type TaskType = 'common' | 'common-sport';
+export type TaskType = 'common' | 'common-sport' | 'sport' | 'meeting';
 
 export interface Task extends Document {
   reserve?: TimeSlotType;
@@ -35,7 +35,7 @@ export interface Task extends Document {
   desc?: string;
 
   // use for common/area reserve
-  type: TaskType;
+  type?: TaskType;
 
   createAt: Date;
   updateAt: Date;
