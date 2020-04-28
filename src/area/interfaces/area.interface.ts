@@ -30,4 +30,6 @@ export interface Area {
 export interface AreaDoc extends Area, Document {
   _id: Types.ObjectId;
 }
-export interface AreaAPI extends Area {}
+export interface AreaAPI extends Area {
+  _id: string;
+}
