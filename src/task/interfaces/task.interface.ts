@@ -21,7 +21,12 @@ export interface StaffRequested {
   id?: string[];
 }
 
-export type TaskType = 'common' | 'common-sport' | 'sport' | 'meeting';
+export type TaskType =
+  | 'common'
+  | 'common-sport'
+  | 'sport'
+  | 'meeting'
+  | 'meeting-club';
 
 export interface Task {
   reserve?: TimeSlotType;
