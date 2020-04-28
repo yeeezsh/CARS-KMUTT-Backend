@@ -270,10 +270,13 @@ export class TaskService {
         .lean();
 
       const task = lastTask[0];
-      const building = await this.areaBuildingModel.findOne({
-        _id: task.building,
-      });
       if (!task) return undefined;
+
+      const building =
+        task.building &&
+        (await this.areaBuildingModel.findOne({
+          _id: task.building,
+        }));
       return {
         ...task,
         owner: (task && task.requestor[0].username) || '',
