@@ -188,6 +188,35 @@ export class AreaQueryService {
     }
   }
 
+  async getAreaCommonMeeting(id?: string): Promise<AreaAPI[]> {
+    try {
+      // const areaBuildingList = await this.getAreaBuilding(id, {
+      //   type: {
+      //     $or: ['meeting', 'meeting-club'],
+      //   },
+      // });
+      const areaBuildingList = await this.areaBuildingModel
+        .find({
+          type: {
+            $in: ['meeting', 'meeting-club'],
+          },
+        })
+        .select('_id');
+      const areaList = this.areaModel
+        .find({
+          building: {
+            $in: [...areaBuildingList.map(e => e._id)],
+          },
+        })
+        .populate('building')
+        .lean();
+
+      return areaList;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   // tslint:disable-next-line: variable-name
   async getAreaBuilding(_id?: string, query?: {}): Promise<AreaBuilding[]> {
     try {

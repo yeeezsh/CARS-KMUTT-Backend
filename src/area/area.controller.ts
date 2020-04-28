@@ -25,6 +25,12 @@ export class AreaController {
     return this.areaQueryService.getAreaCommonBuilding();
   }
 
+  @Get('/common/meeting/all')
+  @UseGuards(AuthGuard('requestor'))
+  async getCommonMeetingAll() {
+    return this.areaQueryService.getAreaCommonMeeting();
+  }
+
   @Get('/sport/fields/:id/:date')
   @UseGuards(AuthGuard('requestor'))
   async getSportAreaFields(@Param('id') id: string, @Param('date') date: Date) {
