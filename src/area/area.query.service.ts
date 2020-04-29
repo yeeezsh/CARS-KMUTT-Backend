@@ -57,7 +57,10 @@ export class AreaQueryService {
     ]);
   }
 
-  async getAvailabelAreaByStaff(areaId: string): Promise<AreaAvailableStaff[]> {
+  async getAvailabelAreaByStaff(
+    areaId: string,
+    date?: Moment,
+  ): Promise<AreaAvailableStaff[]> {
     try {
       const area = await this.areaModel
         .findById(areaId)
@@ -66,7 +69,7 @@ export class AreaQueryService {
 
       if (!area) throw new BadRequestException('bad area id');
 
-      const today = moment(moment()).startOf('day');
+      const today = date || moment(moment()).startOf('day');
       const forward = area.forward;
       const weeks = weekParse(area.reserve[0].week);
       const validDay = Array(forward)

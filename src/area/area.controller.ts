@@ -1,4 +1,12 @@
-import { Controller, Post, UseGuards, Get, Body, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  UseGuards,
+  Get,
+  Body,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AreaService } from './area.service';
 import { CreateAreaBuildingDto } from './dtos/area.building.create.dto';
@@ -64,8 +72,17 @@ export class AreaController {
   }
 
   @Get('/available/:id')
-  async getAvailabelArea(@Param('id') areaId: string) {
-    return await this.areaQueryService.getAvailabelAreaByStaff(areaId);
+  async getAvailabelArea(
+    @Param('id') areaId: string,
+    @Query('date') date: string,
+  ) {
+    if (!date)
+      return await this.areaQueryService.getAvailabelAreaByStaff(areaId);
+
+    return await this.areaQueryService.getAvailabelAreaByStaff(
+      areaId,
+      moment(date),
+    );
   }
 
   @Get('/:id')
