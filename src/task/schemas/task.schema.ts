@@ -41,7 +41,10 @@ export const TaskSchema = new Schema({
   desc: String,
 
   // use for common/area reserve
-  type: { type: String, enum: ['common', 'common-sport'] },
+  type: {
+    type: String,
+    enum: ['common', 'common-sport', 'sport', 'meeting', 'meeting-club'],
+  },
 
   createAt: { type: Date, default: Date.now, index: true },
   updateAt: { type: Date, default: Date.now },
