@@ -14,6 +14,7 @@ import { Request, Response } from 'express';
 import { CreateTaskSportDto } from './dtos/task.create.sport';
 import { UserInfo } from 'src/common/user.decorator';
 import { UserSession } from 'src/users/interfaces/user.session.interface';
+import { CreateTaskByStaffDto } from './dtos/task.create.bystaff.dto';
 
 @Controller('task/sport')
 export class TaskSportController {
@@ -40,5 +41,11 @@ export class TaskSportController {
         msg: String(err),
       });
     }
+  }
+
+  @Post('/byStaff')
+  @UseGuards(AuthGuard('requestor'))
+  async createTaskByStaff(@Body() data: CreateTaskByStaffDto) {
+    return await this.taskService.createSportTaskByStaff(data);
   }
 }

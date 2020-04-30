@@ -125,10 +125,4 @@ export class TaskController {
       return new BadRequestException(err);
     }
   }
-
-  @Post('/byStaff')
-  @UseGuards(AuthGuard('requestor'))
-  async createTaskByStaff(@Body() data: CreateTaskByStaffDto) {
-    return await this.taskService.createTaskByStaff(data);
-  }
 }
