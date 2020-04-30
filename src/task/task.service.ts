@@ -322,7 +322,7 @@ export class TaskService {
         .select(['reserve', 'state', 'area', 'requestor', 'building'])
         .populate('area')
         .lean();
-      console.log('last take', lastTask);
+      // console.log('last take', lastTask);
       const task = lastTask[0];
       if (!task) return undefined;
 
