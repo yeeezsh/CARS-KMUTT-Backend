@@ -15,7 +15,7 @@ export class TimeSlot {
 }
 
 // tslint:disable-next-line: max-classes-per-file
-export class CreateTaskByStaffDto {
+export class CreateSportTaskByStaffDto {
   @ApiProperty({ type: [TimeSlot] })
   @ValidateNested({ each: true })
   @IsNotEmpty()
