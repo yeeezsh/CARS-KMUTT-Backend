@@ -27,6 +27,7 @@ import { AreaBuilding } from 'src/area/interfaces/area.building.interface';
 import { AreaQueryService } from 'src/area/area.query.service';
 import { QuickTaskAPI } from './interfaces/task.quick.interface';
 import { CreateSportTaskByStaffDto } from './dtos/task.create.bystaff.dto';
+import { CreateTaskMeetingDto } from './dtos/task.meeting.dto';
 
 // constant
 // const FORMAT = 'DD-MM-YYYY-HH:mm:ss';
@@ -189,6 +190,56 @@ export class TaskService {
         area: area._id,
         state: requestor.length === 1 ? ['accept'] : ['requested'],
         type: 'sport',
+        createAt: now,
+        updateAt: now,
+      };
+
+      await this.taskModel.create(doc);
+      await s.commitTransaction();
+      s.endSession();
+      return;
+    } catch (err) {
+      await s.abortTransaction();
+      s.endSession();
+      throw err;
+    }
+  }
+
+  async createMeetingTask(
+    data: CreateTaskMeetingDto,
+    type: 'meeting' | 'meeting-club',
+    owner: string,
+  ) {
+    const s = await mongoose.startSession();
+    try {
+      s.startTransaction();
+
+      const { area: areaId, time, forms } = data;
+
+      const area: AreaDoc = await this.areaModel
+        .findById(areaId)
+        .select(['reserve', 'required'])
+        .session(s)
+        .lean();
+
+      // await this.checkAvailable(area, time, s);
+      // console.log(requestor, owner);
+
+      const requestorMapped: Requestor[] = [
+        {
+          username: owner,
+          confirm: true,
+        },
+      ];
+
+      const now = new Date();
+      const doc: Task = {
+        reserve: time,
+        requestor: requestorMapped,
+        area: area._id,
+        state: ['wait'],
+        type,
+        forms,
         createAt: now,
         updateAt: now,
       };
