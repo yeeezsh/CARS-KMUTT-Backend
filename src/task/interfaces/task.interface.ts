@@ -1,9 +1,6 @@
-// import { Schema, Document } from 'mongoose';
 import { Document, Types } from 'mongoose';
-// import { StaffDoc } from '../../users/interfaces/staff.interface';
-import { AreaDoc } from '../../area/interfaces/area.interface';
 
-interface TimeSlot {
+export interface TimeSlot {
   start?: Date;
   stop?: Date;
   allDay?: boolean;
