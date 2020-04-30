@@ -5,7 +5,7 @@ import { AreaBuilding } from './interfaces/area.building.interface';
 
 import { Moment } from 'moment';
 import { AreaAvailble } from './interfaces/area.available.interface';
-import { TaskDoc } from 'src/task/interfaces/task.interface';
+import { TaskDoc, TimeSlot } from 'src/task/interfaces/task.interface';
 import moment = require('moment');
 import { AreaTableAPI } from './interfaces/area.table.interface';
 import { AreaAvailableStaff } from './interfaces/area.available.staff.interface';
@@ -57,10 +57,7 @@ export class AreaQueryService {
     ]);
   }
 
-  async getAvailabelAreaByStaff(
-    areaId: string,
-    date?: Moment,
-  ): Promise<AreaAvailableStaff[]> {
+  async getAvailabelAreaByStaff(areaId: string): Promise<AreaAvailableStaff[]> {
     try {
       const area = await this.areaModel
         .findById(areaId)
@@ -69,7 +66,7 @@ export class AreaQueryService {
 
       if (!area) throw new BadRequestException('bad area id');
 
-      const today = date || moment(moment()).startOf('day');
+      const today = moment(moment()).startOf('day');
       const forward = area.forward;
       const weeks = weekParse(area.reserve[0].week);
       const validDay = Array(forward)
@@ -111,6 +108,62 @@ export class AreaQueryService {
     } catch (err) {
       throw err;
     }
+  }
+
+  async getAvailableMeetingArea(areaId: string, date: string) {
+    console.log('getAvailableMeetingArea');
+    // const today = moment()
+    const lowerBound = moment(date).startOf('day');
+    const upperBound = moment(lowerBound).add(1, 'day');
+    console.log('l', lowerBound.format('DD - MM - YYYY'));
+    console.log('u', upperBound.format('DD - MM - YYYY'));
+    const validArea = await this.areaModel
+      .findOne({ _id: areaId })
+      .select('_id reserve');
+    const interval: number = validArea.reserve[0].interval;
+    if (!validArea) throw new BadRequestException('bad area id');
+    const tasks = await this.taskModel
+      .find({
+        area: areaId,
+        type: {
+          $in: ['meeting', 'meeting-club'],
+        },
+        state: {
+          $in: ['wait', 'requested', 'accept'],
+          $nin: ['drop', 'reject'],
+        },
+        reserve: {
+          $elemMatch: {
+            start: {
+              $gte: new Date(lowerBound.toISOString()),
+              $lte: new Date(upperBound.toISOString()),
+            },
+          },
+        },
+      })
+      .select('reserve')
+      .lean();
+    const parse = tasks.map(e => e.reserve).flatMap(e => e);
+    const mapped = parse
+      .map((e: TimeSlot) => {
+        const start = moment(e.start);
+        const stop = moment(e.stop);
+        let cur = start;
+        let merge = [];
+        while (cur.valueOf() <= stop.valueOf()) {
+          merge.push({
+            value: cur.toDate(),
+            type: 'disabled',
+          });
+          cur = moment(cur).add(interval, 'minute');
+        }
+        return merge;
+      })
+      .flatMap(e => e);
+    console.log('tasks', tasks);
+    console.log('tasks', parse, interval);
+    console.log(mapped);
+    return mapped;
   }
 
   async getAreaTable(): Promise<AreaTableAPI[]> {
