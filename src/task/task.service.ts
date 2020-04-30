@@ -309,20 +309,20 @@ export class TaskService {
               username,
             },
           },
-          reserve: {
-            $elemMatch: {
-              stop: {
-                $gte: new Date(),
-              },
-            },
-          },
+          // reserve: {
+          //   $elemMatch: {
+          //     stop: {
+          //       $gte: new Date(),
+          //     },
+          //   },
+          // },
         })
         .sort({ createAt: -1 })
         .limit(1)
         .select(['reserve', 'state', 'area', 'requestor', 'building'])
         .populate('area')
         .lean();
-
+      console.log('last take', lastTask);
       const task = lastTask[0];
       if (!task) return undefined;
 
@@ -337,6 +337,7 @@ export class TaskService {
         area: task.area || building,
       };
     } catch (err) {
+      console.error(err);
       throw err;
     }
   }
