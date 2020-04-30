@@ -71,18 +71,17 @@ export class AreaController {
     return this.areaQueryService.getAreaTable();
   }
 
-  @Get('/available/:id')
-  async getAvailabelArea(
+  @Get('/available/meeting/:id')
+  async getAvailabelMeetingArea(
     @Param('id') areaId: string,
     @Query('date') date: string,
   ) {
-    if (!date)
-      return await this.areaQueryService.getAvailabelAreaByStaff(areaId);
+    return await this.areaQueryService.getAvailableMeetingArea(areaId, date);
+  }
 
-    return await this.areaQueryService.getAvailabelAreaByStaff(
-      areaId,
-      moment(date),
-    );
+  @Get('/available/:id')
+  async getAvailabelArea(@Param('id') areaId: string) {
+    return await this.areaQueryService.getAvailabelAreaByStaff(areaId);
   }
 
   @Get('/:id')
