@@ -14,6 +14,7 @@ import { TaskCronsService } from './task.crons.service';
 import { AreaQueryService } from 'src/area/area.query.service';
 import { TaskFormController } from './task.form.controller';
 import { TaskFormService } from './task.form.service';
+import { TaskMeetingController } from './task.meeting.controller';
 
 @Module({
   imports: [DatabaseModule, AreaModule, FormModule, ScheduleModule.forRoot()],
@@ -28,6 +29,7 @@ import { TaskFormService } from './task.form.service';
   ],
   controllers: [
     TaskController,
+    TaskMeetingController,
     TaskSportController,
     TaskManageController,
     TaskFormController,
