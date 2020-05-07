@@ -24,13 +24,10 @@ export class TaskMeetingController {
   @Post('/meeting-club')
   async createMeetingClubTask(
     @Body() body: CreateTaskMeetingDto,
-    @Req() req: Request & { user: { _id: string; username: string } },
     @Res() res: Response,
     @UserInfo() user: UserSession,
   ) {
     try {
-      //   if (body.requestor[0] !== user.studentId)
-      // throw new Error('user owner request invalid');
       await this.taskService.createMeetingTask(
         body,
         'meeting-club',
@@ -46,16 +43,13 @@ export class TaskMeetingController {
   }
 
   @UseGuards(AuthGuard('requestor'))
-  @Post('/meeting-club')
+  @Post('/meeting-room')
   async createMeetingTask(
     @Body() body: CreateTaskMeetingDto,
-    @Req() req: Request & { user: { _id: string; username: string } },
     @Res() res: Response,
     @UserInfo() user: UserSession,
   ) {
     try {
-      //   if (body.requestor[0] !== user.studentId)
-      // throw new Error('user owner request invalid');
       await this.taskService.createMeetingTask(body, 'meeting', user.studentId);
 
       return res.sendStatus(200);
