@@ -50,7 +50,11 @@ export class TaskMeetingController {
     @UserInfo() user: UserSession,
   ) {
     try {
-      await this.taskService.createMeetingTask(body, 'meeting', user.studentId);
+      await this.taskService.createMeetingTask(
+        body,
+        'meeting-room',
+        user.studentId,
+      );
 
       return res.sendStatus(200);
     } catch (err) {

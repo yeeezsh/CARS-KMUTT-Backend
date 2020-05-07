@@ -22,7 +22,7 @@ export type TaskType =
   | 'common'
   | 'common-sport'
   | 'sport'
-  | 'meeting'
+  | 'meeting-room'
   | 'meeting-club';
 
 export interface Task {

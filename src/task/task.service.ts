@@ -207,7 +207,7 @@ export class TaskService {
 
   async createMeetingTask(
     data: CreateTaskMeetingDto,
-    type: 'meeting' | 'meeting-club',
+    type: 'meeting-room' | 'meeting-club',
     owner: string,
   ) {
     const s = await mongoose.startSession();
