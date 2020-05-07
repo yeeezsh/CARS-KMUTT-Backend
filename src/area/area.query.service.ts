@@ -111,12 +111,12 @@ export class AreaQueryService {
   }
 
   async getAvailableMeetingArea(areaId: string, date: string) {
-    console.log('getAvailableMeetingArea');
+    // console.log('getAvailableMeetingArea');
     // const today = moment()
     const lowerBound = moment(date).startOf('day');
     const upperBound = moment(lowerBound).add(1, 'day');
-    console.log('l', lowerBound.format('DD - MM - YYYY'));
-    console.log('u', upperBound.format('DD - MM - YYYY'));
+    // console.log('l', lowerBound.format('DD - MM - YYYY'));
+    // console.log('u', upperBound.format('DD - MM - YYYY'));
     const validArea = await this.areaModel
       .findOne({ _id: areaId })
       .select('_id reserve');
@@ -160,9 +160,9 @@ export class AreaQueryService {
         return merge;
       })
       .flatMap(e => e);
-    console.log('tasks', tasks);
-    console.log('tasks', parse, interval);
-    console.log(mapped);
+    // console.log('tasks', tasks);
+    // console.log('tasks', parse, interval);
+    // console.log(mapped);
     return mapped;
   }
 
