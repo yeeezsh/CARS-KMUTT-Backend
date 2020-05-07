@@ -24,9 +24,9 @@ export class HistoryService {
           },
         },
       })
+      .sort({ createAt: -1 })
       .select(DEFAULT_SELECT)
       .populate(DEAFAULT_POPULATE, DEAFAULT_POPULATE_SELECT)
-      .sort({ createAt: -1 })
       .lean();
     const parsed = doc.map(mapAreaBuilding);
     return parsed;
@@ -45,9 +45,9 @@ export class HistoryService {
           $nin: ['accept', 'drop'],
         },
       })
+      .sort({ createAt: -1 })
       .select(DEFAULT_SELECT)
       .populate(DEAFAULT_POPULATE, DEAFAULT_POPULATE_SELECT)
-      .sort({ createAt: -1 })
       .lean();
 
     const parsed = doc.map(mapAreaBuilding);
@@ -67,9 +67,9 @@ export class HistoryService {
           $nin: ['accept', 'drop'],
         },
       })
+      .sort({ createAt: -1 })
       .select(DEFAULT_SELECT)
       .populate(DEAFAULT_POPULATE, DEAFAULT_POPULATE_SELECT)
-      .sort({ createAt: -1 })
       .lean();
 
     const parsed = doc.map(mapAreaBuilding);
