@@ -10,7 +10,7 @@ import {
 import { Response } from 'express';
 import { TaskstaffService } from './task.staff.service';
 import { AuthGuard } from '@nestjs/passport';
-import { TaskManagerQuery } from './dtos/task.manage.query.dto';
+import { TaskStaffQuery } from './dtos/task.staff.query.dto';
 import { UserInfo } from 'src/common/user.decorator';
 import { UserSession } from 'src/users/interfaces/user.session.interface';
 import { TaskCancelByStaff } from './dtos/task.cancel.byStaff.dto';
@@ -25,37 +25,37 @@ export class TaskStaffController {
 
   @Get('/all')
   @UseGuards(AuthGuard('staff'))
-  async getAllTask(@Query() query: TaskManagerQuery) {
-    const { offset, limit } = query;
-    return await this.taskStaffService.getAllTask(offset, limit);
+  async getAllTask(@Query() query: TaskStaffQuery) {
+    // const { current: offset, limit } = query;
+    return await this.taskStaffService.getAllTask(0, 99999);
   }
 
   @Get('/wait')
   @UseGuards(AuthGuard('staff'))
-  async getRejectTask(@Query() query: TaskManagerQuery, @UserInfo() info) {
-    const { offset, limit } = query;
-    return await this.taskStaffService.getWaitTask(offset, limit);
+  async getRejectTask(@Query() query: TaskStaffQuery, @UserInfo() info) {
+    // const { current: offset, limit } = query;
+    return await this.taskStaffService.getWaitTask(0, 99999);
   }
 
   @Get('/reject')
   @UseGuards(AuthGuard('staff'))
-  async getReject(@Query() query: TaskManagerQuery) {
-    const { offset, limit } = query;
-    return await this.taskStaffService.getRejectTask(offset, limit);
+  async getReject(@Query() query: TaskStaffQuery) {
+    // const { current: offset, limit } = query;
+    return await this.taskStaffService.getRejectTask(0, 99999);
   }
 
   @Get('/accept')
   // @UseGuards(AuthGuard('staff'))
-  async getAccept(@Query() query: TaskManagerQuery) {
-    const { offset, limit } = query;
-    return await this.taskStaffService.getAcceptTask(offset, limit);
+  async getAccept(@Query() query: TaskStaffQuery) {
+    // const { current: offset, limit } = query;
+    return await this.taskStaffService.getAcceptTask(0, 99999);
   }
 
   @Get('/drop')
   // @UseGuards(AuthGuard('staff'))
-  async getDrop(@Query() query: TaskManagerQuery) {
-    const { offset, limit } = query;
-    return await this.taskStaffService.getDropTask(offset, limit);
+  async getDrop(@Query() query: TaskStaffQuery) {
+    // const { current: offset, limit } = query;
+    return await this.taskStaffService.getDropTask(0, 99999);
   }
 
   @Post('/cancle')
