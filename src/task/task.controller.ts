@@ -5,8 +5,8 @@ import {
   Param,
   Res,
   BadRequestException,
-  Body,
-  Post,
+  // Body,
+  // Post,
   Query,
 } from '@nestjs/common';
 // import { AreaService } from 'src/area/area.service';
@@ -85,23 +85,6 @@ export class TaskController {
       console.log('cancle task', taskId);
       const { username } = user;
       await this.taskService.cancleTaskById(taskId, username);
-      return res.sendStatus(200);
-    } catch (err) {
-      return err;
-    }
-  }
-
-  @Post('/cancle/byStaff')
-  @UseGuards(AuthGuard('staff'))
-  async cancleTaskByStaff(
-    @UserInfo() user: UserSession,
-    @Body() data: TaskCancelByStaff,
-    @Res() res: Response,
-  ) {
-    try {
-      const { username } = user;
-      const { _id: taskId, desc } = data;
-      await this.taskService.cancleTaskById(taskId, username, true, desc);
       return res.sendStatus(200);
     } catch (err) {
       return err;
