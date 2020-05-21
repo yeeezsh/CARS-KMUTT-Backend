@@ -11,7 +11,7 @@ function mapAreaBuilding(e) {
 }
 
 @Injectable()
-export class HistoryService {
+export class TaskQueryService {
   constructor(
     @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc | any>,
   ) {}

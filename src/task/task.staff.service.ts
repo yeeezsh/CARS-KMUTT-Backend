@@ -7,7 +7,7 @@ import moment = require('moment');
 import { TaskManage } from './interfaces/task.manage.interface';
 
 @Injectable()
-export class TaskManageService {
+export class TaskstaffService {
   constructor(
     @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc>,
   ) {}

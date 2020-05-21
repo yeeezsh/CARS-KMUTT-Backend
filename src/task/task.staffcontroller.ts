@@ -1,12 +1,12 @@
 import { Controller, UseGuards, Get, Query } from '@nestjs/common';
-import { TaskManageService } from './task.manage.service';
+import { TaskstaffService } from './task.staff.service';
 import { AuthGuard } from '@nestjs/passport';
 import { TaskManagerQuery } from './dtos/task.manage.query.dto';
 import { UserInfo } from 'src/common/user.decorator';
 
 @Controller('task/manage')
-export class TaskManageController {
-  constructor(private readonly taskManageService: TaskManageService) { }
+export class TaskStaffController {
+  constructor(private readonly taskManageService: TaskstaffService) {}
 
   @Get('/all')
   @UseGuards(AuthGuard('staff'))

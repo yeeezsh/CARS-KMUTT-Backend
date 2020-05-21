@@ -14,7 +14,7 @@ import { TaskService } from './task.service';
 import { AuthGuard } from '@nestjs/passport';
 import { UserInfo } from 'src/common/user.decorator';
 import { UserSession } from 'src/users/interfaces/user.session.interface';
-import { HistoryService } from './history.service';
+import { TaskQueryService } from './task.query.service';
 import { Response } from 'express';
 import { TaskCancelByStaff } from './dtos/task.cancel.byStaff.dto';
 import * as moment from 'moment';
@@ -24,7 +24,7 @@ export class TaskController {
   constructor(
     // private readonly areaService: AreaService,
     private readonly taskService: TaskService,
-    private readonly historyService: HistoryService,
+    private readonly historyService: TaskQueryService,
   ) {}
 
   @Get('/quickTask')
