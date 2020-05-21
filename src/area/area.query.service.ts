@@ -236,9 +236,24 @@ export class AreaQueryService {
     }
   }
 
-  async getAreaCommonBuilding(id?: string): Promise<AreaBuilding[]> {
+  async getAreaCommonBuilding(
+    id?: string,
+  ): Promise<{
+    label: string;
+    name: string;
+  }> {
     try {
-      return this.getAreaBuilding(id, { type: 'common' });
+      const buildingListId = (
+        await this.getAreaBuilding(id, { type: 'common' })
+      ).map(e => e._id);
+      const mappedArea = await this.areaModel
+        .find({
+          building: {
+            $in: buildingListId,
+          },
+        })
+        .select('name label');
+      return mappedArea as any;
     } catch (err) {
       throw err;
     }
