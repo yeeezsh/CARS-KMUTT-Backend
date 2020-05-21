@@ -75,7 +75,7 @@ export class TaskFormService {
         state: ['wait'],
         reserve: reserveMapped,
         requestor: [{ username: requestorUsername, confirm: true }],
-        building: data.area._id,
+        area: data.area._id,
         type,
       });
 

@@ -32,7 +32,7 @@ export interface Task {
   state: Array<'wait' | 'approve' | 'reject' | 'accept' | 'drop' | 'requested'>;
   staff?: StaffRequested[];
   area?: string | Types.ObjectId; // required area module
-  building?: string;
+  // building?: string;
   forms?: any[];
   desc?: string;
 

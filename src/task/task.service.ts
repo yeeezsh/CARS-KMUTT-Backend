@@ -309,32 +309,18 @@ export class TaskService {
               username,
             },
           },
-          // reserve: {
-          //   $elemMatch: {
-          //     stop: {
-          //       $gte: new Date(),
-          //     },
-          //   },
-          // },
         })
         .sort({ createAt: -1 })
         .limit(1)
         .select(['reserve', 'state', 'area', 'requestor', 'building'])
         .populate('area')
         .lean();
-      // console.log('last take', lastTask);
       const task = lastTask[0];
       if (!task) return undefined;
-
-      const building =
-        task.building &&
-        (await this.areaBuildingModel.findOne({
-          _id: task.building,
-        }));
       return {
         ...task,
         owner: (task && task.requestor[0].username) || '',
-        area: task.area || building,
+        area: task.area,
       };
     } catch (err) {
       console.error(err);
