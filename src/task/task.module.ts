@@ -9,7 +9,7 @@ import { TaskQueryService } from './task.query.service';
 import { TaskSportController } from './task.sport.controller';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskstaffService } from './task.staff.service';
-import { TaskStaffController } from './task.staffcontroller';
+import { TaskStaffController } from './task.staff.controller';
 import { TaskCronsService } from './task.crons.service';
 import { AreaQueryService } from 'src/area/area.query.service';
 import { TaskFormController } from './task.form.controller';

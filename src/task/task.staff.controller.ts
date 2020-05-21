@@ -4,7 +4,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { TaskManagerQuery } from './dtos/task.manage.query.dto';
 import { UserInfo } from 'src/common/user.decorator';
 
-@Controller('task/manage')
+@Controller('task/staff')
 export class TaskStaffController {
   constructor(private readonly taskManageService: TaskstaffService) {}
 
