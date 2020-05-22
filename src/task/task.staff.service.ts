@@ -13,21 +13,12 @@ export class TaskstaffService {
   ) {}
 
   async getAllTask(
-    offset?: Date,
-    limit?: Date,
+    offset?: number,
+    limit?: number,
     // tslint:disable-next-line: ban-types
     query: Object = {},
   ): Promise<TaskManage[]> {
-    if (!offset || !limit) {
-      const now = moment().startOf('day');
-      offset = now.toDate();
-      limit = moment(now)
-        .add('1', 'day')
-        .toDate();
-    }
-
-    // only sport n' meeting
-    const sportAndMeetingdocs: TaskManage[] = await this.taskModel.aggregate([
+    const docs: TaskManage[] = await this.taskModel.aggregate([
       {
         $match: {
           // back verse query
@@ -38,6 +29,14 @@ export class TaskstaffService {
           ...query,
         },
       },
+      // {
+      //   $lookup: {
+      //     from: 'area.buildings',
+      //     localField: 'area',
+      //     foreignField: '_id',
+      //     as: 'area',
+      //   },
+      // },
       {
         $lookup: {
           from: 'areas',
@@ -46,75 +45,35 @@ export class TaskstaffService {
           as: 'area',
         },
       },
-      { $unwind: '$area' },
-      {
-        $lookup: {
-          from: 'area.buildings',
-          localField: 'area.building',
-          foreignField: '_id',
-          as: 'type',
-        },
-      },
-      { $unwind: '$type' },
+
+      { $unwind: { path: '$area', preserveNullAndEmptyArrays: true } },
+      // {
+      //   $lookup: {
+      //     from: 'area.buildings',
+      //     localField: 'area.building',
+      //     foreignField: '_id',
+      //     as: 'type',
+      //   },
+      // },
+      // { $unwind: '$type' },
       {
         $project: {
           _id: 1,
+          key: '$_id',
           requestor: 1,
           'area.label': 1,
           'area.name': 1,
-          type: '$type.type',
+          type: 1,
           createAt: 1,
           state: 1,
         },
       },
       { $sort: { createAt: -1 } },
     ]);
-
-    const taskForm = await this.taskModel.aggregate([
-      {
-        $match: {
-          ...query,
-          building: { $exists: true },
-        },
-      },
-
-      // building bind
-      {
-        $lookup: {
-          from: 'area.buildings',
-          localField: 'building',
-          foreignField: '_id',
-          as: 'area',
-        },
-      },
-      { $unwind: '$area' },
-
-      // project
-      {
-        $project: {
-          _id: 1,
-          requestor: 1,
-          'area.label': 1,
-          'area.name': 1,
-          type: '$area.type',
-          createAt: 1,
-          state: 1,
-        },
-      },
-
-      // sort
-      { $sort: { createAt: -1 } },
-    ]);
-    const merge = [...sportAndMeetingdocs, ...taskForm];
-    const sorted = merge.sort(
-      (a, b) =>
-        -(new Date(a.createAt).getTime() - new Date(b.createAt).getTime()),
-    );
-
-    return sorted;
+    return docs;
   }
 
-  async getWaitTask(offset?: Date, limit?: Date) {
+  async getWaitTask(offset?: number, limit?: number) {
     return await this.getAllTask(offset, limit, {
       state: {
         $in: ['wait', 'requested'],
@@ -123,7 +82,7 @@ export class TaskstaffService {
     });
   }
 
-  async getAcceptTask(offset?: Date, limit?: Date) {
+  async getAcceptTask(offset?: number, limit?: number) {
     return await this.getAllTask(offset, limit, {
       state: {
         $in: ['accept'],
@@ -132,7 +91,7 @@ export class TaskstaffService {
     });
   }
 
-  async getRejectTask(offset?: Date, limit?: Date) {
+  async getRejectTask(offset?: number, limit?: number) {
     return await this.getAllTask(offset, limit, {
       state: {
         $in: ['reject'],
@@ -140,7 +99,7 @@ export class TaskstaffService {
     });
   }
 
-  async getDropTask(offset?: Date, limit?: Date) {
+  async getDropTask(offset?: number, limit?: number) {
     return await this.getAllTask(offset, limit, {
       state: {
         $nin: ['accept'],
