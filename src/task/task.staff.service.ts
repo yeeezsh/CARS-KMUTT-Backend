@@ -1,10 +1,9 @@
 import { Injectable, Inject } from '@nestjs/common';
-
 import { Model } from 'mongoose';
-
 import { TaskDoc } from './interfaces/task.interface';
-import moment = require('moment');
 import { TaskManage } from './interfaces/task.manage.interface';
+
+const LIMIT = 10;
 
 @Injectable()
 export class TaskstaffService {
@@ -15,9 +14,13 @@ export class TaskstaffService {
   async getAllTask(
     offset?: number,
     limit?: number,
+    orderCol?: string,
+    order?: number,
+
     // tslint:disable-next-line: ban-types
     query: Object = {},
-  ): Promise<TaskManage[]> {
+  ): Promise<{ data: TaskManage[]; count: number }> {
+    const orderColField: string = orderCol || 'createAt';
     const docs: TaskManage[] = await this.taskModel.aggregate([
       {
         $match: {
@@ -29,14 +32,9 @@ export class TaskstaffService {
           ...query,
         },
       },
-      // {
-      //   $lookup: {
-      //     from: 'area.buildings',
-      //     localField: 'area',
-      //     foreignField: '_id',
-      //     as: 'area',
-      //   },
-      // },
+      { $sort: { [orderColField]: order || -1 } },
+      { $skip: offset || 0 },
+      { $limit: LIMIT },
       {
         $lookup: {
           from: 'areas',
@@ -47,15 +45,6 @@ export class TaskstaffService {
       },
 
       { $unwind: { path: '$area', preserveNullAndEmptyArrays: true } },
-      // {
-      //   $lookup: {
-      //     from: 'area.buildings',
-      //     localField: 'area.building',
-      //     foreignField: '_id',
-      //     as: 'type',
-      //   },
-      // },
-      // { $unwind: '$type' },
       {
         $project: {
           _id: 1,
@@ -68,13 +57,18 @@ export class TaskstaffService {
           state: 1,
         },
       },
-      { $sort: { createAt: -1 } },
     ]);
-    return docs;
+    const count = await this.taskModel.find({ ...query }).countDocuments();
+    return { data: docs, count };
   }
 
-  async getWaitTask(offset?: number, limit?: number) {
-    return await this.getAllTask(offset, limit, {
+  async getWaitTask(
+    offset?: number,
+    limit?: number,
+    orderCol?: string,
+    order?: 1 | -1,
+  ) {
+    return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
         $in: ['wait', 'requested'],
         $nin: ['drop', 'reject', 'accept'],
@@ -82,8 +76,13 @@ export class TaskstaffService {
     });
   }
 
-  async getAcceptTask(offset?: number, limit?: number) {
-    return await this.getAllTask(offset, limit, {
+  async getAcceptTask(
+    offset?: number,
+    limit?: number,
+    orderCol?: string,
+    order?: 1 | -1,
+  ) {
+    return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
         $in: ['accept'],
         $nin: ['reject', 'drop'],
@@ -91,16 +90,26 @@ export class TaskstaffService {
     });
   }
 
-  async getRejectTask(offset?: number, limit?: number) {
-    return await this.getAllTask(offset, limit, {
+  async getRejectTask(
+    offset?: number,
+    limit?: number,
+    orderCol?: string,
+    order?: 1 | -1,
+  ) {
+    return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
         $in: ['reject'],
       },
     });
   }
 
-  async getDropTask(offset?: number, limit?: number) {
-    return await this.getAllTask(offset, limit, {
+  async getDropTask(
+    offset?: number,
+    limit?: number,
+    orderCol?: string,
+    order?: 1 | -1,
+  ) {
+    return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
         $nin: ['accept'],
         $in: ['drop'],

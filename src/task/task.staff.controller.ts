@@ -26,8 +26,15 @@ export class TaskStaffController {
   @Get('/all')
   @UseGuards(AuthGuard('staff'))
   async getAllTask(@Query() query: TaskStaffQuery) {
-    // const { current: offset, limit } = query;
-    return await this.taskStaffService.getAllTask(0, 99999);
+    const { current, size, orderCol, order } = query;
+    const offset = (current - 1) * size;
+    console.log(offset, size, orderCol, order);
+    return await this.taskStaffService.getAllTask(
+      offset,
+      size,
+      orderCol,
+      Number(order),
+    );
   }
 
   @Get('/wait')

@@ -1,15 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class TaskStaffQuery {
-  @ApiProperty({ type: Date, required: false })
+  @ApiProperty({ type: String, required: false })
   current?: number;
 
-  @ApiProperty({ type: Date, required: false })
+  @ApiProperty({ type: String, required: false })
   size?: number;
 
-  @ApiProperty({ type: Date, required: false })
+  @ApiProperty({ type: String, required: false })
   orderCol: string;
 
-  @ApiProperty({ type: Date, required: false })
-  order: number;
+  @ApiProperty({ type: String, required: false })
+  order?: '1' | '-1';
 }
