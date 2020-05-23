@@ -426,7 +426,7 @@ export class TaskService {
       const validConfirm = doc.requestor
         .flatMap(e => e.username)
         .includes(username);
-      if (!validConfirm) throw new Error('action is not permit');
+      if (!validConfirm) throw new BadRequestException('action is not permit');
       const requestor = doc.requestor.map(e => {
         if (e.username === username) {
           return { username, confirm: true };
