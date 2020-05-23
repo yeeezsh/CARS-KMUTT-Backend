@@ -29,7 +29,7 @@ export interface Task {
   reserve?: TimeSlotType;
   requestor: Requestor[];
   // requested for sport (have timeout) / wait for normaly task
-  state: Array<'wait' | 'approve' | 'reject' | 'accept' | 'drop' | 'requested'>;
+  state: Array<'wait' | 'reject' | 'accept' | 'drop' | 'requested'>;
   staff?: StaffRequested[];
   area?: string | Types.ObjectId; // required area module
   // building?: string;
