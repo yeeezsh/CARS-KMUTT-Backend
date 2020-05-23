@@ -34,7 +34,7 @@ export class TaskstaffService {
       },
       { $sort: { [orderColField]: order || -1 } },
       { $skip: offset || 0 },
-      { $limit: LIMIT },
+      { $limit: limit || LIMIT },
       {
         $lookup: {
           from: 'areas',

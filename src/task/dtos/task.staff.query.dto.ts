@@ -5,7 +5,7 @@ export class TaskStaffQuery {
   current?: number;
 
   @ApiProperty({ type: String, required: false })
-  size?: number;
+  size?: string;
 
   @ApiProperty({ type: String, required: false })
   orderCol: string;
