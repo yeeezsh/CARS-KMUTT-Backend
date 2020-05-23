@@ -66,7 +66,7 @@ export class TaskstaffService {
     offset?: number,
     limit?: number,
     orderCol?: string,
-    order?: 1 | -1,
+    order?: number,
   ) {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
@@ -80,7 +80,7 @@ export class TaskstaffService {
     offset?: number,
     limit?: number,
     orderCol?: string,
-    order?: 1 | -1,
+    order?: number,
   ) {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
@@ -94,7 +94,7 @@ export class TaskstaffService {
     offset?: number,
     limit?: number,
     orderCol?: string,
-    order?: 1 | -1,
+    order?: number,
   ) {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
@@ -107,7 +107,7 @@ export class TaskstaffService {
     offset?: number,
     limit?: number,
     orderCol?: string,
-    order?: 1 | -1,
+    order?: number,
   ) {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {

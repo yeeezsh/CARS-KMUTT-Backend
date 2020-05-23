@@ -28,7 +28,6 @@ export class TaskStaffController {
   async getAllTask(@Query() query: TaskStaffQuery) {
     const { current, size, orderCol, order } = query;
     const offset = (current - 1) * Number(size);
-    console.log(offset, size, orderCol, order);
     return await this.taskStaffService.getAllTask(
       offset,
       Number(size),
@@ -40,29 +39,53 @@ export class TaskStaffController {
   @Get('/wait')
   @UseGuards(AuthGuard('staff'))
   async getRejectTask(@Query() query: TaskStaffQuery, @UserInfo() info) {
-    // const { current: offset, limit } = query;
-    return await this.taskStaffService.getWaitTask(0, 99999);
+    const { current, size, orderCol, order } = query;
+    const offset = (current - 1) * Number(size);
+    return await this.taskStaffService.getWaitTask(
+      offset,
+      Number(size),
+      orderCol,
+      Number(order),
+    );
   }
 
   @Get('/reject')
   @UseGuards(AuthGuard('staff'))
   async getReject(@Query() query: TaskStaffQuery) {
-    // const { current: offset, limit } = query;
-    return await this.taskStaffService.getRejectTask(0, 99999);
+    const { current, size, orderCol, order } = query;
+    const offset = (current - 1) * Number(size);
+    return await this.taskStaffService.getRejectTask(
+      offset,
+      Number(size),
+      orderCol,
+      Number(order),
+    );
   }
 
   @Get('/accept')
-  // @UseGuards(AuthGuard('staff'))
+  @UseGuards(AuthGuard('staff'))
   async getAccept(@Query() query: TaskStaffQuery) {
-    // const { current: offset, limit } = query;
-    return await this.taskStaffService.getAcceptTask(0, 99999);
+    const { current, size, orderCol, order } = query;
+    const offset = (current - 1) * Number(size);
+    return await this.taskStaffService.getAcceptTask(
+      offset,
+      Number(size),
+      orderCol,
+      Number(order),
+    );
   }
 
   @Get('/drop')
-  // @UseGuards(AuthGuard('staff'))
+  @UseGuards(AuthGuard('staff'))
   async getDrop(@Query() query: TaskStaffQuery) {
-    // const { current: offset, limit } = query;
-    return await this.taskStaffService.getDropTask(0, 99999);
+    const { current, size, orderCol, order } = query;
+    const offset = (current - 1) * Number(size);
+    return await this.taskStaffService.getDropTask(
+      offset,
+      Number(size),
+      orderCol,
+      Number(order),
+    );
   }
 
   @Post('/cancle')
