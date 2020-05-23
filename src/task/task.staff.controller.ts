@@ -104,4 +104,20 @@ export class TaskStaffController {
       return err;
     }
   }
+
+  @Post('/accept')
+  @UseGuards(AuthGuard('staff'))
+  async approveTaskByStaff(
+    @UserInfo() user: UserSession,
+    @Body() data: TaskCancelByStaff,
+    @Res() res: Response,
+  ) {
+    try {
+      const { _id: taskId, desc } = data;
+      await this.taskService.acceptTaskById(taskId, desc);
+      return res.sendStatus(200);
+    } catch (err) {
+      return err;
+    }
+  }
 }
