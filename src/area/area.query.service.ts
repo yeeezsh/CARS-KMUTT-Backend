@@ -244,7 +244,11 @@ export class AreaQueryService {
   }> {
     try {
       const buildingListId = (
-        await this.getAreaBuilding(id, { type: 'common' })
+        await this.getAreaBuilding(id, {
+          type: {
+            $in: ['common', 'common-sport'],
+          },
+        })
       ).map(e => e._id);
       const mappedArea = await this.areaModel
         .find({
