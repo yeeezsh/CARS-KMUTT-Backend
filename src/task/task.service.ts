@@ -365,6 +365,26 @@ export class TaskService {
     };
   }
 
+  async acceptTaskById(id: string, desc?: string): Promise<void> {
+    const s = await mongoose.startSession();
+    try {
+      s.startTransaction();
+      const doc = await this.taskModel.findById(id).session(s);
+      if (!doc) throw new BadRequestException('this task is not exisiting');
+
+      doc.state.push('accept');
+      doc.updateAt = new Date();
+      doc.desc = desc;
+      await doc.save({ session: s });
+      await s.commitTransaction();
+      s.endSession();
+
+      return;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async cancleTaskById(
     id: string,
     username: string,
@@ -375,7 +395,7 @@ export class TaskService {
     try {
       s.startTransaction();
       const doc = await this.taskModel.findById(id).session(s);
-      if (!doc) throw new Error('this task is not exisiting');
+      if (!doc) throw new BadRequestException('this task is not exisiting');
       const validCancel = doc.requestor[0].username === username;
       if (!validCancel) {
         if (!staff) {
