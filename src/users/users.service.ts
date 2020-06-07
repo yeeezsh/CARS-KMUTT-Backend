@@ -81,8 +81,8 @@ export class UsersService {
   }
 
   async loginRequestor(login: RequestorLoginDto): Promise<Requestor> {
+    let bypass = false;
     try {
-      let bypass = false;
       if (BYPASS_USER.includes(login.username)) bypass = true;
       const { data: ldap } = await this.httpService
         .post('https://auth.innosoft.kmutt.ac.th', {
@@ -112,6 +112,23 @@ export class UsersService {
       return registred;
     } catch (err) {
       if (err.code === 'ECONNRESET') {
+        if (bypass) {
+          // DANGER CODE BYPASS FIX HERE NXT PATCH **
+          // if no have acc in db add new one
+          const registred = await this.requestorModel
+            .findOne({ username: login.username })
+            .lean();
+          if (!registred) {
+            const doc = await this.requestorModel.create({
+              username: login.username,
+              studentId: login.username,
+            });
+            return doc;
+          }
+          return registred;
+        }
+
+        // normally throw if err at LDAP
         throw new HttpException(
           'KMUTT LDAP connection error',
           HttpStatus.INTERNAL_SERVER_ERROR,
