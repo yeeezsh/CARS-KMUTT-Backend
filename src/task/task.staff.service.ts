@@ -111,7 +111,7 @@ export class TaskstaffService {
   ) {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
-        $nin: ['accept'],
+        // $nin: ['accept'],
         $in: ['drop'],
       },
     });
