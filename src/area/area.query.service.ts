@@ -315,19 +315,14 @@ export class AreaQueryService {
     id: string,
     date: Moment,
   ): Promise<AreaAvailble[]> {
-    // ): Promise<any[]> {
-    // ): Promise<any> {
     const fields: AreaDoc[] = await this.areaModel
       .find({ building: id })
       .lean();
-    const maxForward = fields.reduce((prev, cur) =>
-      prev.forward > cur.forward ? prev : cur,
-    ).forward;
+    // const maxForward = fields.reduce((prev, cur) =>
+    //   prev.forward > cur.forward ? prev : cur,
+    // ).forward;
     const startDay = moment(moment(date).startOf('day'));
     const stopDay = moment(startDay).add(1, 'day');
-    // console.log('maxforward', maxForward);
-    // console.log(startDay.format('DD-MM-YYYY'));
-    // console.log(stopDay.format('DD-MM-YYYY'));
 
     const taskQuery = fields.map(e => {
       // console.log(e._id);
@@ -350,20 +345,14 @@ export class AreaQueryService {
         .lean();
     });
     const tasks: TaskDoc[] = (await Promise.all(taskQuery)).flatMap(e => e);
-    // console.log('all tsk', tasks);
     const mappedTask = fields.map(e => ({
       ...e,
       disabled: tasks
         .filter(t => String(t.area) === String(e._id))
         .flatMap(fm => fm.reserve)
         .map(d => d.start.toISOString()),
-      // disabled: tasks.filter(t => String(t.area) === String(e._id)),
     }));
-    // .map(e => ({
-    //   ...e,
-    //   disabled: e.disabled.map(d => moment(d.start).toISOString()),
-    // }));
-    // console.log('task', mappedTask);
+
     return mappedTask;
   }
 }
