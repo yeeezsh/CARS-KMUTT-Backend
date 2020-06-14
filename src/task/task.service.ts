@@ -66,11 +66,11 @@ export class TaskService {
       timeSlot.forEach(ts => {
         // console.log(moment(ts.start).format('DD-MM-YYYY HH:mm'));
         // console.log(moment(ts.stop).format('DD-MM-YYYY HH:mm'));
-        const startTSWeek = Number(moment(ts.start).format('E'));
-        const stopTSWeek = Number(moment(ts.stop).format('E'));
+        // const startTSWeek = Number(moment(ts.start).format('E'));
+        // const stopTSWeek = Number(moment(ts.stop).format('E'));
         // console.log(startTSWeek, stopTSWeek, weeks);
-        if (!weeks.includes(startTSWeek) || !weeks.includes(stopTSWeek))
-          throw new Error('invalid week');
+        // if (!weeks.includes(startTSWeek) || !weeks.includes(stopTSWeek))
+        //   throw new Error('invalid week');
         const startTSTime = moment(ts.start);
         const stopTSTime = moment(ts.stop);
 
