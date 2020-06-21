@@ -15,11 +15,13 @@ import { AreaQueryService } from 'src/area/area.query.service';
 import { TaskFormController } from './task.form.controller';
 import { TaskFormService } from './task.form.service';
 import { TaskMeetingController } from './task.meeting.controller';
+import { TaskSportService } from './task.sport.service';
 
 @Module({
   imports: [DatabaseModule, AreaModule, FormModule, ScheduleModule.forRoot()],
   providers: [
     TaskService,
+    TaskSportService,
     TaskQueryService,
     TaskstaffService,
     TaskCronsService,
