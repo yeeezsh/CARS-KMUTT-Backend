@@ -29,21 +29,30 @@ const StaffRequest = new Schema(
   { _id: false },
 );
 
+const Desc = new Schema(
+  {
+    msg: { type: String, index: false },
+    createAt: { type: Date, default: Date.now, index: false },
+  },
+  { _id: false },
+);
+
 export const TaskSchema = new Schema({
   reserve: [TimeSchema],
   requestor: { type: [Requestor], index: true, required: true },
-  state: [String],
+  state: { type: [String], index: true },
   staff: { type: [StaffRequest], ref: 'staffs', index: true },
   area: { type: Schema.Types.ObjectId, ref: 'areas', index: true },
   building: { type: Schema.Types.ObjectId, ref: 'area.buildings', index: true },
   // form: { type: Schema.Types.ObjectId, ref: 'forms' },
   forms: [{}],
-  desc: String,
+  desc: { type: Desc, required: false },
 
   // use for common/area reserve
   type: {
     type: String,
     enum: ['common', 'common-sport', 'sport', 'meeting-room', 'meeting-club'],
+    index: true,
   },
 
   createAt: { type: Date, default: Date.now, index: true },

@@ -26,6 +26,11 @@ export type TaskType =
   | 'meeting-club'
   | 'meeting';
 
+export type Desc = {
+  msg: string;
+  createAt: Date;
+};
+
 export interface Task {
   reserve?: TimeSlotType;
   requestor: Requestor[];
@@ -35,9 +40,10 @@ export interface Task {
   area?: string | Types.ObjectId; // required area module
   // building?: string;
   forms?: any[];
-  desc?: string;
+  desc?: Desc[];
 
   // use for common/area reserve
+  // and use for sport timeout checking
   type?: TaskType;
 
   createAt: Date;
