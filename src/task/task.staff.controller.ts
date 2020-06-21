@@ -25,59 +25,79 @@ export class TaskStaffController {
 
   @Get('/all')
   @UseGuards(AuthGuard('staff'))
-  async getAllTask(@Query() query: TaskStaffQuery) {
-    const { current, size, orderCol, order } = query;
-    const offset = (current - 1) * Number(size);
-    return await this.taskStaffService.getAllTask(
-      offset,
-      Number(size),
-      orderCol,
-      Number(order),
-    );
+  async getAllTask(@Query() query: TaskStaffQuery, @Res() res: Response) {
+    try {
+      const { current, size, orderCol, order } = query;
+      const offset = (current - 1) * Number(size);
+      return await this.taskStaffService.getAllTask(
+        offset,
+        Number(size),
+        orderCol,
+        Number(order),
+      );
+    } catch (err) {
+      return res.status(500).send(String(err));
+    }
   }
 
   @Get('/wait')
   @UseGuards(AuthGuard('staff'))
-  async getRejectTask(@Query() query: TaskStaffQuery, @UserInfo() info) {
-    const { current, size, orderCol, order } = query;
-    const offset = (current - 1) * Number(size);
-    return await this.taskStaffService.getWaitTask(
-      offset,
-      Number(size),
-      orderCol,
-      Number(order),
-    );
+  async getRejectTask(
+    @Query() query: TaskStaffQuery,
+    @UserInfo() info,
+    @Res() res: Response,
+  ) {
+    try {
+      const { current, size, orderCol, order } = query;
+      const offset = (current - 1) * Number(size);
+      return await this.taskStaffService.getWaitTask(
+        offset,
+        Number(size),
+        orderCol,
+        Number(order),
+      );
+    } catch (err) {
+      return res.status(500).send(String(err));
+    }
   }
 
   @Get('/reject')
   @UseGuards(AuthGuard('staff'))
-  async getReject(@Query() query: TaskStaffQuery) {
-    const { current, size, orderCol, order } = query;
-    const offset = (current - 1) * Number(size);
-    return await this.taskStaffService.getRejectTask(
-      offset,
-      Number(size),
-      orderCol,
-      Number(order),
-    );
+  async getReject(@Query() query: TaskStaffQuery, @Res() res: Response) {
+    try {
+      const { current, size, orderCol, order } = query;
+      const offset = (current - 1) * Number(size);
+      return await this.taskStaffService.getRejectTask(
+        offset,
+        Number(size),
+        orderCol,
+        Number(order),
+      );
+    } catch (err) {
+      return res.status(500).send(String(err));
+    }
   }
 
   @Get('/accept')
   @UseGuards(AuthGuard('staff'))
-  async getAccept(@Query() query: TaskStaffQuery) {
-    const { current, size, orderCol, order } = query;
-    const offset = (current - 1) * Number(size);
-    return await this.taskStaffService.getAcceptTask(
-      offset,
-      Number(size),
-      orderCol,
-      Number(order),
-    );
+  async getAccept(@Query() query: TaskStaffQuery, @Res() res: Response) {
+    try {
+      const { current, size, orderCol, order } = query;
+      const offset = (current - 1) * Number(size);
+      return await this.taskStaffService.getAcceptTask(
+        offset,
+        Number(size),
+        orderCol,
+        Number(order),
+      );
+    } catch (err) {
+      return res.status(500).send(String(err));
+    }
   }
 
   @Get('/drop')
   @UseGuards(AuthGuard('staff'))
-  async getDrop(@Query() query: TaskStaffQuery) {
+  async getDrop(@Query() query: TaskStaffQuery, @Res() res: Response) {
     const { current, size, orderCol, order } = query;
     const offset = (current - 1) * Number(size);
     return await this.taskStaffService.getDropTask(
@@ -101,7 +121,7 @@ export class TaskStaffController {
       await this.taskService.cancleTaskById(taskId, username, true, desc);
       return res.sendStatus(200);
     } catch (err) {
-      return err;
+      return res.status(500).send(String(err));
     }
   }
 
@@ -117,7 +137,7 @@ export class TaskStaffController {
       await this.taskService.acceptTaskById(taskId, desc);
       return res.sendStatus(200);
     } catch (err) {
-      return err;
+      return res.status(500).send(String(err));
     }
   }
 }
