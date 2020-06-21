@@ -22,12 +22,15 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('/api');
   app.use(cookieParser());
-  const options = new DocumentBuilder()
-    .setTitle('CARs API')
-    .setVersion('1.0')
-    .build();
-  const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('/docs', app, document);
+
+  if (process.env.NODE_ENV === 'development') {
+    const options = new DocumentBuilder()
+      .setTitle('CARs API')
+      .setVersion('1.0')
+      .build();
+    const document = SwaggerModule.createDocument(app, options);
+    SwaggerModule.setup('/docs', app, document);
+  }
 
   await app.listen(3000);
 }
