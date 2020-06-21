@@ -23,7 +23,8 @@ export type TaskType =
   | 'common-sport'
   | 'sport'
   | 'meeting-room'
-  | 'meeting-club';
+  | 'meeting-club'
+  | 'meeting';
 
 export interface Task {
   reserve?: TimeSlotType;
