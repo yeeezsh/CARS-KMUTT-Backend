@@ -127,7 +127,7 @@ export class AreaQueryService {
       .find({
         area: areaId,
         type: {
-          $in: ['meeting', 'meeting-club'],
+          $in: ['meeting-room', 'meeting-club'],
         },
         state: {
           $in: ['wait', 'requested', 'accept'],
@@ -274,6 +274,7 @@ export class AreaQueryService {
       const areaBuildingList = await this.areaBuildingModel
         .find({
           type: {
+            // DANGER MUST MIGRATE TO MEETING-ROOM
             $in: ['meeting', 'meeting-club'],
           },
         })
