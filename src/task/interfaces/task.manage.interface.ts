@@ -1,8 +1,8 @@
-import { Requestor } from './task.interface';
+import { TaskRequestor } from './task.requestor.interface';
 
 export interface TaskManage {
   _id: string;
-  requestor: Requestor[];
+  requestor: TaskRequestor[];
   area: {
     name: string;
     label: string;

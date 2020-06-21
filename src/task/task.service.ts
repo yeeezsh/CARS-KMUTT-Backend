@@ -8,12 +8,8 @@ import { Model, ClientSession } from 'mongoose';
 import * as mongoose from 'mongoose';
 import * as moment from 'moment';
 
-import {
-  TaskDoc,
-  Requestor,
-  TaskLastCard,
-  Task,
-} from './interfaces/task.interface';
+import { TaskDoc, TaskLastCard, Task } from './interfaces/task.interface';
+import { TaskRequestor } from './interfaces/task.requestor.interface';
 import { AreaDoc } from 'src/area/interfaces/area.interface';
 import { TaskSchedule } from './interfaces/task.schedule.interface';
 
@@ -178,7 +174,7 @@ export class TaskService {
         data.requestor.length === area.required.requestor;
       if (!requestorValidNumber) throw new Error('invalid n of requestor');
 
-      const requestorMapped: Requestor[] = requestor.map((e, i) => ({
+      const requestorMapped: TaskRequestor[] = requestor.map((e, i) => ({
         username: e,
         confirm: i === 0 ? true : false,
       }));
@@ -225,7 +221,7 @@ export class TaskService {
       // await this.checkAvailable(area, time, s);
       // console.log(requestor, owner);
 
-      const requestorMapped: Requestor[] = [
+      const requestorMapped: TaskRequestor[] = [
         {
           username: owner,
           confirm: true,
@@ -374,7 +370,7 @@ export class TaskService {
 
       doc.state.push('accept');
       doc.updateAt = new Date();
-      doc.desc = desc;
+      // doc.desc = desc;
       await doc.save({ session: s });
       await s.commitTransaction();
       s.endSession();
@@ -405,7 +401,7 @@ export class TaskService {
 
       doc.state.push('drop');
       doc.updateAt = new Date();
-      doc.desc = desc;
+      // doc.desc = desc;
       await doc.save({ session: s });
       await s.commitTransaction();
       s.endSession();

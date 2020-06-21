@@ -5,7 +5,8 @@ import { AreaBuilding } from './interfaces/area.building.interface';
 
 import { Moment } from 'moment';
 import { AreaAvailble } from './interfaces/area.available.interface';
-import { TaskDoc, TimeSlot } from 'src/task/interfaces/task.interface';
+import { TaskDoc } from 'src/task/interfaces/task.interface';
+import { TaskTimeSlot } from 'src/task/interfaces/task.time.slot.interface';
 import moment = require('moment');
 import { AreaTableAPI } from './interfaces/area.table.interface';
 import { AreaAvailableStaff } from './interfaces/area.available.staff.interface';
@@ -145,7 +146,7 @@ export class AreaQueryService {
       .lean();
     const parse = tasks.map(e => e.reserve).flatMap(e => e);
     const mapped = parse
-      .map((e: TimeSlot) => {
+      .map((e: TaskTimeSlot) => {
         const start = moment(e.start);
         const stop = moment(e.stop);
         let cur = start;

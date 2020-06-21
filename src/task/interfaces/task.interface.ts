@@ -1,23 +1,10 @@
 import { Document, Types } from 'mongoose';
+import { TaskDesc } from './task.desc.interface';
+import { TaskRequestor } from './task.requestor.interface';
+import { TaskStaffRequested } from './task.staff.requested.interface';
+import { TaskTimeSlot } from './task.time.slot.interface';
 
-export interface TimeSlot {
-  start?: Date;
-  stop?: Date;
-  allDay?: boolean;
-}
-
-type TimeSlotType = TimeSlot[];
-
-export interface Requestor {
-  username: string;
-  confirm: boolean;
-}
-
-export interface StaffRequested {
-  group: string;
-  id?: string[];
-  approve: boolean;
-}
+type TimeSlotType = TaskTimeSlot[];
 
 export type TaskType =
   | 'common'
@@ -27,21 +14,16 @@ export type TaskType =
   | 'meeting-club'
   | 'meeting';
 
-export type Desc = {
-  msg: string;
-  createAt: Date;
-};
-
 export interface Task {
   reserve?: TimeSlotType;
-  requestor: Requestor[];
+  requestor: TaskRequestor[];
   // requested for sport (have timeout) / wait for normaly task
   state: Array<'wait' | 'reject' | 'accept' | 'drop' | 'requested'>;
-  staff?: StaffRequested[];
+  staff?: TaskStaffRequested[];
   area?: string | Types.ObjectId; // required area module
   // building?: string;
   forms?: any[];
-  desc?: Desc[];
+  desc?: TaskDesc[];
 
   // use for common/area reserve
   // and use for sport timeout checking
