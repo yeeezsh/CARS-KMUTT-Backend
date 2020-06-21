@@ -22,6 +22,7 @@ export class TaskCronsService {
       const waitTask = await this.taskModel
         .find({
           state: {
+            type: 'sport',
             $in: ['requested'],
             $nin: ['accept', 'drop'],
           },
@@ -33,7 +34,8 @@ export class TaskCronsService {
         .filter(e => moment(now).diff(e.createAt, 'minute') > EXPIRE_TIME)
         .map(e => e._id);
 
-      const updated = await this.taskModel
+      // update
+      await this.taskModel
         .updateMany(
           {
             _id: { $in: dropList },
@@ -44,7 +46,7 @@ export class TaskCronsService {
           },
         )
         .session(s);
-      console.log('drop timout : ', updated.n, 'task');
+
       await s.commitTransaction();
       s.endSession();
     } catch (err) {
