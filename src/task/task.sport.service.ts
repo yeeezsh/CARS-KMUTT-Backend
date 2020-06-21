@@ -6,8 +6,8 @@ import { Injectable, Inject, forwardRef } from '@nestjs/common';
 // interfaces & dto
 import { TaskDoc, Task } from './interfaces/task.interface';
 import { AreaDoc } from 'src/area/interfaces/area.interface';
-import { AreaBuilding } from 'src/area/interfaces/area.building.interface';
-import { AreaQueryService } from 'src/area/area.query.service';
+// import { AreaBuilding } from 'src/area/interfaces/area.building.interface';
+// import { AreaQueryService } from 'src/area/area.query.service';
 import { TimeSlot, CreateTaskSportDto } from './dtos/task.create.sport';
 import { CreateSportTaskByStaffDto } from './dtos/task.create.bystaff.dto';
 import { TaskRequestor } from './interfaces/task.requestor.interface';
@@ -23,10 +23,6 @@ export class TaskSportService {
   constructor(
     @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc>,
     @Inject('AREA_MODEL') private readonly areaModel: Model<AreaDoc>,
-    @Inject('AREA_BUILDING_MODEL')
-    private readonly areaBuildingModel: Model<AreaBuilding>,
-    @Inject(forwardRef(() => AreaQueryService))
-    private readonly areaQueryService: AreaQueryService,
   ) {}
 
   private async checkAvailable(

@@ -30,8 +30,6 @@ export class TaskService {
     @Inject('AREA_MODEL') private readonly areaModel: Model<AreaDoc>,
     @Inject('AREA_BUILDING_MODEL')
     private readonly areaBuildingModel: Model<AreaBuilding>,
-    @Inject(forwardRef(() => AreaQueryService))
-    private readonly areaQueryService: AreaQueryService,
   ) {}
 
   async createMeetingTask(
