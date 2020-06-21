@@ -17,6 +17,7 @@ import { AreaBuilding } from 'src/area/interfaces/area.building.interface';
 import { QuickTaskAPI } from './interfaces/task.quick.interface';
 
 import { CreateTaskMeetingDto } from './dtos/task.meeting.dto';
+import { TaskDesc } from './interfaces/task.desc.interface';
 
 // constant
 // const FORMAT = 'DD-MM-YYYY-HH:mm:ss';
@@ -147,6 +148,27 @@ export class TaskService {
     };
   }
 
+  private AddDesc(task: TaskDoc, desc: string): TaskDesc[] {
+    const now = new Date();
+    if (!task.desc) {
+      return [
+        {
+          msg: desc,
+          createAt: now,
+        },
+      ];
+    }
+
+    const descs = task.desc;
+    return [
+      ...descs,
+      {
+        msg: desc,
+        createAt: now,
+      },
+    ];
+  }
+
   async acceptTaskById(id: string, desc?: string): Promise<void> {
     const s = await mongoose.startSession();
     try {
@@ -156,7 +178,7 @@ export class TaskService {
 
       doc.state.push('accept');
       doc.updateAt = new Date();
-      // doc.desc = desc;
+      doc.desc = this.AddDesc(doc, desc);
       await doc.save({ session: s });
       await s.commitTransaction();
       s.endSession();
@@ -187,7 +209,7 @@ export class TaskService {
 
       doc.state.push('drop');
       doc.updateAt = new Date();
-      // doc.desc = desc;
+      doc.desc = this.AddDesc(doc, desc);
       await doc.save({ session: s });
       await s.commitTransaction();
       s.endSession();
@@ -207,8 +229,8 @@ export class TaskService {
     const validaAreaId = await this.areaModel.findById(areaId).select('_id');
     if (!validaAreaId) throw new BadRequestException('bad area id');
 
-    console.log('qt st', start.format('DD-MM'));
-    console.log('qt st', stop.format('DD-MM'));
+    // console.log('qt st', start.format('DD-MM'));
+    // console.log('qt st', stop.format('DD-MM'));
     const tasks = await this.taskModel
       .find({
         area: mongoose.Types.ObjectId(areaId),
