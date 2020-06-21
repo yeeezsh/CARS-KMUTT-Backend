@@ -14,8 +14,9 @@ export interface Requestor {
 }
 
 export interface StaffRequested {
-  group?: string;
+  group: string;
   id?: string[];
+  approve: boolean;
 }
 
 export type TaskType =

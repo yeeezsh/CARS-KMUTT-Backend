@@ -21,10 +21,12 @@ const StaffRequest = new Schema(
   {
     group: {
       type: String,
+      required: true,
     },
     id: {
       type: [String],
     },
+    approve: { type: Boolean, default: false },
   },
   { _id: false },
 );
