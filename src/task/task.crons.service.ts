@@ -21,8 +21,8 @@ export class TaskCronsService {
       const now = new Date();
       const waitTask = await this.taskModel
         .find({
+          type: 'sport',
           state: {
-            type: 'sport',
             $in: ['requested'],
             $nin: ['accept', 'drop'],
           },
@@ -30,6 +30,7 @@ export class TaskCronsService {
         .session(s)
         .select('_id createAt')
         .lean();
+
       const dropList: string[] = waitTask
         .filter(e => moment(now).diff(e.createAt, 'minute') > EXPIRE_TIME)
         .map(e => e._id);
