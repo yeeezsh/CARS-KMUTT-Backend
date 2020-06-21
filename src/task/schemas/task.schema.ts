@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import { STAFF_PERMISSION } from 'src/users/schemas/staffs.schema';
 
 const TimeSchema = new Schema(
   {
@@ -22,6 +23,7 @@ const StaffRequest = new Schema(
     group: {
       type: String,
       required: true,
+      enum: STAFF_PERMISSION,
     },
     id: {
       type: [String],

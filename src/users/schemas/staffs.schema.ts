@@ -1,7 +1,8 @@
 // import * as mongoose from 'mongoose';
 import { Schema } from 'mongoose';
 
-export type StaffPermissionType = 'staff' | 'approver' | 'admin';
+export type StaffPermissionType = 'staff' | 'staffLv1' | 'staffLv2' | 'admin';
+export const STAFF_PERMISSION = ['staff', 'staffLv1', 'staffLv2', 'admin'];
 
 export const StaffSchema = new Schema({
   username: { type: String, required: true },
@@ -10,7 +11,7 @@ export const StaffSchema = new Schema({
   permission: {
     type: String,
     required: true,
-    enum: ['staff', 'approver', 'admin'],
+    enum: STAFF_PERMISSION,
   },
   createAt: { type: Date, default: Date.now },
   updateAt: { type: Date, default: Date.now },
