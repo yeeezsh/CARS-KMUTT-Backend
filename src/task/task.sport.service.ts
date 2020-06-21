@@ -1,7 +1,12 @@
 import * as mongoose from 'mongoose';
 import { Model, ClientSession } from 'mongoose';
 import * as moment from 'moment';
-import { Injectable, Inject, forwardRef } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  //   forwardRef,
+  BadRequestException,
+} from '@nestjs/common';
 
 // interfaces & dto
 import { TaskDoc, Task } from './interfaces/task.interface';
@@ -229,4 +234,38 @@ export class TaskSportService {
   //       throw err;
   //     }
   //   }
+
+  async confirmTaskSportById(id: string, username: string): Promise<void> {
+    const s = await mongoose.startSession();
+    try {
+      s.startTransaction();
+      const doc = await this.taskModel.findById(id).session(s);
+      if (!doc) throw new Error('this task is not exisiting');
+      const validConfirm = doc.requestor
+        .flatMap(e => e.username)
+        .includes(username);
+      if (!validConfirm) throw new BadRequestException('action is not permit');
+      const requestor = doc.requestor.map(e => {
+        if (e.username === username) {
+          return { username, confirm: true };
+        }
+        return e;
+      });
+      doc.requestor = requestor;
+      const completeTask = requestor.every(e => e.confirm === true);
+
+      if (completeTask) {
+        doc.state.push('accept');
+      }
+      doc.updateAt = new Date();
+      await doc.save({ session: s });
+      await s.commitTransaction();
+      s.endSession();
+      return;
+    } catch (err) {
+      await s.abortTransaction();
+      s.endSession();
+      throw new Error(err);
+    }
+  }
 }

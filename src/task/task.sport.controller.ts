@@ -6,6 +6,9 @@ import {
   Req,
   Res,
   HttpStatus,
+  Get,
+  Param,
+  BadRequestException,
 } from '@nestjs/common';
 
 import { AuthGuard } from '@nestjs/passport';
@@ -45,5 +48,21 @@ export class TaskSportController {
   @UseGuards(AuthGuard('requestor'))
   async createSportTaskByStaff(@Body() data: CreateSportTaskByStaffDto) {
     return await this.taskSportService.createSportTaskByStaff(data);
+  }
+
+  @Get('/:id/confirm')
+  @UseGuards(AuthGuard('requestor'))
+  async confirmTask(
+    @UserInfo() user: UserSession,
+    @Param('id') taskId: string,
+    @Res() res: Response,
+  ) {
+    try {
+      const { username } = user;
+      await this.taskSportService.confirmTaskSportById(taskId, username);
+      return res.sendStatus(200);
+    } catch (err) {
+      return new BadRequestException(err);
+    }
   }
 }

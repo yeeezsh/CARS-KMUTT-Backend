@@ -13,7 +13,7 @@ import { TaskRequestor } from './interfaces/task.requestor.interface';
 import { AreaDoc } from 'src/area/interfaces/area.interface';
 
 import { AreaBuilding } from 'src/area/interfaces/area.building.interface';
-import { AreaQueryService } from 'src/area/area.query.service';
+// import { AreaQueryService } from 'src/area/area.query.service';
 import { QuickTaskAPI } from './interfaces/task.quick.interface';
 
 import { CreateTaskMeetingDto } from './dtos/task.meeting.dto';
@@ -188,40 +188,6 @@ export class TaskService {
       doc.state.push('drop');
       doc.updateAt = new Date();
       // doc.desc = desc;
-      await doc.save({ session: s });
-      await s.commitTransaction();
-      s.endSession();
-      return;
-    } catch (err) {
-      await s.abortTransaction();
-      s.endSession();
-      throw new Error(err);
-    }
-  }
-
-  async confirmTaskById(id: string, username: string): Promise<void> {
-    const s = await mongoose.startSession();
-    try {
-      s.startTransaction();
-      const doc = await this.taskModel.findById(id).session(s);
-      if (!doc) throw new Error('this task is not exisiting');
-      const validConfirm = doc.requestor
-        .flatMap(e => e.username)
-        .includes(username);
-      if (!validConfirm) throw new BadRequestException('action is not permit');
-      const requestor = doc.requestor.map(e => {
-        if (e.username === username) {
-          return { username, confirm: true };
-        }
-        return e;
-      });
-      doc.requestor = requestor;
-      const completeTask = requestor.every(e => e.confirm === true);
-      console.log('complete task', completeTask);
-      if (completeTask) {
-        doc.state.push('accept');
-      }
-      doc.updateAt = new Date();
       await doc.save({ session: s });
       await s.commitTransaction();
       s.endSession();

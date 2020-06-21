@@ -1,14 +1,5 @@
-import {
-  Controller,
-  Get,
-  UseGuards,
-  Param,
-  Res,
-  BadRequestException,
-  // Body,
-  // Post,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, UseGuards, Param, Res, Query } from '@nestjs/common';
+import * as moment from 'moment';
 // import { AreaService } from 'src/area/area.service';
 import { TaskService } from './task.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -16,8 +7,6 @@ import { UserInfo } from 'src/common/user.decorator';
 import { UserSession } from 'src/users/interfaces/user.session.interface';
 import { TaskQueryService } from './task.query.service';
 import { Response } from 'express';
-import { TaskCancelByStaff } from './dtos/task.cancel.byStaff.dto';
-import * as moment from 'moment';
 
 @Controller('task')
 export class TaskController {
@@ -74,6 +63,7 @@ export class TaskController {
     return this.taskService.getTaskById(taskId);
   }
 
+  // used for all task sport/meeting/common/area
   @Get('/:id/cancle')
   @UseGuards(AuthGuard('requestor'))
   async cancleTask(
@@ -82,29 +72,11 @@ export class TaskController {
     @Res() res: Response,
   ) {
     try {
-      console.log('cancle task', taskId);
       const { username } = user;
       await this.taskService.cancleTaskById(taskId, username);
       return res.sendStatus(200);
     } catch (err) {
       return err;
-    }
-  }
-
-  @Get('/:id/confirm')
-  @UseGuards(AuthGuard('requestor'))
-  async confirmTask(
-    @UserInfo() user: UserSession,
-    @Param('id') taskId: string,
-    @Res() res: Response,
-  ) {
-    try {
-      console.log('confirm task', taskId);
-      const { username } = user;
-      await this.taskService.confirmTaskById(taskId, username);
-      return res.sendStatus(200);
-    } catch (err) {
-      return new BadRequestException(err);
     }
   }
 }
