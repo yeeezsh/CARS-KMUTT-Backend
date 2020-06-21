@@ -15,6 +15,7 @@ import { UserInfo } from 'src/common/user.decorator';
 import { UserSession } from 'src/users/interfaces/user.session.interface';
 import { TaskCancelByStaff } from './dtos/task.cancel.byStaff.dto';
 import { TaskService } from './task.service';
+import { TaskManage } from './interfaces/task.manage.interface';
 
 @Controller('task/staff')
 export class TaskStaffController {
@@ -29,12 +30,13 @@ export class TaskStaffController {
     try {
       const { current, size, orderCol, order } = query;
       const offset = (current - 1) * Number(size);
-      return await this.taskStaffService.getAllTask(
+      const doc = await this.taskStaffService.getAllTask(
         offset,
         Number(size),
         orderCol,
         Number(order),
       );
+      return res.send(doc);
     } catch (err) {
       return res.status(500).send(String(err));
     }
@@ -50,12 +52,13 @@ export class TaskStaffController {
     try {
       const { current, size, orderCol, order } = query;
       const offset = (current - 1) * Number(size);
-      return await this.taskStaffService.getWaitTask(
+      const doc = await this.taskStaffService.getWaitTask(
         offset,
         Number(size),
         orderCol,
         Number(order),
       );
+      return res.send(doc);
     } catch (err) {
       return res.status(500).send(String(err));
     }
@@ -67,12 +70,13 @@ export class TaskStaffController {
     try {
       const { current, size, orderCol, order } = query;
       const offset = (current - 1) * Number(size);
-      return await this.taskStaffService.getRejectTask(
+      const doc = await this.taskStaffService.getRejectTask(
         offset,
         Number(size),
         orderCol,
         Number(order),
       );
+      return res.send(doc);
     } catch (err) {
       return res.status(500).send(String(err));
     }
@@ -84,12 +88,13 @@ export class TaskStaffController {
     try {
       const { current, size, orderCol, order } = query;
       const offset = (current - 1) * Number(size);
-      return await this.taskStaffService.getAcceptTask(
+      const doc = await this.taskStaffService.getAcceptTask(
         offset,
         Number(size),
         orderCol,
         Number(order),
       );
+      return res.send(doc);
     } catch (err) {
       return res.status(500).send(String(err));
     }
@@ -100,12 +105,13 @@ export class TaskStaffController {
   async getDrop(@Query() query: TaskStaffQuery, @Res() res: Response) {
     const { current, size, orderCol, order } = query;
     const offset = (current - 1) * Number(size);
-    return await this.taskStaffService.getDropTask(
+    const doc = await this.taskStaffService.getDropTask(
       offset,
       Number(size),
       orderCol,
       Number(order),
     );
+    return res.send(doc);
   }
 
   @Post('/cancle')
