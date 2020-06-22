@@ -1,7 +1,11 @@
 import { Injectable, Inject } from '@nestjs/common';
+import * as mongoose from 'mongoose';
 import { Model } from 'mongoose';
 import { TaskDoc } from './interfaces/task.interface';
 import { TaskManage } from './interfaces/task.manage.interface';
+import { STAFF_PERMISSION } from 'src/users/schemas/staffs.schema';
+import { TaskStaffRequested } from './interfaces/task.staff.requested.interface';
+import staffGroupLvHelper from './helpers/staff.group.lv.helper';
 
 const LIMIT = 10;
 
@@ -115,5 +119,38 @@ export class TaskstaffService {
         $in: ['drop'],
       },
     });
+  }
+
+  async forwardTask(id: string): Promise<void> {
+    const s = await mongoose.startSession();
+    try {
+      s.startTransaction();
+      const task = await this.taskModel
+        .findById(id)
+        .session(s)
+        .select(['_id', 'staff']);
+      const START_STAFF_LV_IND = 0;
+      const STAFF_LEVEL = STAFF_PERMISSION;
+      const alreadyPermit = task.staff && task.staff.length > 1;
+      let staff: TaskStaffRequested[] = [];
+      if (alreadyPermit) {
+        const nextLevelStaff = staffGroupLvHelper(task.staff.slice(-1)[0]);
+        staff = [
+          ...task.staff,
+          { group: STAFF_LEVEL[nextLevelStaff], approve: false },
+        ];
+      } else {
+        staff = [{ group: STAFF_LEVEL[START_STAFF_LV_IND], approve: false }];
+      }
+
+      task.staff = staff;
+      await task.save({ session: s });
+      await s.commitTransaction();
+      s.endSession();
+      return;
+    } catch (err) {
+      await s.abortTransaction();
+      throw err;
+    }
   }
 }
