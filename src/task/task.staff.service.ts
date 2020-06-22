@@ -134,7 +134,13 @@ export class TaskstaffService {
       const alreadyPermit = task.staff && task.staff.length > 1;
       let staff: TaskStaffRequested[] = [];
       if (alreadyPermit) {
-        const nextLevelStaff = staffGroupLvHelper(task.staff.slice(-1)[0]);
+        let nextLevelStaff: number =
+          staffGroupLvHelper(task.staff.slice(-1)[0]) + 1;
+        // preveting from out of index
+        if (nextLevelStaff > STAFF_LEVEL.length) {
+          nextLevelStaff = STAFF_LEVEL.length;
+        }
+
         staff = [
           ...task.staff,
           { group: STAFF_LEVEL[nextLevelStaff], approve: false },
