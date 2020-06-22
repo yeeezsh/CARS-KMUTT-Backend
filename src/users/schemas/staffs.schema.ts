@@ -1,8 +1,13 @@
-// import * as mongoose from 'mongoose';
 import { Schema } from 'mongoose';
 
 export type StaffPermissionType = 'staff' | 'staffLv1' | 'staffLv2' | 'admin';
-export const STAFF_PERMISSION = ['staff', 'staffLv1', 'staffLv2', 'admin'];
+// !!ORDER IMPORTANT
+export const STAFF_PERMISSION: StaffPermissionType[] = [
+  'staff',
+  'staffLv1',
+  'staffLv2',
+  'admin',
+];
 
 export const StaffSchema = new Schema({
   username: { type: String, required: true },
