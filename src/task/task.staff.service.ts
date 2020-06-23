@@ -6,6 +6,7 @@ import { TaskManage } from './interfaces/task.manage.interface';
 import { STAFF_PERMISSION } from 'src/users/schemas/staffs.schema';
 import { TaskStaffRequested } from './interfaces/task.staff.requested.interface';
 import staffGroupLvHelper from './helpers/staff.group.lv.helper';
+import { TaskService } from './task.service';
 
 const LIMIT = 10;
 
@@ -13,6 +14,7 @@ const LIMIT = 10;
 export class TaskstaffService {
   constructor(
     @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc>,
+    private readonly taskService: TaskService,
   ) {}
 
   async getAllTask(
@@ -121,14 +123,14 @@ export class TaskstaffService {
     });
   }
 
-  async forwardTask(id: string): Promise<void> {
+  async forwardTask(id: string, desc?: string): Promise<void> {
     const s = await mongoose.startSession();
     try {
       s.startTransaction();
       const task = await this.taskModel
         .findById(id)
         .session(s)
-        .select(['_id', 'staff']);
+        .select(['_id', 'staff', 'desc']);
       const START_STAFF_LV_IND = 0;
       const STAFF_LEVEL = STAFF_PERMISSION;
       const alreadyPermit = task.staff && task.staff.length > 1;
@@ -151,6 +153,9 @@ export class TaskstaffService {
 
       task.staff = staff;
       task.state = [...task.state, 'forward'];
+      if (desc) {
+        task.desc = this.taskService.AddDesc(task, desc);
+      }
       await task.save({ session: s });
       await s.commitTransaction();
       s.endSession();
