@@ -130,23 +130,25 @@ export class TaskstaffService {
       const task = await this.taskModel
         .findById(id)
         .session(s)
-        .select(['_id', 'staff', 'desc']);
-      const START_STAFF_LV_IND = 0;
+        .select(['_id', 'staff', 'desc', 'state']);
+      const START_STAFF_LV_IND = 1;
       const STAFF_LEVEL = STAFF_PERMISSION;
-      const alreadyPermit = task.staff && task.staff.length > 1;
+      const alreadyPermit = task.staff && task.staff.length > 0;
       let staff: TaskStaffRequested[] = [];
       if (alreadyPermit) {
-        let nextLevelStaff: number =
+        const nextLevelStaff: number =
           staffGroupLvHelper(task.staff.slice(-1)[0]) + 1;
-        // preveting from out of index
-        if (nextLevelStaff > STAFF_LEVEL.length) {
-          nextLevelStaff = STAFF_LEVEL.length;
+        const staffNext = STAFF_LEVEL[nextLevelStaff];
+        const staffNextSave = [...task.staff];
+        if (staffNext) {
+          staffNextSave.push({
+            group: STAFF_LEVEL[nextLevelStaff],
+            approve: false,
+          });
+          staff = staffNextSave;
+        } else {
+          staff = task.staff;
         }
-
-        staff = [
-          ...task.staff,
-          { group: STAFF_LEVEL[nextLevelStaff], approve: false },
-        ];
       } else {
         staff = [{ group: STAFF_LEVEL[START_STAFF_LV_IND], approve: false }];
       }
