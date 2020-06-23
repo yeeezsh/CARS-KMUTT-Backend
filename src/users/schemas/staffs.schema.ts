@@ -13,7 +13,7 @@ export const StaffSchema = new Schema({
   username: { type: String, required: true },
   password: String,
   email: { type: String, required: true },
-  permission: {
+  group: {
     type: String,
     required: true,
     enum: STAFF_PERMISSION,

@@ -1,11 +1,11 @@
-import { Schema, Document, Types } from 'mongoose';
+import { Document, Types } from 'mongoose';
+import { StaffPermissionType } from '../schemas/staffs.schema';
 
 export interface StaffAPI {
   _id: undefined | Types.ObjectId;
   username: string;
   email: string;
-  // permission: StaffPermission;
-  permission: 'staff';
+  group: StaffPermissionType;
 }
 
 export interface StaffDoc extends Document, StaffAPI {
@@ -15,8 +15,8 @@ export interface StaffDoc extends Document, StaffAPI {
   updateAt: Date;
 }
 
-interface StaffPermission {
-  position: 'staff' | 'approver' | 'admin';
-  approve: boolean;
-  permitArea: Schema.Types.ObjectId[] | -1; // -1 meaning all area authorative
-}
+// interface StaffPermission {
+//   position: 'staff' | 'approver' | 'admin';
+//   approve: boolean;
+//   permitArea: Types.ObjectId[] | -1; // -1 meaning all area authorative
+// }

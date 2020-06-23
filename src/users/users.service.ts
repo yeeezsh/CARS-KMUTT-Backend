@@ -19,6 +19,7 @@ import { CreateStaffDto } from './dtos/staff.create.dto';
 
 // helpers
 import { Hash } from './helpers/hash';
+import { STAFF_PERMISSION } from './schemas/staffs.schema';
 
 const BYPASS_USER = ['11111111111', 'k.t', 't.1', 't.2', 't.3', 't.4', 't.5'];
 const BYPASS_STAFF = ['staff.1', 'staff.2'];
@@ -48,7 +49,6 @@ export class UsersService {
     const parse = {
       ...create,
       password: await Hash.encrypt(create.password),
-      permission: 'staff',
     };
     const doc = new this.staffModel(parse);
     const saved = await doc.save();
@@ -63,8 +63,8 @@ export class UsersService {
       return {
         _id: new Types.ObjectId('111111111111'),
         username: login.username,
-        email: '',
-        permission: 'staff',
+        email: 'bypass@test.com',
+        group: STAFF_PERMISSION[0], // use first elem for default,
       };
 
     const user: StaffDoc = await this.staffModel

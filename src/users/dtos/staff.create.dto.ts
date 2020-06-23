@@ -13,4 +13,8 @@ export class CreateStaffDto {
   @ApiProperty()
   @IsEmail()
   email: string;
+
+  @ApiProperty({ default: 'staff' })
+  @IsString()
+  group: string;
 }

@@ -3,6 +3,8 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { jwtConstants } from './constants';
 import { CookieExtracter } from './helpers/cookie.extractor';
+import { STAFF_PERMISSION } from 'src/users/schemas/staffs.schema';
+const STAFFS = STAFF_PERMISSION;
 
 @Injectable()
 export class StaffJWTStrategy extends PassportStrategy(Strategy, 'staff') {
@@ -15,10 +17,10 @@ export class StaffJWTStrategy extends PassportStrategy(Strategy, 'staff') {
   }
 
   async validate(payload: any) {
-    if (payload.permission !== 'staff') throw new UnauthorizedException();
+    if (!STAFFS.includes(payload.group)) throw new UnauthorizedException();
     return {
       _id: payload._id,
-      permission: payload.permission,
+      group: payload.group,
       email: payload.email,
     };
   }

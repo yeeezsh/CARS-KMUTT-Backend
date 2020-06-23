@@ -23,7 +23,7 @@ export class RequestorJWTStrategy extends PassportStrategy(
       username: payload.username,
       studentId: payload.studentId || null,
       email: payload.email,
-      permission: 'requestor',
+      group: 'requestor',
     };
   }
 }

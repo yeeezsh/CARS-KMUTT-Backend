@@ -2,6 +2,8 @@ import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 
+const REQUESTOR_DEFAULT = 'requestor';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -13,7 +15,12 @@ export class AuthService {
   async loginStaff(
     username: string,
     inputPassword: string,
-  ): Promise<{ Authorization: string }> {
+  ): Promise<{
+    username: string;
+    email: string | undefined;
+    group: string;
+    Authorization: string;
+  }> {
     try {
       const user = await this.usersService.loginStaff({
         username,
@@ -22,7 +29,7 @@ export class AuthService {
 
       const payload = {
         _id: user._id,
-        permission: user.permission,
+        group: user.group,
         email: user.email,
         username: user.username,
       };
@@ -44,7 +51,7 @@ export class AuthService {
     username: string;
     studentId: string | undefined;
     email: string | undefined;
-    permission: string;
+    group: string;
     Authorization: string;
   }> {
     try {
@@ -58,7 +65,7 @@ export class AuthService {
         username: user.username,
         studentId: user.studentId || undefined,
         email: user.email || undefined,
-        permission: 'requestor',
+        group: REQUESTOR_DEFAULT,
       };
       const sign = await this.jwtService.signAsync(payload);
       return {
