@@ -6,6 +6,7 @@ import {
   Post,
   Body,
   Res,
+  Param,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { TaskstaffService } from './task.staff.service';
@@ -141,6 +142,17 @@ export class TaskStaffController {
     try {
       const { _id: taskId, desc } = data;
       await this.taskService.acceptTaskById(taskId, desc);
+      return res.sendStatus(200);
+    } catch (err) {
+      return res.status(500).send(String(err));
+    }
+  }
+
+  @Get('/forward/:id')
+  @UseGuards(AuthGuard('staff'))
+  async forwardTaskByStaff(@Param('id') id: string, @Res() res: Response) {
+    try {
+      await this.taskStaffService.forwardTask(id);
       return res.sendStatus(200);
     } catch (err) {
       return res.status(500).send(String(err));

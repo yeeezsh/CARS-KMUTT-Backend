@@ -150,6 +150,7 @@ export class TaskstaffService {
       }
 
       task.staff = staff;
+      task.state = [...task.state, 'forward'];
       await task.save({ session: s });
       await s.commitTransaction();
       s.endSession();
