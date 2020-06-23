@@ -148,7 +148,7 @@ export class TaskService {
     };
   }
 
-  private AddDesc(task: TaskDoc, desc: string): TaskDesc[] {
+  public AddDesc(task: TaskDoc, desc: string): TaskDesc[] {
     const now = new Date();
     if (!task.desc) {
       return [
