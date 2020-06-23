@@ -148,11 +148,16 @@ export class TaskStaffController {
     }
   }
 
-  @Get('/forward/:id')
+  @Post('/forward')
   @UseGuards(AuthGuard('staff'))
-  async forwardTaskByStaff(@Param('id') id: string, @Res() res: Response) {
+  async forwardTaskByStaff(
+    @UserInfo() user: UserSession,
+    @Body() data: TaskCancelByStaff,
+    @Res() res: Response,
+  ) {
     try {
-      await this.taskStaffService.forwardTask(id);
+      const { _id: taskId, desc } = data;
+      await this.taskStaffService.forwardTask(taskId, desc);
       return res.sendStatus(200);
     } catch (err) {
       return res.status(500).send(String(err));
