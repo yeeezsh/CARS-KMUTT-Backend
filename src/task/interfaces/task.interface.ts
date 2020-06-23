@@ -5,6 +5,13 @@ import { TaskStaffRequested } from './task.staff.requested.interface';
 import { TaskTimeSlot } from './task.time.slot.interface';
 
 type TimeSlotType = TaskTimeSlot[];
+type TaskStateType =
+  | 'wait'
+  | 'reject'
+  | 'accept'
+  | 'drop'
+  | 'requested'
+  | 'forward';
 
 export type TaskType =
   | 'common'
@@ -18,7 +25,7 @@ export interface Task {
   reserve?: TimeSlotType;
   requestor: TaskRequestor[];
   // requested for sport (have timeout) / wait for normaly task
-  state: Array<'wait' | 'reject' | 'accept' | 'drop' | 'requested'>;
+  state: TaskStateType[];
   staff?: TaskStaffRequested[];
   area?: string | Types.ObjectId; // required area module
   // building?: string;
