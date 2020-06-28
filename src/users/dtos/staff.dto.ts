@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsEmail, IsString, IsIn, IsDate } from 'class-validator';
+import { STAFF_PERMISSION } from '../schemas/staffs.schema';
 
 export class StaffDto {
   @IsNotEmpty()
@@ -18,8 +19,8 @@ export class StaffDto {
   readonly email: string;
 
   @IsNotEmpty()
-  @IsIn(['staff', 'approver', 'admin'])
-  readonly permission: string;
+  @IsIn(STAFF_PERMISSION)
+  readonly group: string;
 
   @IsNotEmpty()
   @IsDate()
