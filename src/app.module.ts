@@ -1,3 +1,4 @@
+// tslint:disable:ordered-imports
 import { Module } from '@nestjs/common';
 
 import { AppController } from './app.controller';
@@ -9,9 +10,11 @@ import { AreaModule } from './area/area.module';
 import { FormModule } from './form/form.module';
 import { InitModule } from './init/init.module';
 import { FileModule } from './file/file.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
+    DatabaseModule,
     AuthModule,
     UsersModule,
     TaskModule,
