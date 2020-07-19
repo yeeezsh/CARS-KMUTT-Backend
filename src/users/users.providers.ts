@@ -1,8 +1,7 @@
 import { Connection } from 'mongoose';
-
+import { RequestorSchema } from './schemas/requestor.schema';
 // schemas
 import { StaffSchema } from './schemas/staffs.schema';
-import { RequestorSchema } from './schemas/requestor.schema';
 
 export const usersProviders = [
   {

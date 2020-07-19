@@ -1,5 +1,5 @@
-import { TimeNode } from './timenode.interface';
 import { Types } from 'mongoose';
+import { TimeNode } from './timenode.interface';
 
 export interface AreaAvailableStaff {
   _id: string | Types.ObjectId;

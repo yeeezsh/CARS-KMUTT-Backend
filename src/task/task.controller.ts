@@ -1,12 +1,12 @@
-import { Controller, Get, UseGuards, Param, Res, Query } from '@nestjs/common';
-import * as moment from 'moment';
-// import { AreaService } from 'src/area/area.service';
-import { TaskService } from './task.service';
+import { Controller, Get, Param, Query, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Response } from 'express';
+import * as moment from 'moment';
 import { UserInfo } from 'src/common/user.decorator';
 import { UserSession } from 'src/users/interfaces/user.session.interface';
 import { TaskQueryService } from './task.query.service';
-import { Response } from 'express';
+// import { AreaService } from 'src/area/area.service';
+import { TaskService } from './task.service';
 
 @Controller('task')
 export class TaskController {

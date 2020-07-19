@@ -1,10 +1,10 @@
-import {
-  IsString,
-  IsNotEmpty,
-  ValidateNested,
-  IsBoolean,
-} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import moment = require('moment');
 
 class Reserve {

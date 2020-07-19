@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsEmail, IsString, IsIn, IsDate } from 'class-validator';
+import { IsDate, IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 class FullName {
   @IsString()

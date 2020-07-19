@@ -1,4 +1,4 @@
-import { Schema, Document } from 'mongoose';
+import { Schema } from 'mongoose';
 import { StaffDoc } from '../../users/interfaces/staff.interface';
 import { AreaBuilding } from './area.building.interface';
 

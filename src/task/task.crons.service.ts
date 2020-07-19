@@ -1,8 +1,8 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
-import { Model } from 'mongoose';
-import * as mongoose from 'mongoose';
 import * as moment from 'moment';
+import * as mongoose from 'mongoose';
+import { Model } from 'mongoose';
 import { TaskDoc } from './interfaces/task.interface';
 
 @Injectable()

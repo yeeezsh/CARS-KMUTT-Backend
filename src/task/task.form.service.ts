@@ -1,9 +1,9 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { TaskDoc, TaskType } from './interfaces/task.interface';
-import { TaskFormCreateDto } from './dtos/task.form.create.dto';
-import moment = require('moment');
 import { TimeSlot } from './dtos/task.create.sport';
+import { TaskFormCreateDto } from './dtos/task.form.create.dto';
+import { TaskDoc, TaskType } from './interfaces/task.interface';
+import moment = require('moment');
 
 const INDEX_RESERVE_FORM = 1;
 const DAY_FORMAT = 'DD-MM-YYYY';

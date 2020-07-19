@@ -1,5 +1,5 @@
+import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { Injectable, Inject } from '@nestjs/common';
 import { TaskDoc } from './interfaces/task.interface';
 
 const DEFAULT_SELECT = '_id state cancle reserve requestor area createAt';

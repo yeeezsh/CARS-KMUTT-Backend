@@ -1,23 +1,15 @@
-import {
-  Injectable,
-  Inject,
-  forwardRef,
-  BadRequestException,
-} from '@nestjs/common';
-import { Model } from 'mongoose';
-import * as mongoose from 'mongoose';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import * as moment from 'moment';
-
-import { TaskDoc, TaskLastCard, Task } from './interfaces/task.interface';
-import { TaskRequestor } from './interfaces/task.requestor.interface';
-import { AreaDoc } from 'src/area/interfaces/area.interface';
-
+import * as mongoose from 'mongoose';
+import { Model } from 'mongoose';
 import { AreaBuilding } from 'src/area/interfaces/area.building.interface';
-// import { AreaQueryService } from 'src/area/area.query.service';
-import { QuickTaskAPI } from './interfaces/task.quick.interface';
-
+import { AreaDoc } from 'src/area/interfaces/area.interface';
 import { CreateTaskMeetingDto } from './dtos/task.meeting.dto';
 import { TaskDesc } from './interfaces/task.desc.interface';
+import { Task, TaskDoc, TaskLastCard } from './interfaces/task.interface';
+// import { AreaQueryService } from 'src/area/area.query.service';
+import { QuickTaskAPI } from './interfaces/task.quick.interface';
+import { TaskRequestor } from './interfaces/task.requestor.interface';
 
 // constant
 // const FORMAT = 'DD-MM-YYYY-HH:mm:ss';

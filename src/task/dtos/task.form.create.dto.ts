@@ -1,5 +1,4 @@
 import { AreaBuildingType } from 'src/area/interfaces/building.type';
-import { ValidateNested, IsNotEmpty, IsArray } from 'class-validator';
 
 class AreaBuildingAPI {
   // tslint:disable-next-line: variable-name

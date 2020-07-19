@@ -1,18 +1,18 @@
 import {
-  Controller,
-  Post,
-  UseGuards,
-  Get,
   Body,
+  Controller,
+  Get,
   Param,
+  Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { AreaQueryService } from './area.query.service';
 import { AreaService } from './area.service';
 import { CreateAreaBuildingDto } from './dtos/area.building.create.dto';
 import { CreateAreaDto } from './dtos/area.create.dto';
 import moment = require('moment');
-import { AreaQueryService } from './area.query.service';
 
 @Controller('area')
 export class AreaController {

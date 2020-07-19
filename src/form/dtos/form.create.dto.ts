@@ -1,10 +1,10 @@
+import { Type } from 'class-transformer';
 import {
+  IsBoolean,
   IsNotEmpty,
   IsString,
-  IsBoolean,
   ValidateNested,
 } from 'class-validator';
-import { Type } from 'class-transformer';
 
 class Option {
   @IsNotEmpty()

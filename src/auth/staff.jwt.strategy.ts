@@ -1,9 +1,9 @@
-import { Strategy } from 'passport-jwt';
-import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import { Strategy } from 'passport-jwt';
+import { STAFF_PERMISSION } from 'src/users/schemas/staffs.schema';
 import { jwtConstants } from './constants';
 import { CookieExtracter } from './helpers/cookie.extractor';
-import { STAFF_PERMISSION } from 'src/users/schemas/staffs.schema';
 const STAFFS = STAFF_PERMISSION;
 
 @Injectable()

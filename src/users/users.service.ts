@@ -1,24 +1,20 @@
 import {
-  Injectable,
-  Inject,
   HttpException,
-  HttpStatus,
   HttpService,
+  HttpStatus,
+  Inject,
+  Injectable,
 } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
-
-// interfaces
-import { StaffDoc, StaffAPI } from './interfaces/staff.interface';
-import { Requestor } from './interfaces/requestor.interface';
-
+import { RequestorLoginDto } from './dtos/requestor.login.dto';
+import { CreateStaffDto } from './dtos/staff.create.dto';
 // dtos
 import { StaffLoginDto } from './dtos/staff.login.dto';
-import { RequestorLoginDto } from './dtos/requestor.login.dto';
-import { StaffDto } from './dtos/staff.dto';
-import { CreateStaffDto } from './dtos/staff.create.dto';
-
 // helpers
 import { Hash } from './helpers/hash';
+import { Requestor } from './interfaces/requestor.interface';
+// interfaces
+import { StaffAPI, StaffDoc } from './interfaces/staff.interface';
 import { STAFF_PERMISSION } from './schemas/staffs.schema';
 
 const BYPASS_USER = ['11111111111', 'k.t', 't.1', 't.2', 't.3', 't.4', 't.5'];

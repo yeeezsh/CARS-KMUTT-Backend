@@ -1,7 +1,6 @@
 import { Connection } from 'mongoose';
-
-import { AreaSchema } from './schemas/area.schema';
 import { AreaBuildingSchema } from './schemas/area.building.schema';
+import { AreaSchema } from './schemas/area.schema';
 
 export const areaProviders = [
   {

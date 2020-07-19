@@ -1,6 +1,6 @@
-import { Strategy } from 'passport-jwt';
-import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import { Strategy } from 'passport-jwt';
 import { jwtConstants } from './constants';
 import { CookieExtracter } from './helpers/cookie.extractor';
 

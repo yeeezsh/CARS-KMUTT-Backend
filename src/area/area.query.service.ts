@@ -1,17 +1,17 @@
-import { Injectable, Inject, BadRequestException } from '@nestjs/common';
-import { Model, Types } from 'mongoose';
-import { AreaDoc, AreaAPI } from './interfaces/area.interface';
-import { AreaBuilding } from './interfaces/area.building.interface';
-
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { Moment } from 'moment';
-import { AreaAvailble } from './interfaces/area.available.interface';
+import { Model, Types } from 'mongoose';
+import weekParse from 'src/task/helpers/week.parse';
 import { TaskDoc } from 'src/task/interfaces/task.interface';
 import { TaskTimeSlot } from 'src/task/interfaces/task.time.slot.interface';
-import moment = require('moment');
-import { AreaTableAPI } from './interfaces/area.table.interface';
+import { AreaAvailble } from './interfaces/area.available.interface';
 import { AreaAvailableStaff } from './interfaces/area.available.staff.interface';
-import weekParse from 'src/task/helpers/week.parse';
+import { AreaBuilding } from './interfaces/area.building.interface';
+import { AreaAPI, AreaDoc } from './interfaces/area.interface';
+import { AreaTableAPI } from './interfaces/area.table.interface';
 import { TimeNode } from './interfaces/timenode.interface';
+
+import moment = require('moment');
 
 @Injectable()
 export class AreaQueryService {

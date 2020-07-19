@@ -1,11 +1,11 @@
-import { Injectable, Inject, HttpStatus, HttpException } from '@nestjs/common';
-import { Model, Types } from 'mongoose';
-import { AreaDoc } from './interfaces/area.interface';
-import { AreaBuilding } from './interfaces/area.building.interface';
-import { CreateAreaBuildingDto } from './dtos/area.building.create.dto';
-import { CreateAreaDto } from './dtos/area.create.dto';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Model } from 'mongoose';
 import { FormService } from '../form/form.service';
 import { UsersService } from '../users/users.service';
+import { CreateAreaBuildingDto } from './dtos/area.building.create.dto';
+import { CreateAreaDto } from './dtos/area.create.dto';
+import { AreaBuilding } from './interfaces/area.building.interface';
+import { AreaDoc } from './interfaces/area.interface';
 
 @Injectable()
 export class AreaService {

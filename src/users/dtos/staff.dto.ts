@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsEmail, IsString, IsIn, IsDate } from 'class-validator';
+import { IsDate, IsEmail, IsIn, IsNotEmpty, IsString } from 'class-validator';
 import { STAFF_PERMISSION } from '../schemas/staffs.schema';
 
 export class StaffDto {

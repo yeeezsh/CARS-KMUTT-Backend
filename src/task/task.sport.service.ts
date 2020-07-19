@@ -1,25 +1,24 @@
-import * as mongoose from 'mongoose';
-import { Model, ClientSession } from 'mongoose';
-import * as moment from 'moment';
 import {
-  Injectable,
-  Inject,
   //   forwardRef,
   BadRequestException,
+  Inject,
+  Injectable,
 } from '@nestjs/common';
-
-// interfaces & dto
-import { TaskDoc, Task } from './interfaces/task.interface';
+import * as moment from 'moment';
+import * as mongoose from 'mongoose';
+import { ClientSession, Model } from 'mongoose';
 import { AreaDoc } from 'src/area/interfaces/area.interface';
+import { CreateSportTaskByStaffDto } from './dtos/task.create.bystaff.dto';
 // import { AreaBuilding } from 'src/area/interfaces/area.building.interface';
 // import { AreaQueryService } from 'src/area/area.query.service';
-import { TimeSlot, CreateTaskSportDto } from './dtos/task.create.sport';
-import { CreateSportTaskByStaffDto } from './dtos/task.create.bystaff.dto';
-import { TaskRequestor } from './interfaces/task.requestor.interface';
+import { CreateTaskSportDto, TimeSlot } from './dtos/task.create.sport';
 // import { TaskSchedule } from './interfaces/task.schedule.interface';
-
 // helper
 import WeekParseHelper from './helpers/week.parse';
+// interfaces & dto
+import { Task, TaskDoc } from './interfaces/task.interface';
+import { TaskRequestor } from './interfaces/task.requestor.interface';
+
 // import TaskSchedulePartitionArrHelper from './helpers/task.schedule.partition.arr.helper';
 // import TaskScheduleStructArrHelper from './helpers/task.schedule.struct.arr.helper';
 

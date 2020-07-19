@@ -1,13 +1,13 @@
-import { Module, forwardRef } from '@nestjs/common';
-import { AreaService } from './area.service';
+import { forwardRef, Module } from '@nestjs/common';
+import { TaskModule } from 'src/task/task.module';
 import { DatabaseModule } from '../database/database.module';
-import { areaProviders } from './area.providers';
 import { FormModule } from '../form/form.module';
 import { UsersModule } from '../users/users.module';
 import { AreaController } from './area.controller';
-import { TaskModule } from 'src/task/task.module';
-import { BuildingController } from './building.controller';
+import { areaProviders } from './area.providers';
 import { AreaQueryService } from './area.query.service';
+import { AreaService } from './area.service';
+import { BuildingController } from './building.controller';
 
 @Module({
   imports: [

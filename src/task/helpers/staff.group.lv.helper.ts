@@ -1,5 +1,5 @@
-import { TaskStaffRequested } from '../interfaces/task.staff.requested.interface';
 import { STAFF_PERMISSION } from 'src/users/schemas/staffs.schema';
+import { TaskStaffRequested } from '../interfaces/task.staff.requested.interface';
 
 export default (taskStaff: TaskStaffRequested): number => {
   const STAFF_LEVEL = STAFF_PERMISSION;

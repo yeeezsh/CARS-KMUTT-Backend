@@ -1,5 +1,4 @@
 import { Connection } from 'mongoose';
-
 import { TaskSchema } from './schemas/task.schema';
 
 export const taskProviders = [
