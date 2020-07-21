@@ -11,6 +11,8 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileService } from './file.service';
+import { ApiConsumes, ApiBody } from '@nestjs/swagger';
+import { CreateFileDto } from './dtos/file.create.dto';
 
 @Controller('file')
 export class FileController {
@@ -18,6 +20,10 @@ export class FileController {
 
   @Post('/')
   @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    type: CreateFileDto,
+  })
   upload(@UploadedFile() file) {
     return file;
   }
