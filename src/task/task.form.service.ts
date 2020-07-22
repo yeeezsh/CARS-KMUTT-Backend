@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { TimeSlot } from './dtos/task.create.sport';
 import { TaskFormCreateDto } from './dtos/task.form.create.dto';
@@ -51,7 +51,7 @@ export class TaskFormService {
         const startDay = moment(projectStartDate).startOf('day');
         const stopDay = moment(projectStopDate).startOf('day');
         let curDay = moment(startDay);
-        while (curDay.valueOf() < stopDay.valueOf()) {
+        while (curDay.valueOf() <= stopDay.valueOf()) {
           reserveMapped.push({
             start: moment(
               `${curDay.format(DAY_FORMAT)} ${moment(projectStartTime).format(
@@ -69,6 +69,8 @@ export class TaskFormService {
           curDay = moment(curDay.add(1, 'day'));
         }
       }
+
+      if (reserveMapped.length === 0) throw new BadRequestException();
 
       const doc = new this.taskModel({
         forms: data.forms,
