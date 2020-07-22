@@ -29,6 +29,7 @@ export class UsersController {
     @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc>,
     private readonly usersService: UsersService,
   ) {}
+
   @Post('/auth/staff')
   async loginStaff(@Body() body, @Res() res: Response) {
     const { username, password } = body;
@@ -45,6 +46,12 @@ export class UsersController {
     res.cookie('Authorization', user.Authorization);
     res.cookie('user', user);
     return res.send({ ...user });
+  }
+
+  @UseGuards(AuthGuard('requestor'))
+  @Get('/auth/requestor')
+  async validRequestorToken(@Res() res: Response) {
+    return res.sendStatus(200);
   }
 
   @Get('/auth/logout')
