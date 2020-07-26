@@ -75,6 +75,7 @@ export class UsersController {
         state: {
           $nin: ['drop', 'reject'],
         },
+        type: 'sport',
         requestor: {
           $elemMatch: {
             username,
