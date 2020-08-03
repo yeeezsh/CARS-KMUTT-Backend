@@ -29,12 +29,21 @@ export class TaskstaffService {
     const orderColField: string = orderCol || 'createAt';
     const docs: TaskManage[] = await this.taskModel.aggregate([
       {
+        $project: {
+          state: {
+            $arrayElemAt: ['$state', -1],
+          },
+          _id: 1,
+          key: '$_id',
+          requestor: 1,
+          'area.label': 1,
+          'area.name': 1,
+          type: 1,
+          createAt: 1,
+        },
+      },
+      {
         $match: {
-          // back verse query
-          // createAt: {
-          //   $lte: moment(offset).toDate(),
-          //   $gte: moment(limit).toDate(),
-          // },
           ...query,
         },
       },
@@ -60,7 +69,7 @@ export class TaskstaffService {
           'area.name': 1,
           type: 1,
           createAt: 1,
-          state: 1,
+          state: ['$state'],
         },
       },
     ]);
@@ -76,8 +85,7 @@ export class TaskstaffService {
   ) {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
-        $in: ['wait', 'requested'],
-        $nin: ['drop', 'reject', 'accept'],
+        $in: ['wait', 'requested', 'forward'],
       },
     });
   }
@@ -91,7 +99,6 @@ export class TaskstaffService {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
         $in: ['accept'],
-        $nin: ['reject', 'drop'],
       },
     });
   }
@@ -117,7 +124,6 @@ export class TaskstaffService {
   ) {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
-        // $nin: ['accept'],
         $in: ['drop'],
       },
     });
