@@ -1,7 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import * as mongoose from 'mongoose';
 import { Model } from 'mongoose';
-import { STAFF_PERMISSION } from 'src/users/schemas/staffs.schema';
+import {
+  StaffPermissionType,
+  STAFF_PERMISSION,
+} from 'src/users/schemas/staffs.schema';
 import staffGroupLvHelper from './helpers/staff.group.lv.helper';
 import { TaskDoc } from './interfaces/task.interface';
 import { TaskManage } from './interfaces/task.manage.interface';
@@ -29,12 +32,24 @@ export class TaskstaffService {
     const orderColField: string = orderCol || 'createAt';
     const docs: TaskManage[] = await this.taskModel.aggregate([
       {
+        $project: {
+          state: {
+            $arrayElemAt: ['$state', -1],
+          },
+          staff: {
+            $arrayElemAt: ['$staff', -1],
+          },
+          _id: 1,
+          key: '$_id',
+          requestor: 1,
+          area: 1,
+          type: 1,
+          createAt: 1,
+        },
+      },
+      { $addFields: { staffGroupType: '$staff.group' } },
+      {
         $match: {
-          // back verse query
-          // createAt: {
-          //   $lte: moment(offset).toDate(),
-          //   $gte: moment(limit).toDate(),
-          // },
           ...query,
         },
       },
@@ -60,7 +75,8 @@ export class TaskstaffService {
           'area.name': 1,
           type: 1,
           createAt: 1,
-          state: 1,
+          state: ['$state'],
+          staff: 1,
         },
       },
     ]);
@@ -76,8 +92,7 @@ export class TaskstaffService {
   ) {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
-        $in: ['wait', 'requested'],
-        $nin: ['drop', 'reject', 'accept'],
+        $in: ['wait', 'requested', 'forward'],
       },
     });
   }
@@ -91,7 +106,6 @@ export class TaskstaffService {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
         $in: ['accept'],
-        $nin: ['reject', 'drop'],
       },
     });
   }
@@ -117,9 +131,29 @@ export class TaskstaffService {
   ) {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
-        // $nin: ['accept'],
         $in: ['drop'],
       },
+    });
+  }
+
+  async getForwardTask({
+    offset,
+    limit,
+    orderCol,
+    order,
+    staffLevel,
+  }: {
+    offset?: number;
+    limit?: number;
+    orderCol?: string;
+    order?: number;
+    staffLevel: StaffPermissionType;
+  }) {
+    return await this.getAllTask(offset, limit, orderCol, order, {
+      state: {
+        $in: ['forward'],
+      },
+      staffGroupType: staffLevel,
     });
   }
 
