@@ -115,6 +115,7 @@ export class TaskService {
         'forms',
         'type',
         'staff',
+        'desc',
       ])
       .populate('area', '_id name label building')
       .lean();
@@ -143,7 +144,10 @@ export class TaskService {
 
   public AddDesc(task: TaskDoc, desc: string): TaskDesc[] {
     const now = new Date();
-    if (!task.desc) {
+    const msg = desc.trim();
+    const newMsg = msg.length > 0;
+
+    if (!task.desc && newMsg) {
       return [
         {
           msg: desc,
@@ -152,6 +156,7 @@ export class TaskService {
       ];
     }
 
+    if (!newMsg) return task.desc;
     const descs = task.desc;
     return [
       ...descs,
