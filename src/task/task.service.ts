@@ -115,6 +115,7 @@ export class TaskService {
         'forms',
         'type',
         'staff',
+        'desc',
       ])
       .populate('area', '_id name label building')
       .lean();
