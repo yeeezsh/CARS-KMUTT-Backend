@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -11,6 +12,10 @@ import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 import { UserInfo } from 'src/common/user.decorator';
 import { UserSession } from 'src/users/interfaces/user.session.interface';
+import {
+  StaffPermissionType,
+  STAFF_PERMISSION,
+} from 'src/users/schemas/staffs.schema';
 import { TaskCancelByStaff } from './dtos/task.cancel.byStaff.dto';
 import { TaskStaffQuery } from './dtos/task.staff.query.dto';
 import { TaskService } from './task.service';
@@ -110,6 +115,28 @@ export class TaskStaffController {
       orderCol,
       Number(order),
     );
+    return res.send(doc);
+  }
+
+  @Get('/forward')
+  @UseGuards(AuthGuard('staff'))
+  async getForward(
+    @UserInfo() user: UserSession,
+    @Query() query: TaskStaffQuery,
+    @Res() res: Response,
+  ) {
+    const { current, size, orderCol, order } = query;
+    const offset = (current - 1) * Number(size);
+    const userGroup = user.group as StaffPermissionType;
+    if (!STAFF_PERMISSION.includes(userGroup))
+      throw new BadRequestException('invalid user group');
+    const doc = await this.taskStaffService.getForwardTask({
+      offset,
+      limit: Number(size),
+      orderCol,
+      order: Number(order),
+      staffLevel: userGroup,
+    });
     return res.send(doc);
   }
 
