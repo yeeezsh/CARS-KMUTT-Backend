@@ -3,8 +3,8 @@ import { STAFF_PERMISSION } from 'src/users/schemas/staffs.schema';
 
 const TimeSchema = new Schema(
   {
-    start: Date,
-    stop: Date,
+    start: { type: Date, index: true },
+    stop: { type: Date, index: true },
     allDay: { type: Boolean, default: false },
   },
   { _id: false },

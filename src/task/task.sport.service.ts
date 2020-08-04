@@ -7,7 +7,7 @@ import { CreateSportTaskByStaffDto } from './dtos/task.create.bystaff.dto';
 // import { AreaQueryService } from 'src/area/area.query.service';
 import { CreateTaskSportDto, TimeSlot } from './dtos/task.create.sport';
 // interfaces & dto
-import { Task, TaskDoc } from './interfaces/task.interface';
+import { Task, TaskDoc, TaskType } from './interfaces/task.interface';
 import { TaskRequestor } from './interfaces/task.requestor.interface';
 
 // import TaskSchedulePartitionArrHelper from './helpers/task.schedule.partition.arr.helper';
@@ -26,10 +26,12 @@ export class TaskSportService {
     sessions: ClientSession,
   ): Promise<boolean> {
     try {
+      const SPORT_TYPE: TaskType = 'sport';
       const startTime = new Date(time[0].start);
       const stopTime = new Date(time[0].stop);
       const tasks = await this.taskModel
         .find({
+          type: SPORT_TYPE,
           area: areaId,
           state: {
             $in: ['accept', 'wait', 'requested'],
