@@ -96,6 +96,42 @@ export class TaskSportService {
     return true;
   }
 
+  private async validReservation(
+    areaId: mongoose.Types.ObjectId,
+    time: TimeSlot[],
+    sessions: ClientSession,
+  ): Promise<boolean> {
+    try {
+      console.log('yahhh', areaId, time);
+      const startTime = new Date(time[0].start);
+      const stopTime = new Date(time[0].stop);
+      const tasks = await this.taskModel
+        .find({
+          area: areaId,
+          state: {
+            $in: ['accept', 'wait', 'requested'],
+            $nin: ['drop'],
+          },
+          reserve: {
+            $elemMatch: {
+              allDay: false,
+              start: startTime,
+              stop: stopTime,
+            },
+          },
+        })
+        .countDocuments()
+        .session(sessions);
+      console.log('task count', tasks);
+      if (tasks > 0) {
+        throw new Error('duplicated tasks');
+      }
+      return true;
+    } catch {
+      throw new BadRequestException('task time duplicated');
+    }
+  }
+
   async createSportTaskByStaff(
     data: CreateSportTaskByStaffDto,
   ): Promise<TaskDoc> {
@@ -150,7 +186,10 @@ export class TaskSportService {
         .session(s)
         .lean();
 
-      await this.checkAvailable(area, time, s);
+      if (!area) throw new BadRequestException('bad area id');
+      await this.validReservation(area._id, data.time, s);
+
+      // await this.checkAvailable(area, time, s);
       // console.log(requestor, owner);
       const ownerValid = requestor[0] === owner;
       if (!ownerValid) throw new Error('invalid owner');
