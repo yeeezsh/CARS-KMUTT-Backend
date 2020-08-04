@@ -1,10 +1,10 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import * as moment from 'moment';
 import * as mongoose from 'mongoose';
-import { Model } from 'mongoose';
+import { ClientSession, Model, Types } from 'mongoose';
 import { AreaBuilding } from 'src/area/interfaces/area.building.interface';
 import { AreaDoc } from 'src/area/interfaces/area.interface';
-import { CreateTaskMeetingDto } from './dtos/task.meeting.dto';
+import { CreateTaskMeetingDto, TimeSlot } from './dtos/task.meeting.dto';
 import { TaskDesc } from './interfaces/task.desc.interface';
 import { Task, TaskDoc, TaskLastCard } from './interfaces/task.interface';
 // import { AreaQueryService } from 'src/area/area.query.service';
@@ -25,6 +25,40 @@ export class TaskService {
     private readonly areaBuildingModel: Model<AreaBuilding>,
   ) {}
 
+  private async validMeetingReservation(
+    areaId: Types.ObjectId | string,
+    time: TimeSlot[],
+    sessions: ClientSession,
+  ): Promise<boolean> {
+    try {
+      const startTime = new Date(time[0].start);
+      const stopTime = new Date(time[0].stop);
+      const tasks = await this.taskModel
+        .find({
+          area: areaId,
+          state: {
+            $in: ['accept', 'wait', 'requested'],
+            $nin: ['drop'],
+          },
+          reserve: {
+            $elemMatch: {
+              allDay: false,
+              start: startTime,
+              stop: stopTime,
+            },
+          },
+        })
+        .countDocuments()
+        .session(sessions);
+      if (tasks > 0) {
+        throw new Error('duplicated tasks');
+      }
+      return true;
+    } catch {
+      throw new BadRequestException('task time duplicated');
+    }
+  }
+
   async createMeetingTask(
     data: CreateTaskMeetingDto,
     type: 'meeting-room' | 'meeting-club',
@@ -41,9 +75,9 @@ export class TaskService {
         .select(['reserve', 'required'])
         .session(s)
         .lean();
+      if (!area) throw new BadRequestException('bad area id');
 
-      // await this.checkAvailable(area, time, s);
-      // console.log(requestor, owner);
+      await this.validMeetingReservation(areaId, time, s);
 
       const requestorMapped: TaskRequestor[] = [
         {
@@ -51,7 +85,6 @@ export class TaskService {
           confirm: true,
         },
       ];
-
       const now = new Date();
       const doc: Task = {
         reserve: time,
