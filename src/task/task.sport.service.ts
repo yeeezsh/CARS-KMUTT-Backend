@@ -1,9 +1,4 @@
-import {
-  //   forwardRef,
-  BadRequestException,
-  Inject,
-  Injectable,
-} from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import * as moment from 'moment';
 import * as mongoose from 'mongoose';
 import { ClientSession, Model } from 'mongoose';
@@ -114,6 +109,7 @@ export class TaskSportService {
         .select(['reserve', 'required'])
         .session(s)
         .lean();
+      if (!area) throw new BadRequestException('bad area id');
 
       // DANGER BYPASS
       // await this.checkAvailable(area, time, s);
