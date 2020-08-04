@@ -73,7 +73,7 @@ export class TaskController {
   ) {
     try {
       const { username } = user;
-      await this.taskService.cancleTaskById(taskId, username);
+      await this.taskService.cancleTaskById(taskId, username, false, '');
       return res.sendStatus(200);
     } catch (err) {
       return err;

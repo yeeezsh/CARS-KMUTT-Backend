@@ -205,7 +205,7 @@ export class TaskService {
         }
       }
 
-      doc.state.push('drop');
+      doc.state = [...doc.state, 'drop'];
       doc.updateAt = new Date();
       doc.desc = this.AddDesc(doc, desc);
       await doc.save({ session: s });
