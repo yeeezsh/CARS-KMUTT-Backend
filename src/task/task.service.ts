@@ -123,6 +123,8 @@ export class TaskService {
         .select(['reserve', 'state', 'area', 'requestor', 'building'])
         .populate('area')
         .lean();
+      if (!lastTask) return;
+
       const task = lastTask[0];
       if (!task) return undefined;
       return {
@@ -152,6 +154,7 @@ export class TaskService {
       ])
       .populate('area', '_id name label building')
       .lean();
+    if (!task) return;
 
     const buildingId =
       (task.area && task.area.building._id) || task.building._id;
