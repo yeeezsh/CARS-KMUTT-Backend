@@ -5,6 +5,7 @@ import { TaskDoc } from './interfaces/task.interface';
 const DEFAULT_SELECT = '_id state cancle reserve requestor area createAt';
 const DEAFAULT_POPULATE = 'area building';
 const DEAFAULT_POPULATE_SELECT = '_id name label building';
+const LIMIT_QUERY_FOR_USERS = 15;
 
 function mapAreaBuilding(e) {
   return e.building ? { ...e, area: e.building } : e;
@@ -15,7 +16,10 @@ export class TaskQueryService {
   constructor(
     @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc | any>,
   ) {}
-  async getAllHistory(username: string): Promise<TaskDoc[]> {
+  async getAllHistory(
+    username: string,
+    limit: number = LIMIT_QUERY_FOR_USERS,
+  ): Promise<TaskDoc[]> {
     const doc = await this.taskModel
       .find({
         requestor: {
@@ -25,6 +29,7 @@ export class TaskQueryService {
         },
       })
       .sort({ createAt: -1 })
+      .limit(limit)
       .select(DEFAULT_SELECT)
       .populate(DEAFAULT_POPULATE, DEAFAULT_POPULATE_SELECT)
       .lean();
@@ -32,7 +37,10 @@ export class TaskQueryService {
     return parsed;
   }
 
-  async getAllRequested(username: string): Promise<TaskDoc[]> {
+  async getAllRequested(
+    username: string,
+    limit: number = LIMIT_QUERY_FOR_USERS,
+  ): Promise<TaskDoc[]> {
     const doc = await this.taskModel
       .find({
         requestor: {
@@ -46,6 +54,7 @@ export class TaskQueryService {
         },
       })
       .sort({ createAt: -1 })
+      .limit(limit)
       .select(DEFAULT_SELECT)
       .populate(DEAFAULT_POPULATE, DEAFAULT_POPULATE_SELECT)
       .lean();
@@ -54,7 +63,10 @@ export class TaskQueryService {
     return parsed;
   }
 
-  async getAllWait(username: string): Promise<TaskDoc[]> {
+  async getAllWait(
+    username: string,
+    limit: number = LIMIT_QUERY_FOR_USERS,
+  ): Promise<TaskDoc[]> {
     const doc = await this.taskModel
       .find({
         requestor: {
@@ -68,6 +80,7 @@ export class TaskQueryService {
         },
       })
       .sort({ createAt: -1 })
+      .limit(limit)
       .select(DEFAULT_SELECT)
       .populate(DEAFAULT_POPULATE, DEAFAULT_POPULATE_SELECT)
       .lean();
