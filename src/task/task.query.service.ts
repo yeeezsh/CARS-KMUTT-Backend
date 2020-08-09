@@ -75,7 +75,7 @@ export class TaskQueryService {
           },
         },
         state: {
-          $in: ['requested', 'wait'],
+          $in: ['requested', 'wait', 'reject'],
           $nin: ['accept', 'drop'],
         },
       })
