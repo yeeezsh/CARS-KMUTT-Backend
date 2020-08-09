@@ -1,5 +1,6 @@
 import { Schema } from 'mongoose';
 import { STAFF_PERMISSION } from 'src/users/schemas/staffs.schema';
+import { TASK_STATE } from '../interfaces/task.interface';
 
 const TimeSchema = new Schema(
   {
@@ -44,7 +45,7 @@ const Desc = new Schema(
 export const TaskSchema = new Schema({
   reserve: [TimeSchema],
   requestor: { type: [Requestor], index: true, required: true },
-  state: { type: [String], index: true },
+  state: { type: [String], enum: TASK_STATE, index: true },
   staff: { type: [StaffRequest], ref: 'staffs', index: true },
   area: { type: Schema.Types.ObjectId, ref: 'areas', index: true },
   building: { type: Schema.Types.ObjectId, ref: 'area.buildings', index: true },

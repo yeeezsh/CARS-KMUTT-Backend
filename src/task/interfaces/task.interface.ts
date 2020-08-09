@@ -5,13 +5,22 @@ import { TaskStaffRequested } from './task.staff.requested.interface';
 import { TaskTimeSlot } from './task.time.slot.interface';
 
 type TimeSlotType = TaskTimeSlot[];
-type TaskStateType =
+export type TaskStateType =
   | 'wait'
   | 'reject'
   | 'accept'
   | 'drop'
   | 'requested'
   | 'forward';
+
+export const TASK_STATE: TaskStateType[] = [
+  'wait',
+  'reject',
+  'accept',
+  'drop',
+  'requested',
+  'forward',
+];
 
 export type TaskType =
   | 'common'
