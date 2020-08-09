@@ -157,6 +157,28 @@ export class TaskstaffService {
     });
   }
 
+  async rejectTask(id: string, desc?: string): Promise<void> {
+    const s = await mongoose.startSession();
+    try {
+      s.startTransaction();
+      const task = await this.taskModel
+        .findById(id)
+        .session(s)
+        .select(['_id', 'desc', 'state']);
+      if (!task) throw new Error('task is not exist');
+
+      task.state = [...task.state, TaskStateType.REJECT];
+      task.desc = this.taskService.AddDesc(task, desc);
+
+      await task.save({ session: s });
+      await s.commitTransaction();
+      s.endSession();
+    } catch (err) {
+      await s.abortTransaction();
+      throw err;
+    }
+  }
+
   async forwardTask(id: string, desc?: string): Promise<void> {
     const s = await mongoose.startSession();
     try {
