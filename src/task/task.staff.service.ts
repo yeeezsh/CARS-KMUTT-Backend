@@ -6,7 +6,7 @@ import {
   STAFF_PERMISSION,
 } from 'src/users/schemas/staffs.schema';
 import staffGroupLvHelper from './helpers/staff.group.lv.helper';
-import { TaskDoc } from './interfaces/task.interface';
+import { TaskDoc, TaskStateType } from './interfaces/task.interface';
 import { TaskManage } from './interfaces/task.manage.interface';
 import { TaskStaffRequested } from './interfaces/task.staff.requested.interface';
 import { TaskService } from './task.service';
@@ -188,7 +188,7 @@ export class TaskstaffService {
       }
 
       task.staff = staff;
-      task.state = [...task.state, 'forward'];
+      task.state = [...task.state, TaskStateType.FORWARD];
       if (desc) {
         task.desc = this.taskService.AddDesc(task, desc);
       }
