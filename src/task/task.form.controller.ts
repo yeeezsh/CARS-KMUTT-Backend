@@ -22,11 +22,6 @@ export class TaskFormController {
     private readonly taskFormService: TaskFormService,
   ) {}
 
-  @Get('/')
-  async test() {
-    return 'test';
-  }
-
   @Post('/common')
   @UseGuards(AuthGuard('requestor'))
   async createTaskFormCommon(
