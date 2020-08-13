@@ -1,8 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
+import * as mongoose from 'mongoose';
 import { Model } from 'mongoose';
 import { TimeSlot } from './dtos/task.create.sport';
 import { TaskFormCreateDto } from './dtos/task.form.create.dto';
-import { TaskDoc, TaskType } from './interfaces/task.interface';
+import { TaskFormUpdateDto } from './dtos/task.form.update.dto';
+import { TaskDoc, TaskStateType, TaskType } from './interfaces/task.interface';
 import moment = require('moment');
 
 const INDEX_RESERVE_FORM = 1;
@@ -82,6 +84,28 @@ export class TaskFormService {
       await doc.save();
       return doc;
     } catch (err) {
+      throw err;
+    }
+  }
+
+  async updateTask(
+    taskId: string,
+    data: TaskFormUpdateDto,
+    // type: TaskType,
+  ): Promise<void> {
+    const s = await mongoose.startSession();
+    try {
+      s.startTransaction();
+      const task = await this.taskModel.findById(taskId).session(s);
+      const projectForm = data.forms[INDEX_RESERVE_FORM];
+      task.forms = data.forms;
+      task.reserve = this.reserveTimeSlotMapping(projectForm);
+      task.state = [...task.state, TaskStateType.RESEND];
+      await task.save({ session: s });
+      return;
+    } catch (err) {
+      await s.abortTransaction();
+      s.endSession();
       throw err;
     }
   }

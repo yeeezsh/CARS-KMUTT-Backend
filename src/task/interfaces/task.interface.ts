@@ -12,6 +12,7 @@ export enum TaskStateType {
   DROP = 'drop',
   REQUESTED = 'requested',
   FORWARD = 'forward',
+  RESEND = 'resend',
 }
 
 export const TASK_STATE: TaskStateType[] = [
@@ -21,6 +22,7 @@ export const TASK_STATE: TaskStateType[] = [
   TaskStateType.DROP,
   TaskStateType.REQUESTED,
   TaskStateType.FORWARD,
+  TaskStateType.RESEND,
 ];
 
 export type TaskType =
