@@ -92,7 +92,12 @@ export class TaskstaffService {
   ) {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
-        $in: ['wait', 'requested', 'forward', 'resend'],
+        $in: [
+          TaskStateType.WAIT,
+          TaskStateType.REQUESTED,
+          TaskStateType.FORWARD,
+          TaskStateType.RESEND,
+        ],
       },
     });
   }
@@ -118,7 +123,7 @@ export class TaskstaffService {
   ) {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
-        $in: ['reject', 'resend'],
+        $in: [TaskStateType.REJECT, TaskStateType.RESEND],
       },
     });
   }
@@ -131,7 +136,7 @@ export class TaskstaffService {
   ) {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
-        $in: ['drop'],
+        $in: [TaskStateType.DROP],
       },
     });
   }
@@ -151,7 +156,7 @@ export class TaskstaffService {
   }) {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
-        $in: ['forward'],
+        $in: [TaskStateType.FORWARD],
       },
       staffGroupType: staffLevel,
     });
