@@ -7,7 +7,12 @@ import { CreateSportTaskByStaffDto } from './dtos/task.create.bystaff.dto';
 // import { AreaQueryService } from 'src/area/area.query.service';
 import { CreateTaskSportDto, TimeSlot } from './dtos/task.create.sport';
 // interfaces & dto
-import { Task, TaskDoc, TaskType } from './interfaces/task.interface';
+import {
+  Task,
+  TaskDoc,
+  TaskStateType,
+  TaskType,
+} from './interfaces/task.interface';
 import { TaskRequestor } from './interfaces/task.requestor.interface';
 
 // import TaskSchedulePartitionArrHelper from './helpers/task.schedule.partition.arr.helper';
@@ -26,7 +31,7 @@ export class TaskSportService {
     sessions: ClientSession,
   ): Promise<boolean> {
     try {
-      const SPORT_TYPE: TaskType = 'sport';
+      const SPORT_TYPE: TaskType = TaskType.sport;
       const startTime = new Date(time[0].start);
       const stopTime = new Date(time[0].stop);
       const tasks = await this.taskModel
@@ -131,8 +136,11 @@ export class TaskSportService {
         reserve: time,
         requestor: requestorMapped,
         area: area._id,
-        state: requestor.length === 1 ? ['accept'] : ['requested'],
-        type: 'sport',
+        state:
+          requestor.length === 1
+            ? [TaskStateType.ACCEPT]
+            : [TaskStateType.REQUESTED],
+        type: TaskType.sport,
         createAt: now,
         updateAt: now,
       };
@@ -213,7 +221,7 @@ export class TaskSportService {
       const completeTask = requestor.every(e => e.confirm === true);
 
       if (completeTask) {
-        doc.state.push('accept');
+        doc.state.push(TaskStateType.ACCEPT);
       }
       doc.updateAt = new Date();
       await doc.save({ session: s });

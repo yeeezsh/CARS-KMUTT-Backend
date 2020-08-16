@@ -1,8 +1,8 @@
 import {
   Body,
   Controller,
-  Get,
   InternalServerErrorException,
+  Patch,
   Post,
   Res,
   UseGuards,
@@ -12,19 +12,28 @@ import { Response } from 'express';
 import { UserInfo } from 'src/common/user.decorator';
 import { UserSession } from 'src/users/interfaces/user.session.interface';
 import { TaskFormCreateDto } from './dtos/task.form.create.dto';
+import { TaskFormUpdateDto } from './dtos/task.form.update.dto';
+import { TaskType } from './interfaces/task.interface';
 import { TaskFormService } from './task.form.service';
-import { TaskService } from './task.service';
 
 @Controller('taskForm')
 export class TaskFormController {
-  constructor(
-    private readonly taskService: TaskService,
-    private readonly taskFormService: TaskFormService,
-  ) {}
+  constructor(private readonly taskFormService: TaskFormService) {}
 
-  @Get('/')
-  async test() {
-    return 'test';
+  @Patch('/')
+  @UseGuards(AuthGuard('requestor'))
+  async updateTaskFormCommon(
+    @Body() data: TaskFormUpdateDto,
+    @UserInfo() user: UserSession,
+    @Res() res: Response,
+  ) {
+    try {
+      const owner = user.username;
+      await this.taskFormService.updateTask(owner, data.id, data);
+      return res.sendStatus(200);
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
   }
 
   @Post('/common')
@@ -35,7 +44,7 @@ export class TaskFormController {
     @Res() res: Response,
   ) {
     try {
-      this.taskFormService.createTask(user.username, data, 'common');
+      this.taskFormService.createTask(user.username, data, TaskType.common);
       return res.sendStatus(200);
     } catch (err) {
       throw new InternalServerErrorException(err);
@@ -50,7 +59,11 @@ export class TaskFormController {
     @Res() res: Response,
   ) {
     try {
-      this.taskFormService.createTask(user.username, data, 'common-sport');
+      this.taskFormService.createTask(
+        user.username,
+        data,
+        TaskType.commonSport,
+      );
       return res.sendStatus(200);
     } catch (err) {
       throw new InternalServerErrorException(err);

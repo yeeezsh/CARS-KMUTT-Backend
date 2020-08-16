@@ -5,35 +5,50 @@ import { TaskStaffRequested } from './task.staff.requested.interface';
 import { TaskTimeSlot } from './task.time.slot.interface';
 
 type TimeSlotType = TaskTimeSlot[];
-type TaskStateType =
-  | 'wait'
-  | 'reject'
-  | 'accept'
-  | 'drop'
-  | 'requested'
-  | 'forward';
+export enum TaskStateType {
+  WAIT = 'wait',
+  REJECT = 'reject',
+  ACCEPT = 'accept',
+  DROP = 'drop',
+  REQUESTED = 'requested',
+  FORWARD = 'forward',
+  RESEND = 'resend',
+}
 
-export type TaskType =
-  | 'common'
-  | 'common-sport'
-  | 'sport'
-  | 'meeting-room'
-  | 'meeting-club'
-  | 'meeting';
+export const TASK_STATE: TaskStateType[] = [
+  TaskStateType.WAIT,
+  TaskStateType.REJECT,
+  TaskStateType.ACCEPT,
+  TaskStateType.DROP,
+  TaskStateType.REQUESTED,
+  TaskStateType.FORWARD,
+  TaskStateType.RESEND,
+];
+
+export enum TaskType {
+  common = 'common',
+  commonSport = 'common-sport',
+  sport = 'sport',
+  meetingClub = 'meeting-club',
+  meetingRoom = 'meeting-room',
+}
+
+export const TASK_TYPE: TaskType[] = [
+  TaskType.common,
+  TaskType.commonSport,
+  TaskType.sport,
+  TaskType.meetingClub,
+  TaskType.meetingRoom,
+];
 
 export interface Task {
   reserve?: TimeSlotType;
   requestor: TaskRequestor[];
-  // requested for sport (have timeout) / wait for normaly task
   state: TaskStateType[];
   staff?: TaskStaffRequested[];
   area?: string | Types.ObjectId; // required area module
-  // building?: string;
   forms?: any[];
   desc?: TaskDesc[];
-
-  // use for common/area reserve
-  // and use for sport timeout checking
   type?: TaskType;
 
   createAt: Date;

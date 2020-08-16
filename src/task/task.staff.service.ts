@@ -6,7 +6,7 @@ import {
   STAFF_PERMISSION,
 } from 'src/users/schemas/staffs.schema';
 import staffGroupLvHelper from './helpers/staff.group.lv.helper';
-import { TaskDoc } from './interfaces/task.interface';
+import { TaskDoc, TaskStateType } from './interfaces/task.interface';
 import { TaskManage } from './interfaces/task.manage.interface';
 import { TaskStaffRequested } from './interfaces/task.staff.requested.interface';
 import { TaskService } from './task.service';
@@ -92,7 +92,12 @@ export class TaskstaffService {
   ) {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
-        $in: ['wait', 'requested', 'forward'],
+        $in: [
+          TaskStateType.WAIT,
+          TaskStateType.REQUESTED,
+          TaskStateType.FORWARD,
+          TaskStateType.RESEND,
+        ],
       },
     });
   }
@@ -118,7 +123,7 @@ export class TaskstaffService {
   ) {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
-        $in: ['reject'],
+        $in: [TaskStateType.REJECT, TaskStateType.RESEND],
       },
     });
   }
@@ -131,7 +136,7 @@ export class TaskstaffService {
   ) {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
-        $in: ['drop'],
+        $in: [TaskStateType.DROP],
       },
     });
   }
@@ -151,10 +156,32 @@ export class TaskstaffService {
   }) {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
-        $in: ['forward'],
+        $in: [TaskStateType.FORWARD],
       },
       staffGroupType: staffLevel,
     });
+  }
+
+  async rejectTask(id: string, desc?: string): Promise<void> {
+    const s = await mongoose.startSession();
+    try {
+      s.startTransaction();
+      const task = await this.taskModel
+        .findById(id)
+        .session(s)
+        .select(['_id', 'desc', 'state']);
+      if (!task) throw new Error('task is not exist');
+
+      task.state = [...task.state, TaskStateType.REJECT];
+      task.desc = this.taskService.AddDesc(task, desc);
+
+      await task.save({ session: s });
+      await s.commitTransaction();
+      s.endSession();
+    } catch (err) {
+      await s.abortTransaction();
+      throw err;
+    }
   }
 
   async forwardTask(id: string, desc?: string): Promise<void> {
@@ -188,7 +215,7 @@ export class TaskstaffService {
       }
 
       task.staff = staff;
-      task.state = [...task.state, 'forward'];
+      task.state = [...task.state, TaskStateType.FORWARD];
       if (desc) {
         task.desc = this.taskService.AddDesc(task, desc);
       }

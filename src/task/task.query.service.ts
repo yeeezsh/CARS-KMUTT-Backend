@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { TaskDoc } from './interfaces/task.interface';
+import { TaskDoc, TaskStateType } from './interfaces/task.interface';
 
 const DEFAULT_SELECT = '_id state cancle reserve requestor area createAt';
 const DEAFAULT_POPULATE = 'area building';
@@ -49,8 +49,8 @@ export class TaskQueryService {
           },
         },
         state: {
-          $in: ['requested'],
-          $nin: ['accept', 'drop'],
+          $in: [TaskStateType.REQUESTED],
+          $nin: [TaskStateType.ACCEPT, TaskStateType.DROP],
         },
       })
       .sort({ createAt: -1 })
@@ -75,8 +75,12 @@ export class TaskQueryService {
           },
         },
         state: {
-          $in: ['requested', 'wait'],
-          $nin: ['accept', 'drop'],
+          $in: [
+            TaskStateType.REQUESTED,
+            TaskStateType.WAIT,
+            TaskStateType.REJECT,
+          ],
+          $nin: [TaskStateType.ACCEPT, TaskStateType.DROP],
         },
       })
       .sort({ createAt: -1 })

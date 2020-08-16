@@ -6,7 +6,13 @@ import { AreaBuilding } from 'src/area/interfaces/area.building.interface';
 import { AreaDoc } from 'src/area/interfaces/area.interface';
 import { CreateTaskMeetingDto, TimeSlot } from './dtos/task.meeting.dto';
 import { TaskDesc } from './interfaces/task.desc.interface';
-import { Task, TaskDoc, TaskLastCard } from './interfaces/task.interface';
+import {
+  Task,
+  TaskDoc,
+  TaskLastCard,
+  TaskStateType,
+  TaskType,
+} from './interfaces/task.interface';
 // import { AreaQueryService } from 'src/area/area.query.service';
 import { QuickTaskAPI } from './interfaces/task.quick.interface';
 import { TaskRequestor } from './interfaces/task.requestor.interface';
@@ -61,7 +67,7 @@ export class TaskService {
 
   async createMeetingTask(
     data: CreateTaskMeetingDto,
-    type: 'meeting-room' | 'meeting-club',
+    type: TaskType.meetingRoom | TaskType.meetingClub,
     owner: string,
   ) {
     const s = await mongoose.startSession();
@@ -90,7 +96,7 @@ export class TaskService {
         reserve: time,
         requestor: requestorMapped,
         area: area._id,
-        state: ['wait'],
+        state: [TaskStateType.WAIT],
         type,
         forms,
         createAt: now,
@@ -210,7 +216,7 @@ export class TaskService {
       const doc = await this.taskModel.findById(id).session(s);
       if (!doc) throw new BadRequestException('this task is not exisiting');
 
-      doc.state.push('accept');
+      doc.state.push(TaskStateType.ACCEPT);
       doc.updateAt = new Date();
       doc.desc = this.AddDesc(doc, desc);
       await doc.save({ session: s });
@@ -241,7 +247,7 @@ export class TaskService {
         }
       }
 
-      doc.state = [...doc.state, 'drop'];
+      doc.state = [...doc.state, TaskStateType.DROP];
       doc.updateAt = new Date();
       doc.desc = this.AddDesc(doc, desc);
       await doc.save({ session: s });
