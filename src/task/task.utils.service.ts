@@ -22,7 +22,7 @@ export class TaskUtilsService {
     return VIdType[type];
   }
 
-  public async generateVirtualId(type: TaskType) {
+  public async generateVirtualId(type: TaskType): Promise<string> {
     const MAX_LOOP = 50;
     let count = 0;
     do {
