@@ -16,6 +16,7 @@ import {
 // import { AreaQueryService } from 'src/area/area.query.service';
 import { QuickTaskAPI } from './interfaces/task.quick.interface';
 import { TaskRequestor } from './interfaces/task.requestor.interface';
+import { TaskUtilsService } from './task.utils.service';
 
 // constant
 // const FORMAT = 'DD-MM-YYYY-HH:mm:ss';
@@ -29,6 +30,7 @@ export class TaskService {
     @Inject('AREA_MODEL') private readonly areaModel: Model<AreaDoc>,
     @Inject('AREA_BUILDING_MODEL')
     private readonly areaBuildingModel: Model<AreaBuilding>,
+    private readonly taskUtils: TaskUtilsService,
   ) {}
 
   private async validMeetingReservation(
@@ -93,6 +95,7 @@ export class TaskService {
       ];
       const now = new Date();
       const doc: Task = {
+        vid: await this.taskUtils.generateVirtualId(type),
         reserve: time,
         requestor: requestorMapped,
         area: area._id,

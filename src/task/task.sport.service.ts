@@ -14,6 +14,7 @@ import {
   TaskType,
 } from './interfaces/task.interface';
 import { TaskRequestor } from './interfaces/task.requestor.interface';
+import { TaskUtilsService } from './task.utils.service';
 
 // import TaskSchedulePartitionArrHelper from './helpers/task.schedule.partition.arr.helper';
 // import TaskScheduleStructArrHelper from './helpers/task.schedule.struct.arr.helper';
@@ -23,6 +24,7 @@ export class TaskSportService {
   constructor(
     @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc>,
     @Inject('AREA_MODEL') private readonly areaModel: Model<AreaDoc>,
+    private readonly taskUtils: TaskUtilsService,
   ) {}
 
   private async validReservation(
@@ -133,6 +135,7 @@ export class TaskSportService {
 
       const now = new Date();
       const doc: Task = {
+        vid: await this.taskUtils.generateVirtualId(TaskType.sport),
         reserve: time,
         requestor: requestorMapped,
         area: area._id,
