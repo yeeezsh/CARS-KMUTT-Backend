@@ -23,6 +23,8 @@ export class TaskUtilsSerive {
   }
 
   public async generateVirtualId(type: TaskType) {
+    const MAX_LOOP = 50;
+    let count = 0;
     do {
       const prefix = this.getPrefixVid(type);
       const date = moment().format('DD');
@@ -31,6 +33,8 @@ export class TaskUtilsSerive {
       const vid = prefix + date + months + random;
       const duplicated = await this.taskModel.findOne({ vid });
       if (!duplicated) return vid;
-    } while (true);
+      count++;
+    } while (count < MAX_LOOP);
+    throw new Error(`Retry generate vid ${count} count is max retry`);
   }
 }
