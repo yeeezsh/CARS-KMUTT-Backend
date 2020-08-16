@@ -160,6 +160,7 @@ export class TaskService {
         'type',
         'staff',
         'desc',
+        'vid',
       ])
       .populate('area', '_id name label building')
       .lean();
