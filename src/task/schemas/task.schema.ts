@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 import { STAFF_PERMISSION } from 'src/users/schemas/staffs.schema';
-import { TASK_STATE, TASK_TYPE } from '../interfaces/task.interface';
+import { Task, TASK_STATE, TASK_TYPE } from '../interfaces/task.interface';
 
 const TimeSchema = new Schema(
   {
@@ -42,7 +42,8 @@ const Desc = new Schema(
   { _id: false },
 );
 
-export const TaskSchema = new Schema({
+export const TaskSchema = new Schema<Task>({
+  vid: { type: String, required: true, index: true },
   reserve: [TimeSchema],
   requestor: { type: [Requestor], index: true, required: true },
   state: { type: [String], enum: TASK_STATE, index: true },
