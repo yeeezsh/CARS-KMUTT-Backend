@@ -11,6 +11,7 @@ import { Response } from 'express';
 import { UserInfo } from 'src/common/user.decorator';
 import { UserSession } from 'src/users/interfaces/user.session.interface';
 import { CreateTaskMeetingDto } from './dtos/task.meeting.dto';
+import { TaskType } from './interfaces/task.interface';
 import { TaskService } from './task.service';
 
 @Controller('task/meeting')
@@ -29,7 +30,7 @@ export class TaskMeetingController {
     try {
       await this.taskService.createMeetingTask(
         body,
-        'meeting-club',
+        TaskType.meetingClub,
         user.studentId,
       );
 
@@ -51,7 +52,7 @@ export class TaskMeetingController {
     try {
       await this.taskService.createMeetingTask(
         body,
-        'meeting-room',
+        TaskType.meetingRoom,
         user.studentId,
       );
 

@@ -31,7 +31,7 @@ export class TaskSportService {
     sessions: ClientSession,
   ): Promise<boolean> {
     try {
-      const SPORT_TYPE: TaskType = 'sport';
+      const SPORT_TYPE: TaskType = TaskType.sport;
       const startTime = new Date(time[0].start);
       const stopTime = new Date(time[0].stop);
       const tasks = await this.taskModel
@@ -140,7 +140,7 @@ export class TaskSportService {
           requestor.length === 1
             ? [TaskStateType.ACCEPT]
             : [TaskStateType.REQUESTED],
-        type: 'sport',
+        type: TaskType.sport,
         createAt: now,
         updateAt: now,
       };
