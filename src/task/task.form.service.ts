@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { TimeSlot } from './dtos/task.create.sport';
 import { TaskFormCreateDto } from './dtos/task.form.create.dto';
@@ -87,9 +87,23 @@ export class TaskFormService {
     }
   }
 
-  async updateTask(taskId: string, data: TaskFormUpdateDto): Promise<void> {
+  async updateTask(
+    owner: string,
+    taskId: string,
+    data: TaskFormUpdateDto,
+  ): Promise<void> {
     try {
       const task = await this.taskModel.findById(taskId);
+      if (!task) {
+        throw new BadRequestException('Task id is not exists');
+      }
+
+      const validOwner = task.requestor[0].username === owner;
+      if (!validOwner)
+        throw new BadRequestException(
+          `You don't not have a permission for this task`,
+        );
+
       const projectForm = data.forms[INDEX_RESERVE_FORM];
       task.forms = data.forms;
       task.reserve = this.reserveTimeSlotMapping(projectForm);

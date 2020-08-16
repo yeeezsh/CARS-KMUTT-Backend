@@ -24,10 +24,12 @@ export class TaskFormController {
   @UseGuards(AuthGuard('requestor'))
   async updateTaskFormCommon(
     @Body() data: TaskFormUpdateDto,
+    @UserInfo() user: UserSession,
     @Res() res: Response,
   ) {
     try {
-      this.taskFormService.updateTask(data.id, data);
+      const owner = user.username;
+      await this.taskFormService.updateTask(owner, data.id, data);
       return res.sendStatus(200);
     } catch (err) {
       throw new InternalServerErrorException(err);
