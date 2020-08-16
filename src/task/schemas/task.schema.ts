@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 import { STAFF_PERMISSION } from 'src/users/schemas/staffs.schema';
-import { TASK_STATE } from '../interfaces/task.interface';
+import { TASK_STATE, TASK_TYPE } from '../interfaces/task.interface';
 
 const TimeSchema = new Schema(
   {
@@ -49,14 +49,13 @@ export const TaskSchema = new Schema({
   staff: { type: [StaffRequest], ref: 'staffs', index: true },
   area: { type: Schema.Types.ObjectId, ref: 'areas', index: true },
   building: { type: Schema.Types.ObjectId, ref: 'area.buildings', index: true },
-  // form: { type: Schema.Types.ObjectId, ref: 'forms' },
-  forms: [{}],
+  forms: [],
   desc: { type: [Desc], required: false },
 
   // use for common/area reserve
   type: {
     type: String,
-    enum: ['common', 'common-sport', 'sport', 'meeting-room', 'meeting-club'],
+    enum: TASK_TYPE,
     index: true,
   },
 

@@ -33,6 +33,14 @@ export enum TaskType {
   meetingRoom = 'meeting-room',
 }
 
+export const TASK_TYPE: TaskType[] = [
+  TaskType.common,
+  TaskType.commonSport,
+  TaskType.sport,
+  TaskType.meetingClub,
+  TaskType.meetingRoom,
+];
+
 export interface Task {
   reserve?: TimeSlotType;
   requestor: TaskRequestor[];
