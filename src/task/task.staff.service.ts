@@ -92,7 +92,7 @@ export class TaskstaffService {
   ) {
     return await this.getAllTask(offset, limit, orderCol, order, {
       state: {
-        $in: ['wait', 'requested', 'forward'],
+        $in: ['wait', 'requested', 'forward', 'resend'],
       },
     });
   }
