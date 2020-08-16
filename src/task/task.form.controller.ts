@@ -13,6 +13,7 @@ import { UserInfo } from 'src/common/user.decorator';
 import { UserSession } from 'src/users/interfaces/user.session.interface';
 import { TaskFormCreateDto } from './dtos/task.form.create.dto';
 import { TaskFormUpdateDto } from './dtos/task.form.update.dto';
+import { TaskType } from './interfaces/task.interface';
 import { TaskFormService } from './task.form.service';
 
 @Controller('taskForm')
@@ -41,7 +42,7 @@ export class TaskFormController {
     @Res() res: Response,
   ) {
     try {
-      this.taskFormService.createTask(user.username, data, 'common');
+      this.taskFormService.createTask(user.username, data, TaskType.common);
       return res.sendStatus(200);
     } catch (err) {
       throw new InternalServerErrorException(err);
@@ -56,7 +57,11 @@ export class TaskFormController {
     @Res() res: Response,
   ) {
     try {
-      this.taskFormService.createTask(user.username, data, 'common-sport');
+      this.taskFormService.createTask(
+        user.username,
+        data,
+        TaskType.commonSport,
+      );
       return res.sendStatus(200);
     } catch (err) {
       throw new InternalServerErrorException(err);

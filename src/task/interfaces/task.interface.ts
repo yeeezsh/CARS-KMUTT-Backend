@@ -25,27 +25,22 @@ export const TASK_STATE: TaskStateType[] = [
   TaskStateType.RESEND,
 ];
 
-export type TaskType =
-  | 'common'
-  | 'common-sport'
-  | 'sport'
-  | 'meeting-room'
-  | 'meeting-club'
-  | 'meeting';
+export enum TaskType {
+  common = 'common',
+  commonSport = 'common-sport',
+  sport = 'sport',
+  meetingClub = 'meeting-club',
+  meetingRoom = 'meeting-room',
+}
 
 export interface Task {
   reserve?: TimeSlotType;
   requestor: TaskRequestor[];
-  // requested for sport (have timeout) / wait for normaly task
   state: TaskStateType[];
   staff?: TaskStaffRequested[];
   area?: string | Types.ObjectId; // required area module
-  // building?: string;
   forms?: any[];
   desc?: TaskDesc[];
-
-  // use for common/area reserve
-  // and use for sport timeout checking
   type?: TaskType;
 
   createAt: Date;

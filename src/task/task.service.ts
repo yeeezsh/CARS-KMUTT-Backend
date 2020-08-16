@@ -11,6 +11,7 @@ import {
   TaskDoc,
   TaskLastCard,
   TaskStateType,
+  TaskType,
 } from './interfaces/task.interface';
 // import { AreaQueryService } from 'src/area/area.query.service';
 import { QuickTaskAPI } from './interfaces/task.quick.interface';
@@ -66,7 +67,7 @@ export class TaskService {
 
   async createMeetingTask(
     data: CreateTaskMeetingDto,
-    type: 'meeting-room' | 'meeting-club',
+    type: TaskType.meetingRoom | TaskType.meetingClub,
     owner: string,
   ) {
     const s = await mongoose.startSession();
