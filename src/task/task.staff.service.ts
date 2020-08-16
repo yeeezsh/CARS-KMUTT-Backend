@@ -45,6 +45,7 @@ export class TaskstaffService {
           area: 1,
           type: 1,
           createAt: 1,
+          vid: 1,
         },
       },
       { $addFields: { staffGroupType: '$staff.group' } },
@@ -69,6 +70,7 @@ export class TaskstaffService {
       {
         $project: {
           _id: 1,
+          vid: 1,
           key: '$_id',
           requestor: 1,
           'area.label': 1,
