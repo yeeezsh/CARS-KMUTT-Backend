@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { Response } from 'express';
 import { CreateFileDto } from './dtos/file.create.dto';
 import { FileService } from './file.service';
 
@@ -29,7 +30,7 @@ export class FileController {
   }
 
   @Get('/:id')
-  async getFile(@Param('id') id: string, @Res() res) {
+  async getFile(@Param('id') id: string, @Res() res: Response) {
     const file = await this.filesService.findInfo(id);
     const filestream = await this.filesService.readStream(id);
     if (!filestream) {
@@ -39,6 +40,10 @@ export class FileController {
       );
     }
     res.header('Content-Type', file.contentType);
+    res.header(
+      'Content-Disposition',
+      `name=${file.filename}; filename=${file.filename}`,
+    );
     return filestream.pipe(res);
   }
 

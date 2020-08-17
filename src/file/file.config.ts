@@ -13,7 +13,7 @@ export class GridFsMulterConfigService implements MulterOptionsFactory {
       db: this.db,
       // tslint:disable-next-line: variable-name
       file: (_req, file) => {
-        return file.originalname + '-' + Date.now();
+        return file.originalname;
       },
     });
   }
