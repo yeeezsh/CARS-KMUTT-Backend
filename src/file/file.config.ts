@@ -12,8 +12,8 @@ export class GridFsMulterConfigService implements MulterOptionsFactory {
     this.gridFsStorage = new GridFsStorage({
       db: this.db,
       // tslint:disable-next-line: variable-name
-      file: (_req, file) => {
-        return file.originalname + '-' + Date.now();
+      file: (_req: any, file: { originalname: string }) => {
+        return file.originalname;
       },
     });
   }

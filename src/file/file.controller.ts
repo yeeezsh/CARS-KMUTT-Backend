@@ -1,5 +1,6 @@
 import {
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
@@ -7,18 +8,22 @@ import {
   Post,
   Res,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { FileService } from './file.service';
-import { ApiConsumes, ApiBody } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { Response } from 'express';
 import { CreateFileDto } from './dtos/file.create.dto';
+import { FileService } from './file.service';
 
 @Controller('file')
 export class FileController {
   constructor(private filesService: FileService) {}
 
   @Post('/')
+  @UseGuards(AuthGuard('requestor'))
   @UseInterceptors(FileInterceptor('file'))
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -28,29 +33,10 @@ export class FileController {
     return file;
   }
 
-  // @Get('/:id')
-  // async getFile(@Param('id') id: string) {}
-
-  // @Get('info/:id')
-  // async getFileInfo(@Param('id') id: string): Promise<any> {
-  //   const file = await this.filesService.findInfo(id);
-  //   const filestream = await this.filesService.readStream(id);
-  //   if (!filestream) {
-  //     throw new HttpException(
-  //       'An error occurred while retrieving file info',
-  //       HttpStatus.EXPECTATION_FAILED,
-  //     );
-  //   }
-  //   return {
-  //     message: 'File has been detected',
-  //     file: file,
-  //   };
-  // }
-
   @Get('/:id')
-  async getFile(@Param('id') id: string, @Res() res) {
+  @UseGuards(AuthGuard('requestor'))
+  async getFile(@Param('id') id: string, @Res() res: Response) {
     const file = await this.filesService.findInfo(id);
-    console.log(file);
     const filestream = await this.filesService.readStream(id);
     if (!filestream) {
       throw new HttpException(
@@ -59,11 +45,15 @@ export class FileController {
       );
     }
     res.header('Content-Type', file.contentType);
+    res.header(
+      'Content-Disposition',
+      `name=${file.filename}; filename=${file.filename}`,
+    );
     return filestream.pipe(res);
   }
 
   @Get('/download/:id')
-  // @ApiBadRequestResponse({ type: ApiException })
+  @UseGuards(AuthGuard('requestor'))
   async downloadFile(@Param('id') id: string, @Res() res) {
     const file = await this.filesService.findInfo(id);
     const filestream = await this.filesService.readStream(id);
@@ -79,11 +69,9 @@ export class FileController {
     return filestream.pipe(res);
   }
 
-  @Get('/delete/:id')
-  // @ApiBadRequestResponse({ type: ApiException })
-  // @ApiCreatedResponse({ type: FileResponseVm })
+  @Delete('/:id')
+  @UseGuards(AuthGuard('requestor'))
   async deleteFile(@Param('id') id: string): Promise<any> {
-    const file = await this.filesService.findInfo(id);
     const filestream = await this.filesService.deleteFile(id);
     if (!filestream) {
       throw new HttpException(
@@ -91,9 +79,6 @@ export class FileController {
         HttpStatus.EXPECTATION_FAILED,
       );
     }
-    return {
-      message: 'File has been deleted',
-      file: file,
-    };
+    return;
   }
 }
