@@ -1,5 +1,6 @@
 import {
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
@@ -63,7 +64,7 @@ export class FileController {
     return filestream.pipe(res);
   }
 
-  @Get('/delete/:id')
+  @Delete('/:id')
   async deleteFile(@Param('id') id: string): Promise<any> {
     const filestream = await this.filesService.deleteFile(id);
     if (!filestream) {
