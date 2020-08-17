@@ -8,8 +8,10 @@ import {
   Post,
   Res,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { Response } from 'express';
@@ -21,6 +23,7 @@ export class FileController {
   constructor(private filesService: FileService) {}
 
   @Post('/')
+  @UseGuards(AuthGuard('requestor'))
   @UseInterceptors(FileInterceptor('file'))
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -31,6 +34,7 @@ export class FileController {
   }
 
   @Get('/:id')
+  @UseGuards(AuthGuard('requestor'))
   async getFile(@Param('id') id: string, @Res() res: Response) {
     const file = await this.filesService.findInfo(id);
     const filestream = await this.filesService.readStream(id);
@@ -49,6 +53,7 @@ export class FileController {
   }
 
   @Get('/download/:id')
+  @UseGuards(AuthGuard('requestor'))
   async downloadFile(@Param('id') id: string, @Res() res) {
     const file = await this.filesService.findInfo(id);
     const filestream = await this.filesService.readStream(id);
@@ -65,6 +70,7 @@ export class FileController {
   }
 
   @Delete('/:id')
+  @UseGuards(AuthGuard('requestor'))
   async deleteFile(@Param('id') id: string): Promise<any> {
     const filestream = await this.filesService.deleteFile(id);
     if (!filestream) {
