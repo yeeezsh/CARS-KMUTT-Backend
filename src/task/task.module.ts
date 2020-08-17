@@ -16,6 +16,7 @@ import { TaskSportController } from './task.sport.controller';
 import { TaskSportService } from './task.sport.service';
 import { TaskStaffController } from './task.staff.controller';
 import { TaskstaffService } from './task.staff.service';
+import { TaskUtilsService } from './task.utils.service';
 
 @Module({
   imports: [DatabaseModule, AreaModule, FormModule, ScheduleModule.forRoot()],
@@ -27,6 +28,7 @@ import { TaskstaffService } from './task.staff.service';
     TaskCronsService,
     AreaQueryService,
     TaskFormService,
+    TaskUtilsService,
     ...taskProviders,
   ],
   controllers: [

@@ -4,6 +4,7 @@ import { TimeSlot } from './dtos/task.create.sport';
 import { TaskFormCreateDto } from './dtos/task.form.create.dto';
 import { TaskFormUpdateDto } from './dtos/task.form.update.dto';
 import { TaskDoc, TaskStateType, TaskType } from './interfaces/task.interface';
+import { TaskUtilsService } from './task.utils.service';
 import moment = require('moment');
 
 const INDEX_RESERVE_FORM = 1;
@@ -14,6 +15,7 @@ const TIME_FORMAT = 'HH:mm';
 export class TaskFormService {
   constructor(
     @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc>,
+    private taskUtilsService: TaskUtilsService,
   ) {}
 
   private reserveTimeSlotMapping(projectForm): TimeSlot[] {
@@ -72,8 +74,9 @@ export class TaskFormService {
     try {
       const projectForm = data.forms[INDEX_RESERVE_FORM];
       const doc = new this.taskModel({
+        vid: await this.taskUtilsService.generateVirtualId(type),
         forms: data.forms,
-        state: ['wait'],
+        state: [TaskStateType.WAIT],
         reserve: this.reserveTimeSlotMapping(projectForm),
         requestor: [{ username: requestorUsername, confirm: true }],
         area: data.area._id,

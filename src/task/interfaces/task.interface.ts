@@ -42,6 +42,7 @@ export const TASK_TYPE: TaskType[] = [
 ];
 
 export interface Task {
+  vid: string;
   reserve?: TimeSlotType;
   requestor: TaskRequestor[];
   state: TaskStateType[];
