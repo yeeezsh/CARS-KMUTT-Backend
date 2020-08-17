@@ -41,7 +41,9 @@ export class TaskUtilsService {
 
   public async generateVirtualId(type: TaskType): Promise<string> {
     const MAX_LOOP = 50;
+    const MAX_SECOND_LOOP = 75;
     let count = 0;
+    let randomLength = 3;
     do {
       const now = moment();
       const prefix = this.getPrefixVid(type);
@@ -51,12 +53,13 @@ export class TaskUtilsService {
       const yearAlphabet = NUMBER_TO_ALPHABETS.find(
         key => key.key === Number(now.format('YY').toString()[1]),
       ).value;
-      const random = randomString(3, STRING_NUMBERS);
+      const random = randomString(randomLength, STRING_NUMBERS);
       const vid = prefix + date + months + offsetYear + random + yearAlphabet;
       const duplicated = await this.taskModel.findOne({ vid });
       if (!duplicated) return vid;
       count++;
-    } while (count < MAX_LOOP);
+      if (count >= MAX_LOOP) randomLength = 4;
+    } while (count < MAX_SECOND_LOOP);
     throw new Error(`Retry generate vid ${count} count is max retry`);
   }
 }
