@@ -93,21 +93,6 @@ export class TaskStaffController {
     }
   }
 
-  @Post('/reject')
-  @UseGuards(AuthGuard('staff'))
-  async rejectTaskByStaff(
-    @Body() data: TaskCancelByStaff,
-    @Res() res: Response,
-  ) {
-    try {
-      const { _id: taskId, desc } = data;
-      await this.taskStaffService.rejectTask(taskId, desc);
-      return res.sendStatus(200);
-    } catch (err) {
-      return res.status(500).send(String(err));
-    }
-  }
-
   @Get('/accept')
   @UseGuards(AuthGuard('staff'))
   async getAccept(@Query() query: TaskStaffQuery, @Res() res: Response) {
@@ -160,6 +145,23 @@ export class TaskStaffController {
       staffLevel: userGroup,
     });
     return res.send(doc);
+  }
+
+  // POST ACTIONS
+
+  @Post('/reject')
+  @UseGuards(AuthGuard('staff'))
+  async rejectTaskByStaff(
+    @Body() data: TaskCancelByStaff,
+    @Res() res: Response,
+  ) {
+    try {
+      const { _id: taskId, desc } = data;
+      await this.taskStaffService.rejectTask(taskId, desc);
+      return res.sendStatus(200);
+    } catch (err) {
+      return res.status(500).send(String(err));
+    }
   }
 
   @Post('/cancle')
