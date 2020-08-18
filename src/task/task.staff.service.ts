@@ -5,6 +5,7 @@ import {
   StaffPermissionType,
   STAFF_PERMISSION,
 } from 'src/users/schemas/staffs.schema';
+import { TaskSearch } from './dtos/task.search.dto';
 import staffGroupLvHelper from './helpers/staff.group.lv.helper';
 import { TaskDoc, TaskStateType } from './interfaces/task.interface';
 import { TaskManage } from './interfaces/task.manage.interface';
@@ -19,6 +20,12 @@ export class TaskstaffService {
     @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc>,
     private readonly taskService: TaskService,
   ) {}
+
+  async staffSearch(
+    query: TaskSearch,
+  ): Promise<{ data: TaskManage[]; count: number }> {
+    return { data: [], count: 0 };
+  }
 
   async getAllTask(
     offset?: number,

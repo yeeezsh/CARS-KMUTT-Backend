@@ -29,6 +29,12 @@ export class TaskStaffController {
     private readonly taskService: TaskService,
   ) {}
 
+  @Get('/search')
+  @UseGuards(AuthGuard('staff'))
+  async search(@Query() query: TaskSearch) {
+    return this.taskStaffService.staffSearch(query);
+  }
+
   @Get('/all')
   @UseGuards(AuthGuard('staff'))
   async getAllTask(@Query() query: TaskStaffQuery, @Res() res: Response) {
@@ -203,11 +209,5 @@ export class TaskStaffController {
     } catch (err) {
       return res.status(500).send(String(err));
     }
-  }
-
-  @Get('/search')
-  @UseGuards(AuthGuard('staff'))
-  async search(@Query() query: TaskSearch) {
-    return;
   }
 }
