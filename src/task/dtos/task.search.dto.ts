@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
+import { IsArray, IsOptional, IsString } from 'class-validator';
+import { TaskStateType } from '../interfaces/task.interface';
 
 export class TaskSearch {
   @ApiProperty()
@@ -21,4 +22,20 @@ export class TaskSearch {
   @ApiProperty()
   @IsOptional()
   date: string;
+
+  @ApiProperty({
+    enum: [
+      TaskStateType.ACCEPT,
+      TaskStateType.REJECT,
+      TaskStateType.WAIT,
+      TaskStateType.DROP,
+      TaskStateType.REQUESTED,
+      TaskStateType.FORWARD,
+    ],
+    required: false,
+    type: () => [TaskStateType],
+  })
+  @IsOptional()
+  @IsArray()
+  type?: TaskStateType[];
 }
