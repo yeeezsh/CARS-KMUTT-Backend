@@ -24,7 +24,73 @@ export class TaskstaffService {
   async staffSearch(
     query: TaskSearch,
   ): Promise<{ data: TaskManage[]; count: number }> {
-    return { data: [], count: 0 };
+    if (query.s.length === 0) return { data: [], count: 0 };
+
+    const headProjectQuery: any = [
+      {
+        $project: {
+          state: {
+            $arrayElemAt: ['$state', -1],
+          },
+          _id: 1,
+          key: '$_id',
+          requestor: 1,
+          area: 1,
+          type: 1,
+          createAt: 1,
+          vid: 1,
+        },
+      },
+    ];
+
+    const areaJoin: any = [
+      {
+        $lookup: {
+          from: 'areas',
+          localField: 'area',
+          foreignField: '_id',
+          as: 'area',
+        },
+      },
+      { $unwind: { path: '$area', preserveNullAndEmptyArrays: true } },
+    ];
+
+    const queryLimit: any = [
+      {
+        $limit: 500,
+      },
+    ];
+
+    const tailProjectQuery: any = [
+      {
+        $project: {
+          _id: 1,
+          vid: 1,
+          key: '$_id',
+          requestor: 1,
+          'area.label': 1,
+          'area.name': 1,
+          type: 1,
+          createAt: 1,
+          state: ['$state'],
+        },
+      },
+    ];
+    const queryByVId = await this.taskModel.aggregate([
+      ...headProjectQuery,
+      {
+        $match: {
+          vid: {
+            $regex: new RegExp(`^${query.s.toLocaleUpperCase()}`),
+          },
+        },
+      },
+      ...queryLimit,
+      ...areaJoin,
+      ...tailProjectQuery,
+    ]);
+
+    return { data: [...queryByVId], count: queryByVId.length };
   }
 
   async getAllTask(
