@@ -35,6 +35,9 @@ export class TaskstaffService {
           _id: 1,
           key: '$_id',
           requestor: 1,
+          requestorOwner: {
+            $arrayElemAt: ['$requestor.username', -1],
+          },
           area: 1,
           type: 1,
           createAt: 1,
@@ -109,7 +112,28 @@ export class TaskstaffService {
       ...tailProjectQuery,
     ]);
 
-    return { data: [...queryByVId], count: queryByVId.length };
+    const queryByRequestor = await this.taskModel.aggregate([
+      ...headProjectQuery,
+      ...stateTypeQuery,
+      {
+        $match: {
+          requestorOwner: {
+            $regex: `${query.s.toLocaleUpperCase()}`,
+            $options: 'i',
+          },
+        },
+      },
+      ...queryLimit,
+      ...areaJoin,
+      ...tailProjectQuery,
+    ]);
+
+    const result = [...queryByVId, ...queryByRequestor];
+    const distinct = Array.from(new Set(result.map(a => a._id))).map(id => {
+      return result.find(a => a._id === id);
+    });
+
+    return { data: distinct, count: distinct.length };
   }
 
   async getAllTask(
