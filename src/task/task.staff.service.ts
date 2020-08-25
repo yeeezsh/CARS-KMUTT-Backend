@@ -97,35 +97,36 @@ export class TaskstaffService {
       ]) ||
       [];
 
-    const queryByVId = await this.taskModel.aggregate([
-      ...headProjectQuery,
-      ...stateTypeQuery,
-      {
-        $match: {
-          vid: {
-            $regex: new RegExp(`^${query.s.toLocaleUpperCase()}`),
+    const [queryByVId, queryByRequestor] = await Promise.all([
+      this.taskModel.aggregate([
+        ...headProjectQuery,
+        ...stateTypeQuery,
+        {
+          $match: {
+            vid: {
+              $regex: new RegExp(`^${query.s.toLocaleUpperCase()}`),
+            },
           },
         },
-      },
-      ...queryLimit,
-      ...areaJoin,
-      ...tailProjectQuery,
-    ]);
-
-    const queryByRequestor = await this.taskModel.aggregate([
-      ...headProjectQuery,
-      ...stateTypeQuery,
-      {
-        $match: {
-          requestorOwner: {
-            $regex: `${query.s.toLocaleUpperCase()}`,
-            $options: 'i',
+        ...queryLimit,
+        ...areaJoin,
+        ...tailProjectQuery,
+      ]),
+      this.taskModel.aggregate([
+        ...headProjectQuery,
+        ...stateTypeQuery,
+        {
+          $match: {
+            requestorOwner: {
+              $regex: `${query.s.toLocaleUpperCase()}`,
+              $options: 'i',
+            },
           },
         },
-      },
-      ...queryLimit,
-      ...areaJoin,
-      ...tailProjectQuery,
+        ...queryLimit,
+        ...areaJoin,
+        ...tailProjectQuery,
+      ]),
     ]);
 
     const result = [...queryByVId, ...queryByRequestor];
