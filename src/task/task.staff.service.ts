@@ -76,8 +76,27 @@ export class TaskstaffService {
         },
       },
     ];
+
+    const typeMap =
+      (query.type &&
+        query.type.map(e => ({
+          state: e,
+        }))) ||
+      [];
+
+    const stateTypeQuery: any =
+      (query.type && [
+        {
+          $match: {
+            $or: [...typeMap],
+          },
+        },
+      ]) ||
+      [];
+
     const queryByVId = await this.taskModel.aggregate([
       ...headProjectQuery,
+      ...stateTypeQuery,
       {
         $match: {
           vid: {
