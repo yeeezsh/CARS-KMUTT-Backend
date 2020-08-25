@@ -129,6 +129,7 @@ export class TaskstaffService {
       ]),
     ]);
 
+    // distinct id
     const result = [...queryByVId, ...queryByRequestor];
     const distinct = Array.from(new Set(result.map(a => a._id))).map(id => {
       return result.find(a => a._id === id);
