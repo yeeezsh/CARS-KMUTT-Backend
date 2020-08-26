@@ -97,7 +97,7 @@ export class TaskstaffService {
       ]) ||
       [];
 
-    const [queryByVId, queryByRequestor] = await Promise.all([
+    const [queryByVId, queryByRequestor, queryByAreaname] = await Promise.all([
       this.taskModel.aggregate([
         ...headProjectQuery,
         ...stateTypeQuery,
@@ -127,10 +127,25 @@ export class TaskstaffService {
         ...areaJoin,
         ...tailProjectQuery,
       ]),
+      this.taskModel.aggregate([
+        ...headProjectQuery,
+        ...stateTypeQuery,
+        ...areaJoin,
+        {
+          $match: {
+            'area.label': {
+              $regex: `${query.s.toLocaleLowerCase()}`,
+              $options: 'i',
+            },
+          },
+        },
+        ...queryLimit,
+        ...tailProjectQuery,
+      ]),
     ]);
 
     // distinct id
-    const result = [...queryByVId, ...queryByRequestor];
+    const result = [...queryByVId, ...queryByRequestor, ...queryByAreaname];
     const distinct = Array.from(new Set(result.map(a => a._id))).map(id => {
       return result.find(a => a._id === id);
     });
