@@ -118,7 +118,7 @@ export class TaskstaffService {
         {
           $match: {
             requestorOwner: {
-              $regex: `${query.s.toLocaleUpperCase()}`,
+              $regex: `${query.s.toLocaleLowerCase()}`,
               $options: 'i',
             },
           },
