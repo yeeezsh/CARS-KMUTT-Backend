@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import * as moment from 'moment';
 import * as mongoose from 'mongoose';
 import { Model } from 'mongoose';
 import {
@@ -97,7 +98,38 @@ export class TaskstaffService {
       ]) ||
       [];
 
+    const queryDateOnly = query.s.match(/\d{2}-\d{2}-\d{4}/);
+    if (queryDateOnly) {
+      console.log('date only');
+      const queryByCreateDate = await this.taskModel.aggregate([
+        ...headProjectQuery,
+        ...stateTypeQuery,
+        {
+          $match: {
+            createAt: {
+              $gte: new Date(
+                moment(query.s, 'DD/MM/YYYY')
+                  .startOf('day')
+                  .toISOString(),
+              ),
+              $lt: new Date(
+                moment(query.s, 'DD/MM/YYYY')
+                  .startOf('day')
+                  .add(2, 'day')
+                  .toISOString(),
+              ),
+            },
+          },
+        },
+        ...queryLimit,
+        ...areaJoin,
+        ...tailProjectQuery,
+      ]);
+      return { data: queryByCreateDate, count: queryByCreateDate.length };
+    }
+
     const [queryByVId, queryByRequestor, queryByAreaname] = await Promise.all([
+      // vid
       this.taskModel.aggregate([
         ...headProjectQuery,
         ...stateTypeQuery,
@@ -112,6 +144,8 @@ export class TaskstaffService {
         ...areaJoin,
         ...tailProjectQuery,
       ]),
+
+      // requestor name
       this.taskModel.aggregate([
         ...headProjectQuery,
         ...stateTypeQuery,
@@ -127,6 +161,8 @@ export class TaskstaffService {
         ...areaJoin,
         ...tailProjectQuery,
       ]),
+
+      // area name
       this.taskModel.aggregate([
         ...headProjectQuery,
         ...stateTypeQuery,
@@ -144,6 +180,7 @@ export class TaskstaffService {
       ]),
     ]);
 
+    // console.log(moment(query.s, 'DD/MM/YYYY').year(), queryByCreateDate);
     // distinct id
     const result = [...queryByVId, ...queryByRequestor, ...queryByAreaname];
     const distinct = Array.from(new Set(result.map(a => a._id))).map(id => {
