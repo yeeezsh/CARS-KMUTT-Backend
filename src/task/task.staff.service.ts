@@ -100,7 +100,6 @@ export class TaskstaffService {
 
     const queryDateOnly = query.s.match(/\d{2}-\d{2}-\d{4}/);
     if (queryDateOnly) {
-      console.log('date only');
       const queryByCreateDate = await this.taskModel.aggregate([
         ...headProjectQuery,
         ...stateTypeQuery,
@@ -180,7 +179,6 @@ export class TaskstaffService {
       ]),
     ]);
 
-    // console.log(moment(query.s, 'DD/MM/YYYY').year(), queryByCreateDate);
     // distinct id
     const result = [...queryByVId, ...queryByRequestor, ...queryByAreaname];
     const distinct = Array.from(new Set(result.map(a => a._id))).map(id => {
