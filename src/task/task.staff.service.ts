@@ -25,6 +25,7 @@ export class TaskstaffService {
   async staffSearch(
     query: TaskSearch,
   ): Promise<{ data: TaskManage[]; count: number }> {
+    const SEARCH_LIMIT = 50;
     if (query.s.length === 0) return { data: [], count: 0 };
 
     const headProjectQuery: any = [
@@ -61,7 +62,7 @@ export class TaskstaffService {
 
     const queryLimit: any = [
       {
-        $limit: 500,
+        $limit: SEARCH_LIMIT,
       },
     ];
 
