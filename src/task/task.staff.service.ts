@@ -1,10 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
+import * as moment from 'moment';
 import * as mongoose from 'mongoose';
 import { Model } from 'mongoose';
 import {
   StaffPermissionType,
   STAFF_PERMISSION,
 } from 'src/users/schemas/staffs.schema';
+import { TaskSearch } from './dtos/task.search.dto';
 import staffGroupLvHelper from './helpers/staff.group.lv.helper';
 import { TaskDoc, TaskStateType } from './interfaces/task.interface';
 import { TaskManage } from './interfaces/task.manage.interface';
@@ -19,6 +21,173 @@ export class TaskstaffService {
     @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc>,
     private readonly taskService: TaskService,
   ) {}
+
+  async staffSearch(
+    query: TaskSearch,
+  ): Promise<{ data: TaskManage[]; count: number }> {
+    const SEARCH_LIMIT = 50;
+    if (query.s.length === 0) return { data: [], count: 0 };
+
+    const headProjectQuery: any = [
+      {
+        $project: {
+          state: {
+            $arrayElemAt: ['$state', -1],
+          },
+          _id: 1,
+          key: '$_id',
+          requestor: 1,
+          requestorOwner: {
+            $arrayElemAt: ['$requestor.username', -1],
+          },
+          area: 1,
+          type: 1,
+          createAt: 1,
+          vid: 1,
+        },
+      },
+    ];
+
+    const areaJoin: any = [
+      {
+        $lookup: {
+          from: 'areas',
+          localField: 'area',
+          foreignField: '_id',
+          as: 'area',
+        },
+      },
+      { $unwind: { path: '$area', preserveNullAndEmptyArrays: true } },
+    ];
+
+    const queryLimit: any = [
+      {
+        $limit: SEARCH_LIMIT,
+      },
+    ];
+
+    const tailProjectQuery: any = [
+      {
+        $project: {
+          _id: 1,
+          vid: 1,
+          key: '$_id',
+          requestor: 1,
+          'area.label': 1,
+          'area.name': 1,
+          type: 1,
+          createAt: 1,
+          state: ['$state'],
+        },
+      },
+    ];
+
+    const typeMap =
+      (query.type &&
+        query.type.map(e => ({
+          state: e,
+        }))) ||
+      [];
+
+    const stateTypeQuery: any =
+      (query.type && [
+        {
+          $match: {
+            $or: [...typeMap],
+          },
+        },
+      ]) ||
+      [];
+
+    const queryDateOnly = query.s.match(/\d{2}-\d{2}-\d{4}/);
+    if (queryDateOnly) {
+      const queryByCreateDate = await this.taskModel.aggregate([
+        ...headProjectQuery,
+        ...stateTypeQuery,
+        {
+          $match: {
+            createAt: {
+              $gte: new Date(
+                moment(query.s, 'DD/MM/YYYY')
+                  .startOf('day')
+                  .toISOString(),
+              ),
+              $lt: new Date(
+                moment(query.s, 'DD/MM/YYYY')
+                  .startOf('day')
+                  .add(2, 'day')
+                  .toISOString(),
+              ),
+            },
+          },
+        },
+        ...queryLimit,
+        ...areaJoin,
+        ...tailProjectQuery,
+      ]);
+      return { data: queryByCreateDate, count: queryByCreateDate.length };
+    }
+
+    const [queryByVId, queryByRequestor, queryByAreaname] = await Promise.all([
+      // vid
+      this.taskModel.aggregate([
+        ...headProjectQuery,
+        ...stateTypeQuery,
+        {
+          $match: {
+            vid: {
+              $regex: new RegExp(`^${query.s.toLocaleUpperCase()}`),
+            },
+          },
+        },
+        ...queryLimit,
+        ...areaJoin,
+        ...tailProjectQuery,
+      ]),
+
+      // requestor name
+      this.taskModel.aggregate([
+        ...headProjectQuery,
+        ...stateTypeQuery,
+        {
+          $match: {
+            requestorOwner: {
+              $regex: `${query.s.toLocaleLowerCase()}`,
+              $options: 'i',
+            },
+          },
+        },
+        ...queryLimit,
+        ...areaJoin,
+        ...tailProjectQuery,
+      ]),
+
+      // area name
+      this.taskModel.aggregate([
+        ...headProjectQuery,
+        ...stateTypeQuery,
+        ...areaJoin,
+        {
+          $match: {
+            'area.label': {
+              $regex: `${query.s.toLocaleLowerCase()}`,
+              $options: 'i',
+            },
+          },
+        },
+        ...queryLimit,
+        ...tailProjectQuery,
+      ]),
+    ]);
+
+    // distinct id
+    const result = [...queryByVId, ...queryByRequestor, ...queryByAreaname];
+    const distinct = Array.from(new Set(result.map(a => a._id))).map(id => {
+      return result.find(a => a._id === id);
+    });
+
+    return { data: distinct, count: distinct.length };
+  }
 
   async getAllTask(
     offset?: number,

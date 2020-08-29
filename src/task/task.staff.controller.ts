@@ -17,6 +17,7 @@ import {
   STAFF_PERMISSION,
 } from 'src/users/schemas/staffs.schema';
 import { TaskCancelByStaff } from './dtos/task.cancel.byStaff.dto';
+import { TaskSearch } from './dtos/task.search.dto';
 import { TaskStaffQuery } from './dtos/task.staff.query.dto';
 import { TaskService } from './task.service';
 import { TaskstaffService } from './task.staff.service';
@@ -27,6 +28,12 @@ export class TaskStaffController {
     private readonly taskStaffService: TaskstaffService,
     private readonly taskService: TaskService,
   ) {}
+
+  @Get('/search')
+  @UseGuards(AuthGuard('staff'))
+  async search(@Query() query: TaskSearch) {
+    return this.taskStaffService.staffSearch(query);
+  }
 
   @Get('/all')
   @UseGuards(AuthGuard('staff'))
@@ -86,21 +93,6 @@ export class TaskStaffController {
     }
   }
 
-  @Post('/reject')
-  @UseGuards(AuthGuard('staff'))
-  async rejectTaskByStaff(
-    @Body() data: TaskCancelByStaff,
-    @Res() res: Response,
-  ) {
-    try {
-      const { _id: taskId, desc } = data;
-      await this.taskStaffService.rejectTask(taskId, desc);
-      return res.sendStatus(200);
-    } catch (err) {
-      return res.status(500).send(String(err));
-    }
-  }
-
   @Get('/accept')
   @UseGuards(AuthGuard('staff'))
   async getAccept(@Query() query: TaskStaffQuery, @Res() res: Response) {
@@ -153,6 +145,23 @@ export class TaskStaffController {
       staffLevel: userGroup,
     });
     return res.send(doc);
+  }
+
+  // POST ACTIONS
+
+  @Post('/reject')
+  @UseGuards(AuthGuard('staff'))
+  async rejectTaskByStaff(
+    @Body() data: TaskCancelByStaff,
+    @Res() res: Response,
+  ) {
+    try {
+      const { _id: taskId, desc } = data;
+      await this.taskStaffService.rejectTask(taskId, desc);
+      return res.sendStatus(200);
+    } catch (err) {
+      return res.status(500).send(String(err));
+    }
   }
 
   @Post('/cancle')
