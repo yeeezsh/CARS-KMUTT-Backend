@@ -8,7 +8,7 @@ import { UsersService } from './users.service';
 
 @Module({
   imports: [
-    HttpModule,
+    HttpModule.register({ timeout: 5000 }),
     DatabaseModule,
     forwardRef(() => AuthModule),
     forwardRef(() => TaskModule),

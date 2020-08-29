@@ -78,8 +78,8 @@ export class UsersService {
 
   async loginRequestor(login: RequestorLoginDto): Promise<Requestor> {
     let bypass = false;
+    if (BYPASS_USER.includes(login.username)) bypass = true;
     try {
-      if (BYPASS_USER.includes(login.username)) bypass = true;
       const { data: ldap } = await this.httpService
         .post('https://auth.innosoft.kmutt.ac.th', {
           username: login.username,
