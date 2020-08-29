@@ -93,7 +93,6 @@ export class UsersService {
             HttpStatus.UNAUTHORIZED,
           );
       }
-
       // if no have acc in db add new one
       const registred = await this.requestorModel
         .findOne({ username: login.username })
@@ -107,23 +106,23 @@ export class UsersService {
       }
       return registred;
     } catch (err) {
-      if (err.code === 'ECONNRESET') {
-        if (bypass) {
-          // DANGER CODE BYPASS FIX HERE NXT PATCH **
-          // if no have acc in db add new one
-          const registred = await this.requestorModel
-            .findOne({ username: login.username })
-            .lean();
-          if (!registred) {
-            const doc = await this.requestorModel.create({
-              username: login.username,
-              studentId: login.username,
-            });
-            return doc;
-          }
-          return registred;
+      if (bypass) {
+        // DANGER CODE BYPASS FIX HERE NXT PATCH **
+        // if no have acc in db add new one
+        const registred = await this.requestorModel
+          .findOne({ username: login.username })
+          .lean();
+        if (!registred) {
+          const doc = await this.requestorModel.create({
+            username: login.username,
+            studentId: login.username,
+          });
+          return doc;
         }
+        return registred;
+      }
 
+      if (err.code === 'ECONNRESET') {
         // normally throw if err at LDAP
         throw new HttpException(
           'KMUTT LDAP connection error',
