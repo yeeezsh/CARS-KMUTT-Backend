@@ -45,8 +45,12 @@ export class TaskService {
         .find({
           area: areaId,
           state: {
-            $in: ['accept', 'wait', 'requested'],
-            $nin: ['drop'],
+            $in: [
+              TaskStateType.ACCEPT,
+              TaskStateType.WAIT,
+              TaskStateType.REQUESTED,
+            ],
+            $nin: [TaskStateType.DROP],
           },
           reserve: {
             $elemMatch: {
@@ -142,13 +146,12 @@ export class TaskService {
         area: task.area,
       };
     } catch (err) {
-      console.error(err);
       throw err;
     }
   }
 
-  async getTaskById(id: string): Promise<TaskDoc> {
-    const task = await this.taskModel
+  async getTaskById(id: string): Promise<Task | any> {
+    const task = (await this.taskModel
       .findById(id)
       .select([
         'reserve',
@@ -163,20 +166,21 @@ export class TaskService {
         'vid',
       ])
       .populate('area', '_id name label building')
-      .lean();
+      .lean()) as { building: AreaBuilding; area: AreaDoc };
     if (!task) return;
 
     const buildingId =
       (task.area && task.area.building._id) || task.building._id;
     const building = await this.areaBuildingModel
       .findById(buildingId)
-      .select('_id name type label');
+      .select('_id name type label')
+      .lean();
 
     // when only building
     if (!task.area) {
       task.area = {
         label: building.label,
-      };
+      } as AreaDoc;
     }
 
     return {
@@ -273,13 +277,11 @@ export class TaskService {
     const validaAreaId = await this.areaModel.findById(areaId).select('_id');
     if (!validaAreaId) throw new BadRequestException('bad area id');
 
-    // console.log('qt st', start.format('DD-MM'));
-    // console.log('qt st', stop.format('DD-MM'));
     const tasks = await this.taskModel
       .find({
         area: mongoose.Types.ObjectId(areaId),
         state: {
-          $nin: ['drop', 'reject'],
+          $nin: [TaskStateType.DROP, TaskStateType.REJECT],
         },
         reserve: {
           $elemMatch: {
