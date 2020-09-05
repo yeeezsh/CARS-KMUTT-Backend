@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 import { StaffDoc } from '../../users/interfaces/staff.interface';
-import { AreaBuilding } from './area.building.interface';
+import { AreaBuildingDoc } from './area.building.interface';
 
 interface Reserve {
   interval: number | -1 | 60;
@@ -14,7 +14,7 @@ interface Reserve {
 export interface AreaAvailble {
   name: string;
   label?: string;
-  building?: AreaBuilding;
+  building?: AreaBuildingDoc;
   required: {
     form?: Schema.Types.ObjectId; // required form module
     staff?: StaffDoc[];

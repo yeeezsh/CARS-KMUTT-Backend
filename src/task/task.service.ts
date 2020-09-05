@@ -2,7 +2,7 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import * as moment from 'moment';
 import * as mongoose from 'mongoose';
 import { ClientSession, Model, Types } from 'mongoose';
-import { AreaBuilding } from 'src/area/interfaces/area.building.interface';
+import { AreaBuildingDoc } from 'src/area/interfaces/area.building.interface';
 import { AreaDoc } from 'src/area/interfaces/area.interface';
 import { CreateTaskMeetingDto, TimeSlot } from './dtos/task.meeting.dto';
 import { TaskDesc } from './interfaces/task.desc.interface';
@@ -29,7 +29,7 @@ export class TaskService {
     @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc>,
     @Inject('AREA_MODEL') private readonly areaModel: Model<AreaDoc>,
     @Inject('AREA_BUILDING_MODEL')
-    private readonly areaBuildingModel: Model<AreaBuilding>,
+    private readonly areaBuildingModel: Model<AreaBuildingDoc>,
     private readonly taskUtils: TaskUtilsService,
   ) {}
 
@@ -166,7 +166,7 @@ export class TaskService {
         'vid',
       ])
       .populate('area', '_id name label building')
-      .lean()) as { building: AreaBuilding; area: AreaDoc };
+      .lean()) as { building: AreaBuildingDoc; area: AreaDoc };
     if (!task) return;
 
     const buildingId =

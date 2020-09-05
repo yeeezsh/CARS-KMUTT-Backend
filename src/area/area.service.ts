@@ -4,20 +4,22 @@ import { FormService } from '../form/form.service';
 import { UsersService } from '../users/users.service';
 import { CreateAreaBuildingDto } from './dtos/area.building.create.dto';
 import { CreateAreaDto } from './dtos/area.create.dto';
-import { AreaBuilding } from './interfaces/area.building.interface';
-import { AreaDoc } from './interfaces/area.interface';
+import { AreaBuildingDoc } from './interfaces/area.building.interface';
+import { Area, AreaDoc } from './interfaces/area.interface';
 
 @Injectable()
 export class AreaService {
   constructor(
     @Inject('AREA_MODEL') private readonly areaModel: Model<AreaDoc>,
     @Inject('AREA_BUILDING_MODEL')
-    private readonly areaBuildingModel: Model<AreaBuilding>,
+    private readonly areaBuildingModel: Model<AreaBuildingDoc>,
     private readonly formService: FormService,
     private readonly userService: UsersService,
   ) {}
 
-  async createAreaBuilding(data: CreateAreaBuildingDto): Promise<AreaBuilding> {
+  async createAreaBuilding(
+    data: CreateAreaBuildingDto,
+  ): Promise<AreaBuildingDoc> {
     try {
       const duplicated = await this.areaBuildingModel.findOne({
         name: data.name,
@@ -36,7 +38,7 @@ export class AreaService {
     }
   }
 
-  async createArea(data: CreateAreaDto): Promise<AreaDoc> {
+  async createArea(data: CreateAreaDto): Promise<Area> {
     try {
       const duplicated = await this.areaModel.findOne({ name: data.name });
       if (duplicated) {
@@ -82,7 +84,7 @@ export class AreaService {
     }
   }
 
-  async linkAreaBuilding(id: string): Promise<AreaBuilding> {
+  async linkAreaBuilding(id: string): Promise<AreaBuildingDoc> {
     try {
       const doc = await this.areaBuildingModel.findById(id);
       if (!doc) {
