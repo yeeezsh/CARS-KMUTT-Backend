@@ -14,7 +14,7 @@ import { StaffLoginDto } from './dtos/staff.login.dto';
 import { Hash } from './helpers/hash';
 import { Requestor } from './interfaces/requestor.interface';
 // interfaces
-import { StaffAPI, StaffDoc } from './interfaces/staff.interface';
+import { Staff, StaffDoc } from './interfaces/staff.interface';
 import { STAFF_PERMISSION } from './schemas/staffs.schema';
 
 const BYPASS_USER = ['11111111111', 'k.t', 't.1', 't.2', 't.3', 't.4', 't.5'];
@@ -51,7 +51,7 @@ export class UsersService {
     return saved;
   }
 
-  async loginStaff(login: StaffLoginDto): Promise<StaffAPI> {
+  async loginStaff(login: StaffLoginDto): Promise<Staff> {
     // BYPASS
     let bypass = false;
     if (BYPASS_STAFF.includes(login.username)) bypass = true;
@@ -101,10 +101,11 @@ export class UsersService {
         const doc = await this.requestorModel.create({
           username: login.username,
           studentId: login.username,
+          email: null,
         });
         return doc;
       }
-      return registred;
+      return registred as Requestor;
     } catch (err) {
       if (bypass) {
         // DANGER CODE BYPASS FIX HERE NXT PATCH **
@@ -116,10 +117,11 @@ export class UsersService {
           const doc = await this.requestorModel.create({
             username: login.username,
             studentId: login.username,
+            email: null,
           });
           return doc;
         }
-        return registred;
+        return registred as Requestor;
       }
 
       if (err.code === 'ECONNRESET') {
@@ -133,7 +135,7 @@ export class UsersService {
     }
   }
 
-  async listStaff(): Promise<StaffDoc[]> {
+  async listStaff(): Promise<Staff[]> {
     const doc = await this.staffModel.find({}).lean();
     return doc;
   }
@@ -141,15 +143,15 @@ export class UsersService {
   async getUserInfo(
     id: string,
     permission: string,
-  ): Promise<StaffDoc | Requestor> {
+  ): Promise<Staff | Requestor> {
     const staffPermission = ['staff', 'approver', 'admin'];
     if (permission === 'requestor') {
       const doc = await this.requestorModel.findById(id).lean();
-      return doc;
+      return doc as Requestor;
     } else if (staffPermission.includes(permission)) {
       const doc = await this.staffModel.findById(id).lean();
       const { password, ...result } = doc;
-      return result;
+      return result as Staff;
     } else {
       throw new Error('invalid permission');
     }

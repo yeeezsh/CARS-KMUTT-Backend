@@ -41,8 +41,12 @@ export class TaskSportService {
           type: SPORT_TYPE,
           area: areaId,
           state: {
-            $in: ['accept', 'wait', 'requested'],
-            $nin: ['drop'],
+            $in: [
+              TaskStateType.ACCEPT,
+              TaskStateType.WAIT,
+              TaskStateType.REQUESTED,
+            ],
+            $nin: [TaskStateType.DROP],
           },
           reserve: {
             $elemMatch: {

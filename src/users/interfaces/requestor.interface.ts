@@ -1,7 +1,6 @@
-import { Document, Schema } from 'mongoose';
+import { Document } from 'mongoose';
 
 export interface Requestor extends Document {
-  _id: Schema.Types.ObjectId;
   username: string;
   studentId?: string;
   email: string;

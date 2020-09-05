@@ -3,7 +3,7 @@ import { Interval } from '@nestjs/schedule';
 import * as moment from 'moment';
 import * as mongoose from 'mongoose';
 import { Model } from 'mongoose';
-import { TaskDoc } from './interfaces/task.interface';
+import { TaskDoc, TaskStateType, TaskType } from './interfaces/task.interface';
 
 @Injectable()
 export class TaskCronsService {
@@ -21,10 +21,10 @@ export class TaskCronsService {
       const now = new Date();
       const waitTask = await this.taskModel
         .find({
-          type: 'sport',
+          type: TaskType.sport,
           state: {
-            $in: ['requested'],
-            $nin: ['accept', 'drop'],
+            $in: [TaskStateType.REQUESTED],
+            $nin: [TaskStateType.ACCEPT, TaskStateType.DROP],
           },
         })
         .session(s)
@@ -42,7 +42,7 @@ export class TaskCronsService {
             _id: { $in: dropList },
           },
           {
-            state: ['requested', 'drop'],
+            state: [TaskStateType.REQUESTED, TaskStateType.DROP],
             updateAt: now,
           },
         )

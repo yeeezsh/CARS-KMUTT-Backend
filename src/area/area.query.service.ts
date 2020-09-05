@@ -2,12 +2,19 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { Moment } from 'moment';
 import { Model, Types } from 'mongoose';
 import weekParse from 'src/task/helpers/week.parse';
-import { TaskDoc } from 'src/task/interfaces/task.interface';
+import {
+  TaskDoc,
+  TaskStateType,
+  TaskType,
+} from 'src/task/interfaces/task.interface';
 import { TaskTimeSlot } from 'src/task/interfaces/task.time.slot.interface';
 import { AreaAvailble } from './interfaces/area.available.interface';
 import { AreaAvailableStaff } from './interfaces/area.available.staff.interface';
-import { AreaBuilding } from './interfaces/area.building.interface';
-import { AreaAPI, AreaDoc } from './interfaces/area.interface';
+import {
+  AreaBuilding,
+  AreaBuildingDoc,
+} from './interfaces/area.building.interface';
+import { Area, AreaAPI, AreaDoc } from './interfaces/area.interface';
 import { AreaTableAPI } from './interfaces/area.table.interface';
 import { TimeNode } from './interfaces/timenode.interface';
 
@@ -19,7 +26,7 @@ export class AreaQueryService {
     @Inject('AREA_MODEL') private readonly areaModel: Model<AreaDoc>,
     @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc>,
     @Inject('AREA_BUILDING_MODEL')
-    private readonly areaBuildingModel: Model<AreaBuilding>,
+    private readonly areaBuildingModel: Model<AreaBuildingDoc>,
   ) {}
 
   private async getReservedAreaTimeInOneDay(
@@ -127,11 +134,15 @@ export class AreaQueryService {
       .find({
         area: areaId,
         type: {
-          $in: ['meeting-room', 'meeting-club'],
+          $in: [TaskType.meetingRoom, TaskType.meetingClub],
         },
         state: {
-          $in: ['wait', 'requested', 'accept'],
-          $nin: ['drop', 'reject'],
+          $in: [
+            TaskStateType.WAIT,
+            TaskStateType.REQUESTED,
+            TaskStateType.ACCEPT,
+          ],
+          $nin: [TaskStateType.DROP, TaskStateType.REJECT],
         },
         reserve: {
           $elemMatch: {
@@ -169,7 +180,7 @@ export class AreaQueryService {
 
   async getAreaTable(): Promise<AreaTableAPI[]> {
     try {
-      const areas = await this.areaModel
+      const areas = (await this.areaModel
         .find({})
         .populate('building', 'name label')
         .select({
@@ -179,15 +190,15 @@ export class AreaQueryService {
           createAt: 0,
           updateAt: 0,
         })
-        .lean();
+        .lean()) as Area[];
 
-      return areas.map(e => ({ ...e, key: e._id }));
+      return areas.map(e => ({ ...e, key: e._id.toString() })) as any;
     } catch (err) {
       throw err;
     }
   }
 
-  async listAreaType(type?: string): Promise<AreaBuilding[]> {
+  async listAreaType(type?: string): Promise<AreaBuildingDoc[]> {
     try {
       let query = {};
       if (type) query = { type };
@@ -229,7 +240,7 @@ export class AreaQueryService {
    * @param  {string} id? when null is query all possible
    * @returns Promise
    */
-  async getAreaSportBuilding(id?: string): Promise<AreaBuilding[]> {
+  async getAreaSportBuilding(id?: string): Promise<AreaBuildingDoc[]> {
     try {
       return this.getAreaBuilding(id, { type: 'sport' });
     } catch (err) {
@@ -275,7 +286,7 @@ export class AreaQueryService {
         .find({
           type: {
             // DANGER MUST MIGRATE TO MEETING-ROOM
-            $in: ['meeting', 'meeting-club'],
+            $in: ['meeting'],
           },
         })
         .select('_id');
@@ -309,7 +320,7 @@ export class AreaQueryService {
     }
   }
 
-  async getSportAreaFields(id: string): Promise<AreaDoc[]> {
+  async getSportAreaFields(id: string): Promise<Area[]> {
     return await this.areaModel.find({ building: id }).lean();
   }
 
@@ -340,13 +351,19 @@ export class AreaQueryService {
             },
           },
           state: {
-            $in: ['wait', 'requested', 'accept'],
-            $nin: ['drop', 'reject'],
+            $in: [
+              TaskStateType.WAIT,
+              TaskStateType.REQUESTED,
+              TaskStateType.ACCEPT,
+            ],
+            $nin: [TaskStateType.DROP, TaskStateType.REJECT],
           },
         })
         .lean();
     });
-    const tasks: TaskDoc[] = (await Promise.all(taskQuery)).flatMap(e => e);
+    const tasks: TaskDoc[] = (await Promise.all(taskQuery)).flatMap(
+      e => e,
+    ) as TaskDoc[];
     const mappedTask = fields.map(e => ({
       ...e,
       disabled: tasks

@@ -13,7 +13,11 @@ import { Response } from 'express';
 import { Model } from 'mongoose';
 import { AuthService } from 'src/auth/auth.service';
 import { UserInfo } from 'src/common/user.decorator';
-import { TaskDoc } from 'src/task/interfaces/task.interface';
+import {
+  TaskDoc,
+  TaskStateType,
+  TaskType,
+} from 'src/task/interfaces/task.interface';
 // import { StaffDto } from './dtos/staff.dto';
 import { CreateStaffDto } from './dtos/staff.create.dto';
 import { QuotaType } from './interfaces/quota.interface';
@@ -69,9 +73,9 @@ export class UsersController {
     const reserve = await this.taskModel
       .find({
         state: {
-          $nin: ['drop', 'reject'],
+          $nin: [TaskStateType.DROP, TaskStateType.REJECT],
         },
-        type: 'sport',
+        type: TaskType.sport,
         requestor: {
           $elemMatch: {
             username,
