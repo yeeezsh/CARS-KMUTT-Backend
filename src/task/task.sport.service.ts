@@ -84,6 +84,7 @@ export class TaskSportService {
       // await this.checkAvailable(area, time, s);
       const now = new Date();
       const task = new this.taskModel({
+        vid: await this.taskUtils.generateVirtualId(TaskType.sport),
         reserve: time,
         area: area._id,
         state: ['accept'],
