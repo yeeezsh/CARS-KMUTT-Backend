@@ -61,12 +61,6 @@ export class AreaController {
     return await this.areaQueryService.getAvailableMeetingArea(areaId, date);
   }
 
-  @Get('/:id')
-  @UseGuards(AuthGuard('requestor'))
-  async getAreaById(@Param('id') areaId: string) {
-    return this.areaQueryService.getArea(areaId);
-  }
-
   // not sure
   @Get('/available/:id')
   @UseGuards(AuthGuard('requestor'))
@@ -94,5 +88,12 @@ export class AreaController {
   @UseGuards(AuthGuard('staff'))
   async getAreaTable() {
     return this.areaQueryService.getAreaTable();
+  }
+
+  // requestor
+  @Get('/:id')
+  @UseGuards(AuthGuard('requestor'))
+  async getAreaById(@Param('id') areaId: string) {
+    return this.areaQueryService.getArea(areaId);
   }
 }
