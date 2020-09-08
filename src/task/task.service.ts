@@ -147,7 +147,7 @@ export class TaskService {
     }
   }
 
-  async getTaskById(id: string): Promise<TaskDoc> {
+  async getTaskById(id: string): Promise<Task> {
     const task = await this.taskModel
       .findById(id)
       .select([

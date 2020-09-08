@@ -56,6 +56,6 @@ export interface Task {
   updateAt: Date;
 }
 export interface TaskDoc extends Task, Document {}
-export interface TaskLastCard extends TaskDoc {
+export interface TaskLastCard extends Task {
   owner: string;
 }
