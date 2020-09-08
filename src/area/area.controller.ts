@@ -64,7 +64,12 @@ export class AreaController {
   // not sure
   @Get('/available/:id')
   @UseGuards(AuthGuard('requestor'))
-  async getAvailabelArea(@Param('id') areaId: string) {
+  async getAvailabelArea(
+    @Param('id') areaId: string,
+    @Query('start') start: string,
+    @Query('stop') stop: string,
+  ) {
+    console.log(start, stop);
     return await this.areaQueryService.getAvailabelAreaByStaff(areaId);
   }
 
