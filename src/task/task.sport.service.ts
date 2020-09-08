@@ -3,10 +3,7 @@ import * as mongoose from 'mongoose';
 import { ClientSession, Model } from 'mongoose';
 import { AreaDoc } from 'src/area/interfaces/area.interface';
 import { CreateSportTaskByStaffDto } from './dtos/task.create.bystaff.dto';
-// import { AreaBuilding } from 'src/area/interfaces/area.building.interface';
-// import { AreaQueryService } from 'src/area/area.query.service';
 import { CreateTaskSportDto, TimeSlot } from './dtos/task.create.sport';
-// interfaces & dto
 import {
   Task,
   TaskDoc,
@@ -15,9 +12,6 @@ import {
 } from './interfaces/task.interface';
 import { TaskRequestor } from './interfaces/task.requestor.interface';
 import { TaskUtilsService } from './task.utils.service';
-
-// import TaskSchedulePartitionArrHelper from './helpers/task.schedule.partition.arr.helper';
-// import TaskScheduleStructArrHelper from './helpers/task.schedule.struct.arr.helper';
 
 @Injectable()
 export class TaskSportService {
@@ -79,9 +73,8 @@ export class TaskSportService {
 
       // validation
       if (!area) throw new BadRequestException('bad area id');
+      await this.validReservation(area._id, data.time, s);
 
-      // DANGER BYPASS
-      // await this.checkAvailable(area, time, s);
       const now = new Date();
       const task = new this.taskModel({
         vid: await this.taskUtils.generateVirtualId(TaskType.sport),
@@ -120,11 +113,10 @@ export class TaskSportService {
         .session(s)
         .lean();
 
+      // validation
       if (!area) throw new BadRequestException('bad area id');
       await this.validReservation(area._id, data.time, s);
 
-      // await this.checkAvailable(area, time, s);
-      // console.log(requestor, owner);
       const ownerValid = requestor[0] === owner;
       if (!ownerValid) throw new Error('invalid owner');
       const requestorValidNumber =
