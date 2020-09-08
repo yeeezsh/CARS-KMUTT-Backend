@@ -52,26 +52,8 @@ export class AreaController {
     }
   }
 
-  //   staff operate
-  @Post('/building')
-  async createBuilding(@Body() body: CreateAreaBuildingDto) {
-    await this.areaService.createAreaBuilding(body);
-    return;
-  }
-
-  // create area
-  @Post('/')
-  async createArea(@Body() body: CreateAreaDto) {
-    await this.areaService.createArea(body);
-    return;
-  }
-
-  @Get('/table')
-  async getAreaTable() {
-    return this.areaQueryService.getAreaTable();
-  }
-
   @Get('/available/meeting/:id')
+  @UseGuards(AuthGuard('requestor'))
   async getAvailabelMeetingArea(
     @Param('id') areaId: string,
     @Query('date') date: string,
@@ -79,13 +61,38 @@ export class AreaController {
     return await this.areaQueryService.getAvailableMeetingArea(areaId, date);
   }
 
+  @Get('/:id')
+  @UseGuards(AuthGuard('requestor'))
+  async getAreaById(@Param('id') areaId: string) {
+    return this.areaQueryService.getArea(areaId);
+  }
+
+  // not sure
   @Get('/available/:id')
+  @UseGuards(AuthGuard('requestor'))
   async getAvailabelArea(@Param('id') areaId: string) {
     return await this.areaQueryService.getAvailabelAreaByStaff(areaId);
   }
 
-  @Get('/:id')
-  async getAreaById(@Param('id') areaId: string) {
-    return this.areaQueryService.getArea(areaId);
+  //   staff operate
+  @Post('/building')
+  @UseGuards(AuthGuard('staff'))
+  async createBuilding(@Body() body: CreateAreaBuildingDto) {
+    await this.areaService.createAreaBuilding(body);
+    return;
+  }
+
+  // create area
+  @Post('/')
+  @UseGuards(AuthGuard('staff'))
+  async createArea(@Body() body: CreateAreaDto) {
+    await this.areaService.createArea(body);
+    return;
+  }
+
+  @Get('/table')
+  @UseGuards(AuthGuard('staff'))
+  async getAreaTable() {
+    return this.areaQueryService.getAreaTable();
   }
 }
