@@ -76,6 +76,8 @@ export class TaskSportService {
         .select(['reserve', 'required'])
         .session(s)
         .lean();
+
+      // validation
       if (!area) throw new BadRequestException('bad area id');
 
       // DANGER BYPASS
