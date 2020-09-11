@@ -222,12 +222,15 @@ export class AreaQueryService {
     try {
       const doc = await this.areaModel
         .findById(id)
-        .populate('building', 'name label')
+        .populate('building', 'name label type')
         .lean();
       if (!doc) {
         throw Error('_id is not exisiting');
       }
-      return doc;
+      return {
+        ...doc,
+        type: doc.building.type,
+      };
     } catch (err) {
       throw err;
     }
