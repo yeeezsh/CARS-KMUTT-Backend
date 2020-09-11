@@ -69,8 +69,11 @@ export class AreaController {
     @Query('start') start: string,
     @Query('stop') stop: string,
   ) {
-    console.log(start, stop);
-    return await this.areaQueryService.getAvailabelAreaByStaff(areaId);
+    return await this.areaQueryService.getAvailabelAreaByStaff(
+      areaId,
+      start && moment(start),
+      stop && moment(stop),
+    );
   }
 
   //   staff operate
