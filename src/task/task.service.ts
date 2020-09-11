@@ -272,9 +272,6 @@ export class TaskService {
   ): Promise<QuickTaskAPI[]> {
     const validaAreaId = await this.areaModel.findById(areaId).select('_id');
     if (!validaAreaId) throw new BadRequestException('bad area id');
-
-    // console.log('qt st', start.format('DD-MM'));
-    // console.log('qt st', stop.format('DD-MM'));
     const tasks = await this.taskModel
       .find({
         area: mongoose.Types.ObjectId(areaId),
@@ -284,8 +281,9 @@ export class TaskService {
         reserve: {
           $elemMatch: {
             start: {
-              $gte: new Date(start.toISOString()),
-              $lt: new Date(stop.toISOString()),
+              // FIX OFFSET DATE
+              $gt: new Date(start.subtract(1, 'day').toISOString()),
+              $lte: new Date(stop.add(1, 'day').toISOString()),
             },
           },
         },
