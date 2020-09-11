@@ -289,12 +289,13 @@ export class TaskService {
         },
       })
       .sort({ createAt: -1 })
-      .select('_id requestor state reserve')
+      .select('_id vid requestor state reserve')
       .lean();
 
     return tasks.map(e => ({
       ...e,
       key: e._id,
+      vid: e.vid,
       username: e.requestor[0].username,
       state: e.state.slice(-1)[0],
       date: e.reserve[0].start,
