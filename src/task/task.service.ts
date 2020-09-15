@@ -71,6 +71,7 @@ export class TaskService {
     data: CreateTaskMeetingDto,
     type: TaskType.meetingRoom | TaskType.meetingClub,
     owner: string,
+    staff?: boolean,
   ) {
     const s = await mongoose.startSession();
     try {
@@ -99,7 +100,7 @@ export class TaskService {
         reserve: time,
         requestor: requestorMapped,
         area: area._id,
-        state: [TaskStateType.WAIT],
+        state: [staff ? TaskStateType.ACCEPT : TaskStateType.WAIT],
         type,
         forms,
         createAt: now,

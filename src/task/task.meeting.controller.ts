@@ -63,4 +63,26 @@ export class TaskMeetingController {
       });
     }
   }
+
+  @UseGuards(AuthGuard('requestor'))
+  @Post('/meeting-room/byStaff')
+  async createMeetingTaskByStaff(
+    @Body() body: CreateTaskMeetingDto,
+    @Res() res: Response,
+    @UserInfo() user: UserSession,
+  ) {
+    try {
+      await this.taskService.createMeetingTask(
+        body,
+        TaskType.meetingRoom,
+        user.username,
+        true,
+      );
+      return res.sendStatus(200);
+    } catch (err) {
+      return res.status(HttpStatus.BAD_REQUEST).send({
+        msg: String(err),
+      });
+    }
+  }
 }
