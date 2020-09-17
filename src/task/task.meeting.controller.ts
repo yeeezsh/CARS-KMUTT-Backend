@@ -20,8 +20,8 @@ export class TaskMeetingController {
     private readonly taskService: TaskService, // private readonly historyService: HistoryService,
   ) {}
 
-  @UseGuards(AuthGuard('requestor'))
   @Post('/meeting-club')
+  @UseGuards(AuthGuard('requestor'))
   async createMeetingClubTask(
     @Body() body: CreateTaskMeetingDto,
     @Res() res: Response,
@@ -42,8 +42,8 @@ export class TaskMeetingController {
     }
   }
 
-  @UseGuards(AuthGuard('requestor'))
   @Post('/meeting-room')
+  @UseGuards(AuthGuard('requestor'))
   async createMeetingTask(
     @Body() body: CreateTaskMeetingDto,
     @Res() res: Response,
@@ -64,8 +64,8 @@ export class TaskMeetingController {
     }
   }
 
-  @UseGuards(AuthGuard('requestor'))
   @Post('/meeting-room/byStaff')
+  @UseGuards(AuthGuard('staff'))
   async createMeetingTaskByStaff(
     @Body() body: CreateTaskMeetingDto,
     @Res() res: Response,
@@ -78,6 +78,29 @@ export class TaskMeetingController {
         user.username,
         true,
       );
+      return res.sendStatus(200);
+    } catch (err) {
+      return res.status(HttpStatus.BAD_REQUEST).send({
+        msg: String(err),
+      });
+    }
+  }
+
+  @Post('/meeting-club/byStaff')
+  @UseGuards(AuthGuard('staff'))
+  async createMeetingClubTaskByStaff(
+    @Body() body: CreateTaskMeetingDto,
+    @Res() res: Response,
+    @UserInfo() user: UserSession,
+  ) {
+    try {
+      await this.taskService.createMeetingTask(
+        body,
+        TaskType.meetingClub,
+        user.username,
+        true,
+      );
+
       return res.sendStatus(200);
     } catch (err) {
       return res.status(HttpStatus.BAD_REQUEST).send({
