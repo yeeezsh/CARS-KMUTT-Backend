@@ -71,6 +71,7 @@ export class TaskService {
     data: CreateTaskMeetingDto,
     type: TaskType.meetingRoom | TaskType.meetingClub,
     owner: string,
+    staff?: boolean,
   ) {
     const s = await mongoose.startSession();
     try {
@@ -99,7 +100,7 @@ export class TaskService {
         reserve: time,
         requestor: requestorMapped,
         area: area._id,
-        state: [TaskStateType.WAIT],
+        state: [staff ? TaskStateType.ACCEPT : TaskStateType.WAIT],
         type,
         forms,
         createAt: now,
@@ -147,7 +148,7 @@ export class TaskService {
     }
   }
 
-  async getTaskById(id: string): Promise<TaskDoc> {
+  async getTaskById(id: string): Promise<Task> {
     const task = await this.taskModel
       .findById(id)
       .select([
@@ -272,9 +273,6 @@ export class TaskService {
   ): Promise<QuickTaskAPI[]> {
     const validaAreaId = await this.areaModel.findById(areaId).select('_id');
     if (!validaAreaId) throw new BadRequestException('bad area id');
-
-    // console.log('qt st', start.format('DD-MM'));
-    // console.log('qt st', stop.format('DD-MM'));
     const tasks = await this.taskModel
       .find({
         area: mongoose.Types.ObjectId(areaId),
@@ -284,19 +282,21 @@ export class TaskService {
         reserve: {
           $elemMatch: {
             start: {
-              $gte: new Date(start.toISOString()),
-              $lt: new Date(stop.toISOString()),
+              // FIX OFFSET DATE
+              $gt: new Date(start.subtract(1, 'day').toISOString()),
+              $lte: new Date(stop.add(1, 'day').toISOString()),
             },
           },
         },
       })
       .sort({ createAt: -1 })
-      .select('_id requestor state reserve')
+      .select('_id vid requestor state reserve')
       .lean();
 
     return tasks.map(e => ({
       ...e,
       key: e._id,
+      vid: e.vid,
       username: e.requestor[0].username,
       state: e.state.slice(-1)[0],
       date: e.reserve[0].start,

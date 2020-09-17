@@ -1,6 +1,7 @@
 import { Document, Schema, Types } from 'mongoose';
 import { StaffDoc } from '../../users/interfaces/staff.interface';
 import { AreaBuilding } from './area.building.interface';
+import { AreaBuildingType } from './building.type';
 
 interface Reserve {
   interval: number | -1 | 60;
@@ -31,5 +32,6 @@ export interface AreaDoc extends Area, Document {
   _id: Types.ObjectId;
 }
 export interface AreaAPI extends Area {
+  type: AreaBuildingType;
   _id: string;
 }

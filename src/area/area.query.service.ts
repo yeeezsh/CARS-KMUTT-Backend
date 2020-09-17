@@ -58,7 +58,11 @@ export class AreaQueryService {
     ]);
   }
 
-  async getAvailabelAreaByStaff(areaId: string): Promise<AreaAvailableStaff[]> {
+  async getAvailabelAreaByStaff(
+    areaId: string,
+    start?: Moment,
+    stop?: Moment,
+  ): Promise<AreaAvailableStaff[]> {
     try {
       const area = await this.areaModel
         .findById(areaId)
@@ -67,8 +71,13 @@ export class AreaQueryService {
 
       if (!area) throw new BadRequestException('bad area id');
 
-      const today = moment(moment()).startOf('day');
-      const forward = area.forward;
+      const now = start;
+      const today = moment(now);
+
+      const forward = stop
+        ? Math.abs(moment(stop).diff(moment(today), 'day') + 1) // preventing start-stop = 0
+        : area.forward;
+
       const weeks = weekParse(area.reserve[0].week);
       const validDay = Array(forward)
         .fill([])
@@ -76,8 +85,7 @@ export class AreaQueryService {
           const day = moment(today).add(i, 'day');
           if (weeks.includes(Number(day.format('E')))) {
             return {
-              // HOT FIX for overlaps day
-              date: moment(day).subtract(1, 'day'),
+              date: day,
             };
           }
           return 0;
@@ -214,12 +222,15 @@ export class AreaQueryService {
     try {
       const doc = await this.areaModel
         .findById(id)
-        .populate('building', 'name label')
+        .populate('building', 'name label type')
         .lean();
       if (!doc) {
         throw Error('_id is not exisiting');
       }
-      return doc;
+      return {
+        ...doc,
+        type: doc.building.type,
+      };
     } catch (err) {
       throw err;
     }
