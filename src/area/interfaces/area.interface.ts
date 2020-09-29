@@ -23,7 +23,7 @@ export interface Area {
     staff?: StaffDoc[];
     requestor: number;
   };
-  quota: AreaQuotaType;
+  quota?: AreaQuotaType;
   forward: number;
   reserve: Reserve[];
   createAt: Date;
