@@ -1,10 +1,10 @@
 import AreaQuotaUnitEnum from '../@enums/area.quota.unit.enum';
 
-type QuotaType = {
+type AreaQuotaType = {
   requestor: {
     n: number;
     unit: AreaQuotaUnitEnum;
   };
 };
 
-export default QuotaType;
+export default AreaQuotaType;
