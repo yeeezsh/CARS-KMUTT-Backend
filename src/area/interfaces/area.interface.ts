@@ -1,4 +1,5 @@
 import { Document, Schema, Types } from 'mongoose';
+import { QuotaType } from 'src/users/interfaces/quota.interface';
 import { StaffDoc } from '../../users/interfaces/staff.interface';
 import { AreaBuilding } from './area.building.interface';
 import { AreaBuildingType } from './building.type';
@@ -22,6 +23,7 @@ export interface Area {
     staff?: StaffDoc[];
     requestor: number;
   };
+  quota: QuotaType;
   forward: number;
   reserve: Reserve[];
   createAt: Date;
