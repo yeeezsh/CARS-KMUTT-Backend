@@ -2,6 +2,7 @@ import { forwardRef, HttpModule, Module } from '@nestjs/common';
 import { TaskModule } from 'src/task/task.module';
 import { AuthModule } from '../auth/auth.module';
 import { DatabaseModule } from '../database/database.module';
+import { UserQuotaService } from './user.quota.service';
 import { UsersController } from './users.controller';
 import { usersProviders } from './users.providers';
 import { UsersService } from './users.service';
@@ -13,7 +14,7 @@ import { UsersService } from './users.service';
     forwardRef(() => AuthModule),
     forwardRef(() => TaskModule),
   ],
-  providers: [UsersService, ...usersProviders],
+  providers: [UsersService, UserQuotaService, ...usersProviders],
   exports: [UsersService],
   controllers: [UsersController],
 })
