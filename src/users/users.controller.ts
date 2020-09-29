@@ -18,6 +18,7 @@ import QuotaResponseApiDTO from './@dtos/response/quota.api.response.dto';
 // import { StaffDto } from './dtos/staff.dto';
 import { CreateStaffDto } from './@dtos/staff.create.dto';
 import { UserSession } from './interfaces/user.session.interface';
+import { UserQuotaService } from './user.quota.service';
 // import { TaskService } from 'src/task/task.service';
 import { UsersService } from './users.service';
 
@@ -28,6 +29,7 @@ export class UsersController {
     private readonly authService: AuthService,
     @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc>,
     private readonly usersService: UsersService,
+    private readonly userQuotaService: UserQuotaService,
   ) {}
 
   @Post('/auth/staff')
@@ -66,32 +68,7 @@ export class UsersController {
   async quotaRequestor(
     @UserInfo() user: UserSession,
   ): Promise<QuotaResponseApiDTO> {
-    const MAX_QUOTAS = 1;
-    const username = user.username;
-    const reserve = await this.taskModel
-      .find({
-        state: {
-          $nin: ['drop', 'reject'],
-        },
-        type: 'sport',
-        requestor: {
-          $elemMatch: {
-            username,
-          },
-        },
-        reserve: {
-          $elemMatch: {
-            start: {
-              $gte: new Date(),
-            },
-          },
-        },
-      })
-      .countDocuments();
-
-    return {
-      n: MAX_QUOTAS - reserve,
-    };
+    return this.userQuotaService.getSportQuota(user);
   }
 
   @Post('/staff')
