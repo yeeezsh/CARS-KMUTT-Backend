@@ -15,7 +15,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { UserInfo } from 'src/common/user.decorator';
 import { TaskDoc } from 'src/task/interfaces/task.interface';
 // import { StaffDto } from './dtos/staff.dto';
-import { CreateStaffDto } from './dtos/staff.create.dto';
+import { CreateStaffDto } from './@dtos/staff.create.dto';
 import { QuotaType } from './interfaces/quota.interface';
 import { UserSession } from './interfaces/user.session.interface';
 // import { TaskService } from 'src/task/task.service';
