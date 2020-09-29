@@ -14,9 +14,9 @@ import { Model } from 'mongoose';
 import { AuthService } from 'src/auth/auth.service';
 import { UserInfo } from 'src/common/user.decorator';
 import { TaskDoc } from 'src/task/interfaces/task.interface';
+import QuotaResponseApiDTO from './@dtos/response/quota.api.response.dto';
 // import { StaffDto } from './dtos/staff.dto';
 import { CreateStaffDto } from './@dtos/staff.create.dto';
-import { QuotaType } from './interfaces/quota.interface';
 import { UserSession } from './interfaces/user.session.interface';
 // import { TaskService } from 'src/task/task.service';
 import { UsersService } from './users.service';
@@ -63,7 +63,9 @@ export class UsersController {
 
   @UseGuards(AuthGuard('requestor'))
   @Get('/quota')
-  async quotaRequestor(@UserInfo() user: UserSession): Promise<QuotaType> {
+  async quotaRequestor(
+    @UserInfo() user: UserSession,
+  ): Promise<QuotaResponseApiDTO> {
     const MAX_QUOTAS = 1;
     const username = user.username;
     const reserve = await this.taskModel
