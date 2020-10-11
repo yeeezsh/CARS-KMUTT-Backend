@@ -6,6 +6,7 @@ import { UsersModule } from '../users/users.module';
 import { AreaController } from './area.controller';
 import { areaProviders } from './area.providers';
 import { AreaQueryService } from './area.query.service';
+import { AreaQuotaService } from './area.quota.service';
 import { AreaService } from './area.service';
 import { BuildingController } from './building.controller';
 
@@ -18,11 +19,11 @@ import { BuildingController } from './building.controller';
   ],
   providers: [
     AreaService,
-    AreaQueryService,
+    AreaQuotaService,
     AreaQueryService,
     ...areaProviders,
   ],
-  exports: [AreaService, AreaQueryService, ...areaProviders],
+  exports: [AreaService, AreaQueryService, AreaQuotaService, ...areaProviders],
   controllers: [AreaController, BuildingController],
 })
 export class AreaModule {}
