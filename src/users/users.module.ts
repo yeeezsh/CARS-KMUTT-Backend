@@ -1,4 +1,5 @@
 import { forwardRef, HttpModule, Module } from '@nestjs/common';
+import { AreaModule } from 'src/area/area.module';
 import { TaskModule } from 'src/task/task.module';
 import { AuthModule } from '../auth/auth.module';
 import { DatabaseModule } from '../database/database.module';
@@ -13,6 +14,7 @@ import { UsersService } from './users.service';
     DatabaseModule,
     forwardRef(() => AuthModule),
     forwardRef(() => TaskModule),
+    forwardRef(() => AreaModule),
   ],
   providers: [UsersService, UserQuotaService, ...usersProviders],
   exports: [UsersService],

@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
+import { AreaQuotaService } from 'src/area/area.quota.service';
 import {
   TaskDoc,
   TaskStateType,
@@ -16,6 +17,7 @@ export class UserQuotaService {
     @Inject('REQUESTOR_MODEL')
     private readonly requestorModel: Model<Requestor>,
     @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc>,
+    private readonly areaQuotaService: AreaQuotaService,
   ) {}
 
   async getSportQuota(user: UserSession) {
