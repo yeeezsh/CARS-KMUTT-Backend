@@ -16,7 +16,12 @@ import { BuildingController } from './building.controller';
     forwardRef(() => UsersModule),
     forwardRef(() => TaskModule),
   ],
-  providers: [AreaService, AreaQueryService, ...areaProviders],
+  providers: [
+    AreaService,
+    AreaQueryService,
+    AreaQueryService,
+    ...areaProviders,
+  ],
   exports: [AreaService, AreaQueryService, ...areaProviders],
   controllers: [AreaController, BuildingController],
 })
