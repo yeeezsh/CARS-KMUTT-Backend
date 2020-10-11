@@ -11,6 +11,7 @@ import { FormModule } from './form/form.module';
 import { InitModule } from './init/init.module';
 import { FileModule } from './file/file.module';
 import { DatabaseModule } from './database/database.module';
+import { ConfigModule } from './config/config.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { DatabaseModule } from './database/database.module';
     FormModule,
     InitModule,
     FileModule,
+    ConfigModule,
   ],
   controllers: [AppController],
   providers: [AppService],
