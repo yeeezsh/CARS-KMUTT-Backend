@@ -1,3 +1,9 @@
+FROM node:12 as base
+COPY yarn.lock .
+COPY package.json .
+RUN yarn install
+
+
 FROM node:12 as dev
 # cache dependencies
 ADD yarn.lock /tmp/yarn.lock
