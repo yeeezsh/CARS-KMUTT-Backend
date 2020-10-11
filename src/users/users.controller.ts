@@ -4,6 +4,7 @@ import {
   forwardRef,
   Get,
   Inject,
+  Param,
   Post,
   Res,
   UseGuards,
@@ -64,10 +65,12 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard('requestor'))
-  @Get('/quota')
+  @Get('/quota/:id')
   async quotaRequestor(
     @UserInfo() user: UserSession,
+    @Param('id') areaId: string,
   ): Promise<QuotaResponseApiDTO> {
+    console.log('areaId', areaId);
     return this.userQuotaService.getSportQuota(user);
   }
 
