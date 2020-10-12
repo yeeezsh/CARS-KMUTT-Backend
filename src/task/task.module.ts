@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AreaQueryService } from 'src/area/area.query.service';
 import { AreaModule } from '../area/area.module';
@@ -19,7 +19,12 @@ import { TaskstaffService } from './task.staff.service';
 import { TaskUtilsService } from './task.utils.service';
 
 @Module({
-  imports: [DatabaseModule, AreaModule, FormModule, ScheduleModule.forRoot()],
+  imports: [
+    DatabaseModule,
+    forwardRef(() => AreaModule),
+    FormModule,
+    ScheduleModule.forRoot(),
+  ],
   providers: [
     TaskService,
     TaskSportService,
