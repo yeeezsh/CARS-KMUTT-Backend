@@ -5,7 +5,7 @@ import { ConfigurationInterface } from './configuration.interface';
 export const configProviders: Provider[] = [
   {
     provide: 'APP_CONFIG',
-    useValue: (() => {
+    useValue: ((): ConfigurationInterface => {
       const {
         DATABASE_CONNECTION,
         DATABASE_USERAME,
@@ -14,6 +14,7 @@ export const configProviders: Provider[] = [
         JWT_SECRET_KEY,
         JWT_EXPIRES,
         OPS_KEY,
+        ORIGIN,
       } = process.env as ConfigType;
       return {
         database: {
@@ -31,6 +32,7 @@ export const configProviders: Provider[] = [
         node_env:
           (process.env.NODE_ENV as ConfigurationInterface['node_env']) ||
           'development',
+        origin: ORIGIN === 'true' || ORIGIN || true,
       };
     })(),
   },

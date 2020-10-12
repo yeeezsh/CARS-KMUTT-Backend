@@ -11,4 +11,5 @@ export interface ConfigurationInterface {
   };
   opsKey: string;
   node_env: 'production' | 'development';
+  origin: boolean | string;
 }
