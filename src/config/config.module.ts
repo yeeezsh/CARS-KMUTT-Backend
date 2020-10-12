@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AppConfigService } from './app.config.service';
+import { configProviders } from './config.provider';
 
 @Module({
-  imports: [],
-  providers: [AppConfigService],
-  exports: [],
+  providers: [...configProviders],
+  exports: [...configProviders],
 })
 export class ConfigModule {}
