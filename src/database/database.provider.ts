@@ -1,7 +1,6 @@
 import { Provider } from '@nestjs/common';
 import * as mongoose from 'mongoose';
 import { ConfigurationInterface } from 'src/config/configuration.interface';
-// import { ConfigModule } from '../config/config.module';
 
 export const databaseProviders: Provider[] = [
   {
