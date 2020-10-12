@@ -32,7 +32,7 @@ export const configProviders: Provider[] = [
         node_env:
           (process.env.NODE_ENV as ConfigurationInterface['node_env']) ||
           'development',
-        origin: ORIGIN === 'true' || ORIGIN || true,
+        origin: new RegExp(ORIGIN),
       };
     })(),
   },
