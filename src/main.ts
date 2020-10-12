@@ -4,12 +4,18 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
+import { ConfigModule } from './config/config.module';
+import { ConfigurationInterface } from './config/configuration.interface';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const config: ConfigurationInterface = app
+    .select(ConfigModule)
+    .get('APP_CONFIG');
+
   app.use(compression());
   app.enableCors({
-    origin: process.env.CORS ? process.env.CORS : true,
+    origin: [config.origin],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
@@ -17,7 +23,7 @@ async function bootstrap() {
   app.setGlobalPrefix('/api');
   app.use(cookieParser());
 
-  if (process.env.NODE_ENV === 'development') {
+  if (config.node_env === 'development') {
     const options = new DocumentBuilder()
       .setTitle('CARs API')
       .setVersion('1.0')
