@@ -1,6 +1,6 @@
 FROM node:12 as base
-COPY yarn.lock .
-COPY package.json .
+COPY yarn.lock yarn.lock
+COPY package.json package.json
 RUN yarn install
 
 FROM base as dev
