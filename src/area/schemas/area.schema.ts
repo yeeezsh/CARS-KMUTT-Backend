@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import AreaQuotaUnitEnum from '../@enums/area.quota.unit.enum';
 
 const ReserveSchema = new Schema(
   {
@@ -20,6 +21,15 @@ export const AreaSchema = new Schema({
     form: { type: Schema.Types.ObjectId, ref: 'forms' }, // required form module
     staff: { type: Number, default: 1 },
     requestor: { type: Number, default: 1 },
+  },
+  quota: {
+    requestor: {
+      n: { type: Number },
+      unit: {
+        type: AreaQuotaUnitEnum,
+        enum: [AreaQuotaUnitEnum.day, AreaQuotaUnitEnum.month],
+      },
+    },
   },
   forward: { type: Number, default: 2, required: true },
   reserve: { type: [ReserveSchema], required: true },

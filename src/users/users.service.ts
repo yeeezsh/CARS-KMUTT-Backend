@@ -6,10 +6,10 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
-import { RequestorLoginDto } from './dtos/requestor.login.dto';
-import { CreateStaffDto } from './dtos/staff.create.dto';
+import { RequestorLoginDto } from './@dtos/requestor.login.dto';
+import { CreateStaffDto } from './@dtos/staff.create.dto';
 // dtos
-import { StaffLoginDto } from './dtos/staff.login.dto';
+import { StaffLoginDto } from './@dtos/staff.login.dto';
 // helpers
 import { Hash } from './helpers/hash';
 import { Requestor } from './interfaces/requestor.interface';

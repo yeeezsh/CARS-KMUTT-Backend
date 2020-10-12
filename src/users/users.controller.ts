@@ -4,6 +4,7 @@ import {
   forwardRef,
   Get,
   Inject,
+  Param,
   Post,
   Res,
   UseGuards,
@@ -14,10 +15,11 @@ import { Model } from 'mongoose';
 import { AuthService } from 'src/auth/auth.service';
 import { UserInfo } from 'src/common/user.decorator';
 import { TaskDoc } from 'src/task/interfaces/task.interface';
+import QuotaResponseApiDTO from './@dtos/response/quota.api.response.dto';
 // import { StaffDto } from './dtos/staff.dto';
-import { CreateStaffDto } from './dtos/staff.create.dto';
-import { QuotaType } from './interfaces/quota.interface';
+import { CreateStaffDto } from './@dtos/staff.create.dto';
 import { UserSession } from './interfaces/user.session.interface';
+import { UserQuotaService } from './user.quota.service';
 // import { TaskService } from 'src/task/task.service';
 import { UsersService } from './users.service';
 
@@ -28,6 +30,7 @@ export class UsersController {
     private readonly authService: AuthService,
     @Inject('TASK_MODEL') private readonly taskModel: Model<TaskDoc>,
     private readonly usersService: UsersService,
+    private readonly userQuotaService: UserQuotaService,
   ) {}
 
   @Post('/auth/staff')
@@ -62,34 +65,13 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard('requestor'))
-  @Get('/quota')
-  async quotaRequestor(@UserInfo() user: UserSession): Promise<QuotaType> {
-    const MAX_QUOTAS = 1;
-    const username = user.username;
-    const reserve = await this.taskModel
-      .find({
-        state: {
-          $nin: ['drop', 'reject'],
-        },
-        type: 'sport',
-        requestor: {
-          $elemMatch: {
-            username,
-          },
-        },
-        reserve: {
-          $elemMatch: {
-            start: {
-              $gte: new Date(),
-            },
-          },
-        },
-      })
-      .countDocuments();
-
-    return {
-      n: MAX_QUOTAS - reserve,
-    };
+  @Get('/quota/:id')
+  async quotaRequestor(
+    @UserInfo() user: UserSession,
+    @Param('id') areaId: string,
+  ): Promise<QuotaResponseApiDTO> {
+    console.log('areaId', areaId);
+    return this.userQuotaService.getSportQuota(user);
   }
 
   @Post('/staff')
