@@ -10,19 +10,15 @@ export const databaseProviders: Provider[] = [
     useFactory: async (
       appConfig: ConfigurationInterface,
     ): Promise<typeof mongoose> => {
-      console.log(appConfig.database.authSource);
-      return await mongoose.connect(
-        'mongodb://mongodb-sharded:27017/cars-kmutt',
-        {
-          user: 'root',
-          pass: 'kmuttC@Rs2020',
-          authSource: 'admin',
-          useCreateIndex: true,
-          useNewUrlParser: true,
-          useFindAndModify: false,
-          useUnifiedTopology: true,
-        },
-      );
+      return await mongoose.connect(appConfig.database.connection, {
+        user: appConfig.database.username,
+        pass: appConfig.database.password,
+        authSource: appConfig.database.authSource,
+        useCreateIndex: true,
+        useNewUrlParser: true,
+        useFindAndModify: false,
+        useUnifiedTopology: true,
+      });
     },
   },
 ];
