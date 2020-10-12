@@ -1,7 +1,8 @@
+import { registerAs } from '@nestjs/config';
 import { ConfigType } from './config.type';
 import { ConfigurationInterface } from './configuration.interface';
 
-export default (): ConfigurationInterface => {
+export default registerAs('APP', () => {
   const {
     DATABASE_CONNECTION,
     DATABASE_USERAME,
@@ -28,4 +29,4 @@ export default (): ConfigurationInterface => {
       (process.env.NODE_ENV as ConfigurationInterface['node_env']) ||
       'development',
   };
-};
+});
