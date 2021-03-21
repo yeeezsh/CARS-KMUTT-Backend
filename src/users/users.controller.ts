@@ -36,7 +36,7 @@ export class UsersController {
     const user = await this.authService.loginStaff(username, password);
     res.cookie('Authorization', user.Authorization);
     res.cookie('user', user);
-    return res.send({ ...user });
+    return res.send({ ...user, Authorization: undefined });
   }
 
   @Post('/auth/requestor')
@@ -45,7 +45,7 @@ export class UsersController {
     const user = await this.authService.loginRequestor(username, password);
     res.cookie('Authorization', user.Authorization);
     res.cookie('user', user);
-    return res.send({ ...user });
+    return res.send({ ...user, Authorization: undefined });
   }
 
   @UseGuards(AuthGuard('requestor'))
