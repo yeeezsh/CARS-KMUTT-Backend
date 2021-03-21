@@ -14,11 +14,9 @@ import { Model } from 'mongoose';
 import { AuthService } from 'src/auth/auth.service';
 import { UserInfo } from 'src/common/user.decorator';
 import { TaskDoc } from 'src/task/interfaces/task.interface';
-// import { StaffDto } from './dtos/staff.dto';
 import { CreateStaffDto } from './dtos/staff.create.dto';
 import { QuotaType } from './interfaces/quota.interface';
 import { UserSession } from './interfaces/user.session.interface';
-// import { TaskService } from 'src/task/task.service';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -36,7 +34,7 @@ export class UsersController {
     const user = await this.authService.loginStaff(username, password);
     res.cookie('Authorization', user.Authorization);
     res.cookie('user', user);
-    return res.send({ ...user });
+    return res.send({ ...user, Authorization: undefined });
   }
 
   @Post('/auth/requestor')
@@ -45,7 +43,7 @@ export class UsersController {
     const user = await this.authService.loginRequestor(username, password);
     res.cookie('Authorization', user.Authorization);
     res.cookie('user', user);
-    return res.send({ ...user });
+    return res.send({ ...user, Authorization: undefined });
   }
 
   @UseGuards(AuthGuard('requestor'))
