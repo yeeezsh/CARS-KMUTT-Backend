@@ -6,6 +6,8 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
+import { APP_CONFIG } from 'src/config/config.constant';
+import { ConfigProvider } from 'src/config/configuration.provider.interface';
 import { RequestorLoginDto } from './dtos/requestor.login.dto';
 import { CreateStaffDto } from './dtos/staff.create.dto';
 // dtos
@@ -23,6 +25,7 @@ const BYPASS_STAFF = ['staff.1', 'staff.2'];
 @Injectable()
 export class UsersService {
   constructor(
+    @Inject(APP_CONFIG) private readonly config: ConfigProvider,
     @Inject('STAFF_MODEL') private readonly staffModel: Model<StaffDoc>,
     @Inject('REQUESTOR_MODEL')
     private readonly requestorModel: Model<Requestor>,
@@ -81,7 +84,7 @@ export class UsersService {
     if (BYPASS_USER.includes(login.username)) bypass = true;
     try {
       const { data: ldap } = await this.httpService
-        .post('https://auth.innosoft.kmutt.ac.th', {
+        .post(this.config.kmuttAuth, {
           username: login.username,
           password: login.password,
         })

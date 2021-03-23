@@ -1,14 +1,13 @@
 import { Provider } from '@nestjs/common';
 import * as mongoose from 'mongoose';
-import { ConfigurationInterface } from 'src/config/configuration.interface';
+import { APP_CONFIG } from 'src/config/config.constant';
+import { ConfigProvider } from 'src/config/configuration.provider.interface';
 
 export const databaseProviders: Provider[] = [
   {
-    inject: ['APP_CONFIG'],
+    inject: [APP_CONFIG],
     provide: 'DATABASE_CONNECTION',
-    useFactory: async (
-      appConfig: ConfigurationInterface,
-    ): Promise<typeof mongoose> => {
+    useFactory: async (appConfig: ConfigProvider): Promise<typeof mongoose> => {
       return await mongoose.connect(appConfig.database.connection, {
         user: appConfig.database.username,
         pass: appConfig.database.password,

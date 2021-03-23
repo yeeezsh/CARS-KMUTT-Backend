@@ -4,14 +4,13 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
+import { APP_CONFIG } from './config/config.constant';
 import { ConfigModule } from './config/config.module';
-import { ConfigurationInterface } from './config/configuration.interface';
+import { ConfigProvider } from './config/configuration.provider.interface';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const config: ConfigurationInterface = app
-    .select(ConfigModule)
-    .get('APP_CONFIG');
+  const config: ConfigProvider = app.select(ConfigModule).get(APP_CONFIG);
 
   app.use(compression());
   app.enableCors({

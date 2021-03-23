@@ -1,4 +1,5 @@
 import { forwardRef, HttpModule, Module } from '@nestjs/common';
+import { ConfigModule } from 'src/config/config.module';
 import { TaskModule } from 'src/task/task.module';
 import { AuthModule } from '../auth/auth.module';
 import { DatabaseModule } from '../database/database.module';
@@ -8,6 +9,7 @@ import { UsersService } from './users.service';
 
 @Module({
   imports: [
+    ConfigModule,
     HttpModule.register({}),
     DatabaseModule,
     forwardRef(() => AuthModule),

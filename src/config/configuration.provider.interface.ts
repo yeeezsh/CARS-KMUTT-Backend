@@ -1,4 +1,4 @@
-export interface ConfigurationInterface {
+export interface ConfigProvider {
   database: {
     connection: string;
     username: string;
@@ -12,4 +12,5 @@ export interface ConfigurationInterface {
   opsKey: string;
   node_env: 'production' | 'development';
   origin: RegExp;
+  kmuttAuth: string;
 }
