@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 import { APP_CONFIG } from 'src/config/config.constant';
-import { ConfigProvider } from 'src/config/configuration.interface';
+import { ConfigProvider } from 'src/config/configuration.provider.interface';
 import { CookieExtracter } from './helpers/cookie.extractor';
 
 @Injectable()

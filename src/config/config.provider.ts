@@ -1,7 +1,7 @@
 import { Provider } from '@nestjs/common';
 import { APP_CONFIG } from './config.constant';
 import { ConfigType } from './config.type';
-import { ConfigProvider } from './configuration.interface';
+import { ConfigProvider } from './configuration.provider.interface';
 
 export const configProviders: Provider[] = [
   {
