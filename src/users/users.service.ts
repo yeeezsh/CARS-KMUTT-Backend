@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
 import { APP_CONFIG } from 'src/config/config.constant';
-import { ConfigurationInterface } from 'src/config/configuration.interface';
+import { ConfigProvider } from 'src/config/configuration.interface';
 import { RequestorLoginDto } from './dtos/requestor.login.dto';
 import { CreateStaffDto } from './dtos/staff.create.dto';
 // dtos
@@ -25,7 +25,7 @@ const BYPASS_STAFF = ['staff.1', 'staff.2'];
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject(APP_CONFIG) private readonly config: ConfigurationInterface,
+    @Inject(APP_CONFIG) private readonly config: ConfigProvider,
     @Inject('STAFF_MODEL') private readonly staffModel: Model<StaffDoc>,
     @Inject('REQUESTOR_MODEL')
     private readonly requestorModel: Model<Requestor>,

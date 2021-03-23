@@ -1,4 +1,4 @@
-export interface ConfigurationInterface {
+export interface ConfigProvider {
   database: {
     connection: string;
     username: string;

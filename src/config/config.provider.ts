@@ -1,12 +1,12 @@
 import { Provider } from '@nestjs/common';
 import { APP_CONFIG } from './config.constant';
 import { ConfigType } from './config.type';
-import { ConfigurationInterface } from './configuration.interface';
+import { ConfigProvider } from './configuration.interface';
 
 export const configProviders: Provider[] = [
   {
     provide: APP_CONFIG,
-    useValue: ((): ConfigurationInterface => {
+    useValue: ((): ConfigProvider => {
       const {
         DATABASE_CONNECTION,
         DATABASE_USERAME,
@@ -32,8 +32,7 @@ export const configProviders: Provider[] = [
         },
         opsKey: OPS_KEY || 'kmuttC@Rs2020.OpsKey',
         node_env:
-          (process.env.NODE_ENV as ConfigurationInterface['node_env']) ||
-          'development',
+          (process.env.NODE_ENV as ConfigProvider['node_env']) || 'development',
         origin: new RegExp(ORIGIN),
         kmuttAuth: KMUTT_AUTH,
       };
