@@ -1,10 +1,11 @@
 import { Provider } from '@nestjs/common';
 import * as mongoose from 'mongoose';
+import { APP_CONFIG } from 'src/config/config.constant';
 import { ConfigurationInterface } from 'src/config/configuration.interface';
 
 export const databaseProviders: Provider[] = [
   {
-    inject: ['APP_CONFIG'],
+    inject: [APP_CONFIG],
     provide: 'DATABASE_CONNECTION',
     useFactory: async (
       appConfig: ConfigurationInterface,

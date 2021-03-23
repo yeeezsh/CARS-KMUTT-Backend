@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
+import { APP_CONFIG } from 'src/config/config.constant';
 import { ConfigurationInterface } from 'src/config/configuration.interface';
 import { CookieExtracter } from './helpers/cookie.extractor';
 
@@ -9,7 +10,7 @@ export class RequestorJWTStrategy extends PassportStrategy(
   Strategy,
   'requestor',
 ) {
-  constructor(@Inject('APP_CONFIG') appConfig: ConfigurationInterface) {
+  constructor(@Inject(APP_CONFIG) appConfig: ConfigurationInterface) {
     super({
       jwtFromRequest: CookieExtracter,
       ignoreExpiration: true,

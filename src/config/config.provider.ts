@@ -1,10 +1,11 @@
 import { Provider } from '@nestjs/common';
+import { APP_CONFIG } from './config.constant';
 import { ConfigType } from './config.type';
 import { ConfigurationInterface } from './configuration.interface';
 
 export const configProviders: Provider[] = [
   {
-    provide: 'APP_CONFIG',
+    provide: APP_CONFIG,
     useValue: ((): ConfigurationInterface => {
       const {
         DATABASE_CONNECTION,
